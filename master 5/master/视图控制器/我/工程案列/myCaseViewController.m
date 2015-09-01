@@ -40,6 +40,7 @@
     };
     //    [self initUI];
     self.tableview.separatorStyle=0;
+    self.automaticallyAdjustsScrollViewInsets=NO;
     [self customNV];
     [self setupHeaderWithTableview:self.tableview];
     [self setupFooter:self.tableview];

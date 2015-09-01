@@ -23,7 +23,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="请输入密码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xfj-EY-Put">
-                    <rect key="frame" x="22" y="228" width="280" height="40"/>
+                    <rect key="frame" x="22" y="196" width="280" height="40"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="280" id="mRq-vI-VcZ"/>
                         <constraint firstAttribute="height" constant="40" id="nje-fj-K0a"/>
@@ -32,7 +32,7 @@
                     <textInputTraits key="textInputTraits"/>
                 </textField>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="请输入验证码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tEN-Hw-nQG">
-                    <rect key="frame" x="22" y="172" width="115" height="40"/>
+                    <rect key="frame" x="22" y="140" width="115" height="40"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="115" id="1jU-vD-cUf"/>
                         <constraint firstAttribute="height" constant="40" id="M9b-E1-eZu"/>
@@ -41,7 +41,7 @@
                     <textInputTraits key="textInputTraits"/>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v0C-CR-11j">
-                    <rect key="frame" x="171" y="172" width="122" height="40"/>
+                    <rect key="frame" x="171" y="140" width="122" height="40"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="clC-tS-WxV"/>
                         <constraint firstAttribute="width" constant="122" id="wsi-f6-EoI"/>
@@ -55,7 +55,7 @@
                     </connections>
                 </button>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="请确认密码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8CN-MZ-JPh">
-                    <rect key="frame" x="21" y="284" width="280" height="40"/>
+                    <rect key="frame" x="21" y="252" width="280" height="40"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="Vyl-Kt-DRr"/>
                         <constraint firstAttribute="width" constant="280" id="ki5-Yx-w5M"/>
@@ -64,7 +64,7 @@
                     <textInputTraits key="textInputTraits"/>
                 </textField>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="请输入正确的手机号码" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="erT-nD-BCm">
-                    <rect key="frame" x="22" y="116" width="280" height="40"/>
+                    <rect key="frame" x="22" y="84" width="280" height="40"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="280" id="961-rY-66M"/>
                         <constraint firstAttribute="height" constant="40" id="UJQ-cy-hnL"/>
@@ -105,7 +105,7 @@
                 <constraint firstItem="tEN-Hw-nQG" firstAttribute="top" secondItem="erT-nD-BCm" secondAttribute="bottom" constant="16" id="74I-At-Gx1"/>
                 <constraint firstAttribute="trailing" secondItem="7HL-0l-J1j" secondAttribute="trailing" constant="124" id="7GF-5P-6G4"/>
                 <constraint firstAttribute="trailing" secondItem="v0C-CR-11j" secondAttribute="trailing" constant="27" id="7Mo-pP-Ac8"/>
-                <constraint firstItem="erT-nD-BCm" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="116" id="D9f-K0-dj8"/>
+                <constraint firstItem="erT-nD-BCm" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="84" id="D9f-K0-dj8"/>
                 <constraint firstItem="v0C-CR-11j" firstAttribute="leading" secondItem="tEN-Hw-nQG" secondAttribute="trailing" constant="34" id="F3Y-CJ-xLA"/>
                 <constraint firstItem="7HL-0l-J1j" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="322" id="Hu9-x9-Kb5"/>
                 <constraint firstAttribute="trailing" secondItem="Xfj-EY-Put" secondAttribute="trailing" constant="18" id="ILG-Qf-rF8"/>

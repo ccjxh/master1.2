@@ -28,6 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _currentPage=1;
+    self.automaticallyAdjustsScrollViewInsets=NO;
     // Do any additional setup after loading the view.
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationItem.title = @"收藏";

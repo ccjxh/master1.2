@@ -176,7 +176,7 @@
             }
             phone.text=Str;
             phone.textColor=COLOR(225, 0, 42, 1);
-            phone.frame=CGRectMake(phone.frame.origin.x, phone.frame.origin.y-5, phone.frame.size.width, 20);
+            phone.frame=CGRectMake(phone.frame.origin.x, 15, phone.frame.size.width, 20);
             phone.font=[UIFont systemFontOfSize:15];
             if (self.model.auditState==1) {
                 

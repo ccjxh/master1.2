@@ -30,6 +30,8 @@
 #import "findMasterViewController.h"
 #import   <TestinAgent/TestinAgent.h>
 #import "myPublicViewController.h"
+#import "myTabViewController.h"
+
 @interface AppDelegate ()<TencentSessionDelegate,WXApiDelegate,UIAlertViewDelegate>
 @property (nonatomic) CLLocationManager *locMgr;
 @property(nonatomic)BOOL havePushMessage;//是否有推送消息
@@ -290,18 +292,24 @@
     
     UINavigationController*nc1=[[UINavigationController alloc]initWithRootViewController:ovc];
     nc1.navigationBar.barTintColor=COLOR(67, 172, 219, 1);
+//    [nc.navigationBar setBackgroundImage:[self returnImageFromName:@"导航栏.png"] forBarMetrics:UIBarMetricsDefault];
+    nc.navigationController.navigationBar.translucent = NO;
+//    UIImageView*imageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 64)];
+//    imageview.image=[UIImage imageNamed:@"导航栏.png"];
+//    
+//    [nc.navigationBar insertSubview:imageview atIndex:0];
     ovc.title=@"订单";
-    
-    nc1.navigationBar.barStyle=1;
+    [nc1.navigationController.navigationBar.layer setMasksToBounds:YES];
+//    nc1.navigationBar.barStyle=1;
     MyViewController*mvc=[[MyViewController alloc]init];
     UINavigationController*nc2=[[UINavigationController alloc]initWithRootViewController:mvc];
     nc2.navigationBar.barStyle=1;
     nc2.navigationBar.barTintColor=COLOR(22, 168, 234, 1);
     mvc.title=@"我";
-    UITabBarItem*item1=[[UITabBarItem alloc]initWithTitle:@"找师傅" image: [UIImage imageNamed:@"找师傅-未选中"] selectedImage: [UIImage imageNamed:@"找师傅"]];
-    UITabBarItem*item2=[[UITabBarItem alloc]initWithTitle:@"找活干" image: [UIImage imageNamed:@"找工作-未选择"] selectedImage: [UIImage imageNamed:@"找工作"]];
-    UITabBarItem*item3=[[UITabBarItem alloc]initWithTitle:@"我的" image: [UIImage imageNamed:@"我的-未选择"] selectedImage: [UIImage imageNamed:@"我的"]];
+    UITabBarItem*item1=[[UITabBarItem alloc]initWithTitle:@"找师傅" image: [UIImage imageNamed:@"找师傅-未选择"] selectedImage: [self returnImageFromName:@"找师傅"]];
     
+    UITabBarItem*item2=[[UITabBarItem alloc]initWithTitle:@"找活干" image: [UIImage imageNamed:@"找工作-未选择"] selectedImage: [self returnImageFromName:@"找工作"]];
+    UITabBarItem*item3=[[UITabBarItem alloc]initWithTitle:@"我的" image: [UIImage imageNamed:@"我的-未选择"] selectedImage: [self returnImageFromName:@"我的"]];
     findWorkViewController*fvc=[[findWorkViewController alloc]init];
     fvc.title=@"找活干";
     UINavigationController*nc4=[[UINavigationController alloc]initWithRootViewController:fvc];
@@ -309,6 +317,7 @@
     nc4.navigationBar.barStyle=1;
     UITabBarController*cvc=[[UITabBarController alloc]init];
     cvc.viewControllers=@[nc,nc4,nc2];
+    cvc.tabBar.selectedImageTintColor=COLOR(0, 166, 237, 1);
     nc.tabBarItem=item1;
     nc1.tabBarItem=item2;
     nc2.tabBarItem=item3;
@@ -353,6 +362,14 @@
     }
 }
 
+
+-(UIImage*)returnImageFromName:(NSString*)name{
+
+    UIImage *img = [UIImage imageNamed:name];
+    img =  [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    return img;
+    
+}
 
 -(void)setupLoginView{
     LoginViewController*lvc=[[LoginViewController alloc]init];

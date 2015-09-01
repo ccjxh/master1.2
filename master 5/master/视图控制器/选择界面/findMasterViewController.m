@@ -47,10 +47,11 @@
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"update" object:nil];
 }
 
+
+
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    
     _currentCityName=@"深圳市";
     [self requestAdImage];
     [self requestPay];
@@ -59,8 +60,7 @@
     [self createUI];
     [self receiveNotice];
     [self customNavigation];
-    
-       AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     [delegate setupMap];
     delegate.cityChangeBlock=^(NSString*name){
         
@@ -284,6 +284,7 @@
         
     };
     
+    self.view.backgroundColor=COLOR(232, 233, 232, 1);
     [self.view addSubview:findView];
     
 }

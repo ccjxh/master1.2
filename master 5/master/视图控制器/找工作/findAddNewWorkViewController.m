@@ -21,6 +21,7 @@
      NSMutableDictionary*subDict;//提交单据字典
     NSMutableArray*_serviceArray;
     NSMutableArray*colorArray;//字体颜色数组
+    NSInteger sendtype;//0为发布  1为保存  2为更新招工
 }
 
 
@@ -34,6 +35,7 @@
     [self requestToken];
     [self initData];
     [self initUI];
+    [self customRightNavigation];
     [self CreateFlow];
      [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(cityInfprmatin:) name:@"city" object:nil];  //省市选择通知
     // Do any additional setup after loading the view.
@@ -64,6 +66,77 @@
 }
 
 
+-(void)customRightNavigation{
+
+    UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 25)];
+    [button setTitle:@"保存" forState:UIControlStateNormal];
+    button.titleLabel.font=[UIFont systemFontOfSize:16];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(save)  forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithCustomView:button];
+
+
+}
+
+-(void)save{
+    
+    if ([subDict objectForKey:@"title"]==nil) {
+        [self.view makeToast:@"标题不能为空" duration:1 position:@"center"];
+        return;
+    }
+    else if ([subDict objectForKey:@"peopleNumber"]==nil){
+        [self.view makeToast:@"人数不能为空" duration:1 position:@"center"];
+        return;
+    }else if ([subDict objectForKey:@"payType.id"]==nil){
+        [self.view makeToast:@"待遇不能为空" duration:1 position:@"center"];
+        return;
+    }else if ([subDict objectForKey:@"workSite.id"]==nil){
+        
+        [self.view makeToast:@"工作地点不能为空" duration:1 position:@"center"];
+        return;
+    }else if ([subDict objectForKey:@"workRequire"]==nil){
+        
+        [self.view makeToast:@"职位要求不能为空" duration:1 position:@"center"];
+        return;
+    }else if ([subDict objectForKey:@"contacts"]==nil){
+        
+        [self.view makeToast:@"联系人不能为空" duration:1 position:@"center"];
+        return;
+    }
+
+    [self sendSave];
+}
+
+
+-(void)sendSave{
+
+    [self flowShow];
+    NSString*urlString=[self interfaceFromString:interface_projectSave];
+    [subDict setObject:self.token forKey:@"token"];
+    [[httpManager share]POST:urlString parameters:subDict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
+        NSDictionary*dict=(NSDictionary*)responseObject;
+        [self flowHide];
+        if ([[dict objectForKey:@"rspCode"] intValue]==200) {
+            [self.view makeToast:@"保存成功" duration:1 position:@"center" Finish:^{
+
+                
+            }];
+        }else{
+        
+            NSString*Str=[[dict objectForKey:@"msg"] componentsSeparatedByString:@" "][0];
+            [self.view makeToast:Str duration:1 position:@"center"];
+        
+        }
+        
+    } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+        
+        [self flowHide];
+        [self.view makeToast:@"网络异常" duration:1 position:@"center"];
+    }];
+
+
+}
+
 -(void)initData{
 
     if (!subDict) {
@@ -74,8 +147,6 @@
     if (!colorArray) {
         colorArray=[[NSMutableArray alloc]initWithObjects:@"0",@"0",@"0",@"0",@"0",@"0", nil];
     }
-    
-
 }
 
 -(void)initUI{
@@ -323,6 +394,13 @@
         [self.view makeToast:@"联系人不能为空" duration:1 position:@"center"];
         return;
     }
+   
+   
+}
+
+
+-(void)publish{
+
     [self flowShow];
     NSString*urlString=[self interfaceFromString:interface_isureWork];
     [subDict setObject:self.token forKey:@"token"];
@@ -332,35 +410,36 @@
         
         if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
             [self.view makeToast:@"已提交审核" duration:1 position:@"center" Finish:^{
-               
-                [self popWithnimation:self.navigationController]; 
+                
+                [self popWithnimation:self.navigationController];
             }];
         }else{
             
-        
-//            NSString*str=[[dict objectForKey:@"msg"] componentsSeparatedByString:@""]
-        
+            
+            //            NSString*str=[[dict objectForKey:@"msg"] componentsSeparatedByString:@""]
+            
             
         }
         
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
-       
+        
         [self flowHide];
         [self.view makeToast:@"网络异常" duration:1 position:@"center"];
         
     }];
+
 
 }
 
 
 -(void)requestToken{
     
-   
+    __weak typeof(findAddNewWorkViewController*)WeSelf=self;
     NSString*urlString=[self interfaceFromString:interface_token];
     [[httpManager share]GET:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
         NSDictionary*dict=(NSDictionary*)responseObject;
         self.token= [[dict objectForKey:@"properties"] objectForKey:@"token"];
-    } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+           } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
         
     }];
 }

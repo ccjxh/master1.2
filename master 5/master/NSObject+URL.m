@@ -288,6 +288,9 @@
             case interface_delePublic:
             urlString=@"project/delete";
             break;
+            case interface_projectSave:
+            urlString=@"project/save";
+            break;
              default:
             break;
                 }

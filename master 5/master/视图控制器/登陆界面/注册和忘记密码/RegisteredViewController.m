@@ -38,8 +38,8 @@
     if (self.states == 1) {
         [self.registerButton removeFromSuperview];
         UIButton *resetPasswordBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-        resetPasswordBtn.backgroundColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1.0];
-        resetPasswordBtn.frame = CGRectMake(120, 340, 80, 40);
+//        resetPasswordBtn.backgroundColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1.0];
+        resetPasswordBtn.frame = CGRectMake(120, 300, 80, 40);
         [resetPasswordBtn setTitle:@"重置密码" forState:UIControlStateNormal];
         [resetPasswordBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         resetPasswordBtn.titleLabel.font = [UIFont systemFontOfSize:15];
@@ -156,7 +156,6 @@
 -(void) requestAFNet
 {
     
-    value=YES;
     NSString* openUDID = [OpenUDID value];
     NSString*name=[[UIDevice currentDevice] model];
     if (self.telephoneTextField.text.length == 0) {

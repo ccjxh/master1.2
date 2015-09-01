@@ -199,9 +199,7 @@
         
         [view.refreshFooter endRefreshing];
         [self.view makeToast:@"没有更多数据了" duration:1 position:@"center"];
-        
     }
-    
 }
 
 

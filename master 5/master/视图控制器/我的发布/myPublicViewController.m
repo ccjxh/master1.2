@@ -60,6 +60,7 @@
 -(void)initUI{
     
     self.title=@"我的发布";
+    _currentPage=1;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     view=[[mypublicListView alloc]init];
     __weak typeof(NSMutableArray*)WeArray=_dataArray;
@@ -145,6 +146,7 @@
     
     NSString*urlString=[self interfaceFromString:interface_myPublicList];
     NSDictionary*dict=@{@"pageNo":[NSString stringWithFormat:@"%lu",_currentPage],@"pageSize":@"10"};
+    
     [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
         NSDictionary*dict=(NSDictionary*)responseObject;
         [self flowHide];
@@ -200,6 +202,8 @@
 
             
         }else{
+            NSLog(@"%@",[dict objectForKey:@"msg"]);
+            
             
             [self.view makeToast:[dict objectForKey:@"msg"] duration:1 position:@"center"];
         }

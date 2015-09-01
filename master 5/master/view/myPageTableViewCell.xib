@@ -18,7 +18,7 @@
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iZT-OW-Irf">
                         <rect key="frame" x="8" y="11" width="20" height="20"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="25" id="7hF-Q9-XAn"/>
+                            <constraint firstAttribute="height" constant="18" id="7hF-Q9-XAn"/>
                             <constraint firstAttribute="width" constant="21" id="Pqt-37-sK0"/>
                         </constraints>
                     </imageView>
@@ -36,7 +36,7 @@
                     <constraint firstItem="iZT-OW-Irf" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="Ade-NV-DiB"/>
                     <constraint firstAttribute="trailingMargin" secondItem="0hj-T8-jph" secondAttribute="trailing" constant="50" id="Bbs-BL-5NQ"/>
                     <constraint firstItem="0hj-T8-jph" firstAttribute="leading" secondItem="iZT-OW-Irf" secondAttribute="trailing" constant="15" id="YBX-T7-hV2"/>
-                    <constraint firstItem="iZT-OW-Irf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="7" id="anc-jc-gYL"/>
+                    <constraint firstItem="iZT-OW-Irf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="12" id="anc-jc-gYL"/>
                     <constraint firstItem="0hj-T8-jph" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="10" id="fXn-e0-lDQ"/>
                 </constraints>
             </tableViewCellContentView>
