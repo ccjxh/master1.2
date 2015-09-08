@@ -12,7 +12,8 @@
 #import "contractorViewController.h"
 #import "webDetailViewController.h"
 #import "findMaster.h"
-@interface findMasterViewController ()<UIScrollViewDelegate,SDCycleScrollViewDelegate,UIAlertViewDelegate>
+#import "FNCheckUpdate.h"
+@interface findMasterViewController ()<UIScrollViewDelegate,SDCycleScrollViewDelegate,UIAlertViewDelegate,FNCheckUpdateDelegate>
 @property(nonatomic)NSString*currentCityName;
 @property(nonatomic)NSMutableArray*ADArray;
 @end
@@ -53,13 +54,14 @@
     
     [super viewDidLoad];
     _currentCityName=@"深圳市";
-    [self requestAdImage];
+//    [self requestAdImage];   广告栏图片
     [self requestPay];
     [self request];
     [self initUI];
     [self createUI];
     [self receiveNotice];
     [self customNavigation];
+    [self updateSetting];
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     [delegate setupMap];
     delegate.cityChangeBlock=^(NSString*name){
@@ -82,6 +84,17 @@
     
 }
 
+
+
+-(void)updateSetting{
+
+//    [FNCheckUpdate shareInstance].forceUpdate=YES;
+//    
+//    [FNCheckUpdate shareInstance].delegate=self;
+//    
+//    [[FNCheckUpdate shareInstance] checkUpdateWithAppID:@"1031874136"];
+
+}
 
 #pragma mark-customNavigation
 -(void)customNavigation{
@@ -347,6 +360,7 @@
     [self flowShow];
     AreaModel*model3=[[dataBase share]findWithCity:_currentCityName];
     NSArray*array=[[dataBase share]findWithPid:model3.id];
+    if (model3) {
     if (array.count==0) {
         NSString*urlString=[self interfaceFromString:interface_resigionList];
         NSDictionary*dict=@{@"cityId":[NSString stringWithFormat:@"%lu",model3.id]};
@@ -368,13 +382,13 @@
             
             [self flowHide];
             
-        }];
+            }];
+        }
     }
 }
 
 
 
-//地图相关设置
 
 
 

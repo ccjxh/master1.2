@@ -1,9 +1,10 @@
 # Uncomment this line to define a global platform for your project
  platform :ios, '7.0'
+pod 'Masonry', '~> 0.6.2'
  pod 'SVPullToRefresh', '~> 0.4.1'
  pod 'FMDB', '~> 2.5'
- pod 'PDTSimpleCalendar', '~> 0.8.0'
  pod 'UzysAnimatedGifPullToRefresh', :git => 'https://github.com/uzysjung/UzysAnimatedGifPullToRefresh.git'
+ pod 'PDTSimpleCalendar', '~> 0.8.0'
  pod 'AFNetworking', '~> 2.5.4'
  pod 'MBProgressHUD', '~> 0.9.1'
  pod 'MJRefresh', '~> 1.4.5'

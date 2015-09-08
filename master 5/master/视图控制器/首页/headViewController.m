@@ -18,8 +18,6 @@
 - (void)viewDidLoad {
     self.type=@"师傅";
     [super viewDidLoad];
-    NSArray*Array=@[@""];
-    
     
     // Do any additional setup after loading the view.
 }

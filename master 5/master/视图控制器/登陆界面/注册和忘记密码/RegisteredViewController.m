@@ -155,7 +155,7 @@
 #pragma mark - 注册或重置密码的实现
 -(void) requestAFNet
 {
-    
+    value=YES;
     NSString* openUDID = [OpenUDID value];
     NSString*name=[[UIDevice currentDevice] model];
     if (self.telephoneTextField.text.length == 0) {

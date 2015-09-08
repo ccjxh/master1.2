@@ -43,17 +43,17 @@
 -(void)setIsSupportPulldown:(BOOL)isSupportPulldown{
     if (!isSupportPulldown) {
         
-    }else{
-    
-        __weak typeof(self)WeSelf=self;
-        [self addPullToRefreshActionHandler:^{
-            if (WeSelf.pulldownBlock) {
-                WeSelf.pulldownBlock(WeSelf);
-            }
-            
-        } ProgressImagesGifName:@"Preloader_10@2x.gif" LoadingImagesGifName:@"run@2x.gif" ProgressScrollThreshold:10 LoadingImageFrameRate:10];
+//    }else{
+//    
+//        __weak typeof(self)WeSelf=self;
+//        [self addPullToRefreshActionHandler:^{
+//            if (WeSelf.pulldownBlock) {
+//                WeSelf.pulldownBlock(WeSelf);
+//            }
+//            
+//        } ProgressImagesGifName:@"Preloader_10@2x.gif" LoadingImagesGifName:@"run@2x.gif" ProgressScrollThreshold:10 LoadingImageFrameRate:10];
     }
-
+//
 }
 
 

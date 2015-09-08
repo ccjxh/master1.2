@@ -75,6 +75,7 @@
         NSDictionary*dict=(NSDictionary*)responseObject;
         [self flowHide];
         if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
+             [self HXLoginWithUsername:username Password:password];
             [delegate requestInformation];
             NSUserDefaults*users=[NSUserDefaults standardUserDefaults];
             [users setObject:username forKey:@"username"];

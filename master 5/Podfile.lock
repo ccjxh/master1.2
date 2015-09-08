@@ -41,6 +41,7 @@ PODS:
   - FMDB/standard (2.5):
     - FMDB/common
   - IQKeyboardManager (3.2.4)
+  - Masonry (0.6.2)
   - MBProgressHUD (0.9.1)
   - MJRefresh (1.4.7)
   - PDTSimpleCalendar (0.8.0)
@@ -55,7 +56,7 @@ PODS:
   - SDWebImage/Core (3.7.3)
   - SVPullToRefresh (0.4.1)
   - UIToast (0.0.2)
-  - UzysAnimatedGifPullToRefresh (0.9.6):
+  - UzysAnimatedGifPullToRefresh (0.9.7):
     - AnimatedGIFImageSerialization (~> 0.2.0)
 
 DEPENDENCIES:
@@ -64,6 +65,7 @@ DEPENDENCIES:
   - CocoaSecurity (~> 1.2.4)
   - FMDB (~> 2.5)
   - IQKeyboardManager (~> 3.2.3)
+  - Masonry (~> 0.6.2)
   - MBProgressHUD (~> 0.9.1)
   - MJRefresh (~> 1.4.5)
   - PDTSimpleCalendar (~> 0.8.0)
@@ -80,7 +82,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   UzysAnimatedGifPullToRefresh:
-    :commit: 86aca19258b84b55e31de159e1a7ba0bfc4349f0
+    :commit: 625e6d0134c8fbf6eebe6b345f4d25cee6e4e261
     :git: https://github.com/uzysjung/UzysAnimatedGifPullToRefresh.git
 
 SPEC CHECKSUMS:
@@ -90,6 +92,7 @@ SPEC CHECKSUMS:
   CocoaSecurity: d288a6f87e0f363823d2cb83e753814a6944f71a
   FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
   IQKeyboardManager: 555b1231fefafb21b19278d7cca72986a27b748b
+  Masonry: 362e8a1cc0beada4a4c4832d5e863da2a51533be
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   MJRefresh: 6b140993028fa30f1fcb88e82925a7c7911415cf
   PDTSimpleCalendar: 165e96cd8b808c98b3204effa4f4d519a3b71580
@@ -100,6 +103,6 @@ SPEC CHECKSUMS:
   SDWebImage-ProgressView: cdc29091ec0d53fd6dab3df65039a4f308e0a5ae
   SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
   UIToast: 1fa08a3d167d2d2a66083c78adb1cad22b260ba9
-  UzysAnimatedGifPullToRefresh: d23e3ae2b22448e110eb57f80f2d3c9982a18c8d
+  UzysAnimatedGifPullToRefresh: b964f66df2905a0b25e77498c148d51aaf30e620
 
 COCOAPODS: 0.35.0

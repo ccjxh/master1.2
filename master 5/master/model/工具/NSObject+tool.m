@@ -137,8 +137,39 @@
     }];
 }
 
+//环信注册
+-(void)regiloginWithUsername:(NSString *)name Password:(NSString *)password{
+
+    [[EaseMob sharedInstance].chatManager asyncRegisterNewAccount:name password:password withCompletion:^(NSString *username, NSString *password, EMError *error) {
+        NSDictionary*dict;
+        if (!error) {
+            dict=@{@"rspCode":@"200"};
+        }else{
+        
+           dict=@{@"rspCode":@"530"};
+        }
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"huanxinReLogin" object:nil userInfo:dict];
+    } onQueue:nil];
+
+}
 
 
+//环信登陆
+-(void)HXLoginWithUsername:(NSString*)username Password:(NSString*)password{
+    
+    [[EaseMob sharedInstance].chatManager asyncLoginWithUsername:username password:password completion:^(NSDictionary *loginInfo, EMError *error) {
+        NSDictionary*dict;
+        if (!error && loginInfo) {
+           
+            NSDictionary*dict=@{@"rspCode":@"200"};
+        }else{
+            NSDictionary*dict=@{@"rspCode":@"530"};
 
+        }
+        
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"huanxinLogin" object:nil userInfo:dict];
+    } onQueue:nil];
+    
+}
 
 @end

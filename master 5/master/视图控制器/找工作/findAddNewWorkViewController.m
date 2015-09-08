@@ -395,7 +395,8 @@
         return;
     }
    
-   
+    [self publish];
+    
 }
 
 
@@ -403,7 +404,10 @@
 
     [self flowShow];
     NSString*urlString=[self interfaceFromString:interface_isureWork];
-    [subDict setObject:self.token forKey:@"token"];
+    if (self.token) {
+        [subDict setObject:self.token forKey:@"token"];
+    }
+  
     [[httpManager share]POST:urlString parameters:subDict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
         NSDictionary*dict=(NSDictionary*)responseObject;
         [self flowHide];
@@ -416,8 +420,9 @@
         }else{
             
             
-            //            NSString*str=[[dict objectForKey:@"msg"] componentsSeparatedByString:@""]
+            NSString*str=[[dict objectForKey:@"msg"] componentsSeparatedByString:@""][0];
             
+            [self.view makeToast:str duration:1 position:@"center"];
             
         }
         

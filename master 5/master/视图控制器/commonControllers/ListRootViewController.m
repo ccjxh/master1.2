@@ -115,6 +115,7 @@
         [weSelf requestInformation];
         
     };
+    
     [self.view addSubview:_menue];
     
 }

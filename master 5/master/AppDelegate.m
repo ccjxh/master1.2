@@ -31,6 +31,9 @@
 #import   <TestinAgent/TestinAgent.h>
 #import "myPublicViewController.h"
 #import "myTabViewController.h"
+#import "Appirater.h"
+#import "friendViewController.h"
+
 
 @interface AppDelegate ()<TencentSessionDelegate,WXApiDelegate,UIAlertViewDelegate>
 @property (nonatomic) CLLocationManager *locMgr;
@@ -55,13 +58,17 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    [TestinAgent init:@"c5ea5096fd7481f747bbad61c3005e8d" channel:nil config:[TestinConfig defaultConfig]];
     
-    TestinConfig *testCon = [TestinConfig defaultConfig];
-       
-    [XGPush startApp:2200123145 appKey:@"IT2RW4D1E84M"];
+    [self setupRecommend];  //评分相关设置
     
-     [SMS_SDK registerApp:@"93852832ce02" withSecret:@"a28d5c5bfbb3ddee35bf3a9585895472"];
+    [self setupTestLin];    //云测相关设置
+    
+    [[EaseMob sharedInstance] registerSDKWithAppKey:@"baoself#baoselftest" apnsCertName:@"com.zhuobao.master"];    //环信初始化
+    [[EaseMob sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
+    
+    [XGPush startApp:2200123145 appKey:@"IT2RW4D1E84M"];  //信鸽推送初始化
+    
+     [SMS_SDK registerApp:@"93852832ce02" withSecret:@"a28d5c5bfbb3ddee35bf3a9585895472"]; //短信验证初始化
     
     if (!_pictureArray) {
         
@@ -78,11 +85,10 @@
     
     [[dataBase share]CreateAllTables]; //创建数据库
     
-    [self getOpenCity];
+    [self getOpenCity];   //缓存已开通城市
     
     [self requestSkills];//缓存技能列表并缓存
     
-//    [self dataBase];//缓存城市
 
     NSUserDefaults*user=[NSUserDefaults standardUserDefaults];
     if ([[user objectForKey:@"first"] integerValue]==1) {
@@ -114,6 +120,29 @@
 
 
 
+
+/*评分相关设置**/
+-(void)setupRecommend{
+
+    //评分
+    [Appirater setAppId:@"1031874136"];
+    [Appirater setDaysUntilPrompt:0];
+    [Appirater setUsesUntilPrompt:5];
+    [Appirater setSignificantEventsUntilPrompt:-1];
+    [Appirater setTimeBeforeReminding:2];
+    [Appirater setDebug:NO];
+    [Appirater appLaunched:YES];
+
+}
+
+
+//云测相关设置
+-(void)setupTestLin{
+
+    [TestinAgent init:@"c5ea5096fd7481f747bbad61c3005e8d" channel:nil config:[TestinConfig defaultConfig]];
+    
+
+}
 
 
 -(void)deafter{
@@ -289,11 +318,10 @@
     nc.navigationBar.barTintColor=COLOR(22, 168, 234, 1);
     nc.navigationBar.barStyle=1;
     orderViewController*ovc=[[orderViewController alloc]initWithNibName:@"orderViewController" bundle:nil];
-    
     UINavigationController*nc1=[[UINavigationController alloc]initWithRootViewController:ovc];
     nc1.navigationBar.barTintColor=COLOR(67, 172, 219, 1);
 //    [nc.navigationBar setBackgroundImage:[self returnImageFromName:@"导航栏.png"] forBarMetrics:UIBarMetricsDefault];
-    nc.navigationController.navigationBar.translucent = NO;
+//    nc.navigationController.navigationBar.translucent = NO;
 //    UIImageView*imageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 64)];
 //    imageview.image=[UIImage imageNamed:@"导航栏.png"];
 //    
@@ -312,16 +340,25 @@
     UITabBarItem*item3=[[UITabBarItem alloc]initWithTitle:@"我的" image: [UIImage imageNamed:@"我的-未选择"] selectedImage: [self returnImageFromName:@"我的"]];
     findWorkViewController*fvc=[[findWorkViewController alloc]init];
     fvc.title=@"找活干";
+    UITabBarItem*friendItem=[[UITabBarItem alloc]initWithTitle:@"消息" image: [UIImage imageNamed:@"我的-未选择"] selectedImage: [self returnImageFromName:@"我的"]];
     UINavigationController*nc4=[[UINavigationController alloc]initWithRootViewController:fvc];
     nc4.navigationBar.barTintColor=COLOR(22, 168, 234, 1);
     nc4.navigationBar.barStyle=1;
+    
+    friendViewController*frvc=[[friendViewController alloc]init];
+    frvc.title=@"消息";
+    UINavigationController*friendNC=[[UINavigationController alloc]initWithRootViewController:frvc];
+    friendNC.navigationBar.barTintColor=COLOR(22, 168, 234, 1);
+    friendNC.navigationBar.barStyle=1;
+
     UITabBarController*cvc=[[UITabBarController alloc]init];
-    cvc.viewControllers=@[nc,nc4,nc2];
+    cvc.viewControllers=@[nc,nc4,friendNC,nc2];
     cvc.tabBar.selectedImageTintColor=COLOR(0, 166, 237, 1);
     nc.tabBarItem=item1;
     nc1.tabBarItem=item2;
     nc2.tabBarItem=item3;
     nc4.tabBarItem=item2;
+    friendNC.tabBarItem=friendItem;
     self.window.rootViewController=cvc;
     if (_havePushMessage) {
         NSString*str=[_pushDictory objectForKey:PUSHKEY];
@@ -348,8 +385,6 @@
             myPublicViewController*mvc=[[myPublicViewController alloc]init];
             [nc2 pushViewController:mvc animated:NO];
         }
-        
-
         
         if (!type) {
             CustomDialogView *dialog = [[CustomDialogView alloc]initWithTitle:@"" message:@"当前账号在其他设备登陆,若非本人操作,你的登陆密码可能已经已经泄露,请及时修改密码.紧急情况可以联系客服" buttonTitles:@"确定", nil];
@@ -394,6 +429,7 @@
     [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary*dict=(NSDictionary*)responseObject;
         if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
+            [self HXLoginWithUsername:username Password:password];
             NSUserDefaults*users=[NSUserDefaults standardUserDefaults];
             [users setObject:username forKey:@"username"];
             [users setObject:password forKey:username];
@@ -468,7 +504,6 @@
 
 -(NSString*)getPhoneType{
 
-    
     int mib[2];
     size_t len;
     char *machine;
@@ -541,8 +576,6 @@
     _isLogin=NO;
     
      [XGPush startApp:2200123145 appKey:@"IT2RW4D1E84M"];
-
-
     
     LoginViewController*lvc=[[LoginViewController alloc]init];
     
@@ -665,7 +698,6 @@
             skillModel*model=array[i];
             [[dataBase share]addSkillModel:model];
             
-            
         }
         
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
@@ -686,7 +718,6 @@
                 NSDictionary*inforDic=Array[i];
                 NSString*url=[[inforDic objectForKey:@"advertising"] objectForKey:@"resource"];
                 NSString*temp=[NSString stringWithFormat:@"%@%@",changeURL,url];
-                
                 
                 [_pictureArray addObject:temp];
             }
@@ -801,9 +832,7 @@
         
     }
     
-    
         if([identifier isEqualToString:@"ACCEPT_IDENTIFIER"]){
-            
             
 //        NSLog(@"ACCEPT_IDENTIFIER is clicked");
     }
@@ -950,23 +979,26 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
+    
+    [[EaseMob sharedInstance] applicationDidEnterBackground:application];
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+    [[EaseMob sharedInstance] applicationWillEnterForeground:application];
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    
-    
-    
-    
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
+
+
 - (void)applicationWillTerminate:(UIApplication *)application {
+    
+    [[EaseMob sharedInstance] applicationWillTerminate:application];
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 

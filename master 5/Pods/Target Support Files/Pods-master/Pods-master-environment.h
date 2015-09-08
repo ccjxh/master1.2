@@ -126,6 +126,12 @@
 #define COCOAPODS_VERSION_MINOR_MJRefresh 4
 #define COCOAPODS_VERSION_PATCH_MJRefresh 7
 
+// Masonry
+#define COCOAPODS_POD_AVAILABLE_Masonry
+#define COCOAPODS_VERSION_MAJOR_Masonry 0
+#define COCOAPODS_VERSION_MINOR_Masonry 6
+#define COCOAPODS_VERSION_PATCH_Masonry 2
+
 // PDTSimpleCalendar
 #define COCOAPODS_POD_AVAILABLE_PDTSimpleCalendar
 #define COCOAPODS_VERSION_MAJOR_PDTSimpleCalendar 0
@@ -178,7 +184,7 @@
 #define COCOAPODS_POD_AVAILABLE_UzysAnimatedGifPullToRefresh
 #define COCOAPODS_VERSION_MAJOR_UzysAnimatedGifPullToRefresh 0
 #define COCOAPODS_VERSION_MINOR_UzysAnimatedGifPullToRefresh 9
-#define COCOAPODS_VERSION_PATCH_UzysAnimatedGifPullToRefresh 6
+#define COCOAPODS_VERSION_PATCH_UzysAnimatedGifPullToRefresh 7
 
 // pop
 #define COCOAPODS_POD_AVAILABLE_pop

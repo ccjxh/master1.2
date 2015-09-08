@@ -88,14 +88,13 @@
 #import "opinionViewController.h"
 #import "customOrderTableViewCell.h"
 #import "NSObject+tool.h"
-#import "UIScrollView+UzysAnimatedGifPullToRefresh.h"
 #import "SVPullToRefresh.h"
 #import "RefershTableview.h"
 #import "datePcikView.h"
 #import "findAddNewWorkModel.h"
 #import "findWorkListModel.h"
 #import "findWorkDetailModel.h"
-
+#import "EaseMob.h"
 #define kScreenBounds [UIScreen mainScreen].bounds
 #define kScreenW [UIScreen mainScreen].bounds.size.width
 #define kScreenH [UIScreen mainScreen].bounds.size.height
