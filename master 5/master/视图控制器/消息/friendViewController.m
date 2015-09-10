@@ -9,6 +9,7 @@
 #import "friendViewController.h"
 #import "myFriendView.h"
 #import "myCheatViewController.h"
+#import "GJGCChatFriendViewController.h"
 @interface friendViewController ()
 
 @end
@@ -25,7 +26,22 @@
 
 }
 
+-(void)viewDidAppear:(BOOL)animated{
 
+    [super viewDidAppear:animated];
+    [[IQKeyboardManager sharedManager]setEnable:NO];
+
+}
+
+
+
+-(void)viewWillDisappear:(BOOL)animated{
+    
+    [super viewWillDisappear:animated];
+    [[IQKeyboardManager sharedManager]setEnable:YES];
+    
+
+}
 - (void)viewDidLoad {
     
     [super viewDidLoad];
@@ -62,6 +78,7 @@
             backView.dataArray=Array;
             [backView.tableview reloadData];
         }
+        
     } onQueue:nil];
 
 }
@@ -77,13 +94,15 @@
         EMBuddy*buddy=WeView.dataArray[indexPath.section];
         cvc.buddy=buddy;
         cvc.hidesBottomBarWhenPushed=YES;
+//        GJGCChatFriendViewController*gvc=[[GJGCChatFriendViewController alloc]init];
+//        gvc.hidesBottomBarWhenPushed=YES;
         [WeSelf pushWinthAnimation:WeSelf.navigationController Viewcontroller:cvc];
         
     };
+    
     self.view=backView;
+    
 }
-
-
 
 
 @end

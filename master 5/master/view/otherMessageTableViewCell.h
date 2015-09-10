@@ -7,11 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "XHMessageTextView.h"
 @interface otherMessageTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *date;
-@property (weak, nonatomic) IBOutlet UILabel *content;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentHeight;
 @property(nonatomic)EMMessage*model;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentHeight;
+@property (weak, nonatomic) IBOutlet UIImageView *backImage;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textviewHeight;
+@property (weak, nonatomic) IBOutlet XHMessageTextView *tx;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageWidth;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentWidth;
 -(void)reloadData;
 @end

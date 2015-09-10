@@ -8,8 +8,10 @@
 
 #import "myCheatViewController.h"
 #import "messageView.h"
-#import "XMChatBar.h"
-@interface myCheatViewController ()
+//#import "XMChatBar.h"
+
+
+@interface myCheatViewController ()<MessageDelegate,IEMChatProgressDelegate,EMChatManagerChatDelegate>
 
 @end
 
@@ -17,6 +19,24 @@
 {
 
     messageView*_backView;
+}
+
+
+-(void)viewDidAppear:(BOOL)animated{
+    
+    [super viewDidAppear:animated];
+    [[IQKeyboardManager sharedManager]setEnable:NO];
+    
+}
+
+
+
+-(void)viewWillDisappear:(BOOL)animated{
+    
+    [super viewWillDisappear:animated];
+    [[IQKeyboardManager sharedManager]setEnable:YES];
+    
+    
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -26,6 +46,7 @@
     
     // Do any additional setup after loading the view.
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -37,26 +58,53 @@
 -(void)request{
 
     //获取会话
-    NSArray *netConversations = [[EaseMob sharedInstance].chatManager loadAllConversationsFromDatabaseWithAppend2Chat:YES];
-    EMConversation*conversations=netConversations[0];
-   
-    NSArray*Array=[conversations loadAllMessages];
-    _backView.dataArray=[[NSMutableArray alloc]initWithArray:Array];
-    [_backView.tableview reloadData];
-//    EMMessage*message=Array[0];
-//    NSString*str=((EMTextMessageBody*)message.messageBodies.firstObject).text;
+    EMConversation *netConversations = [[EaseMob sharedInstance].chatManager conversationForChatter:self.buddy.username conversationType:eConversationTypeChat];
+    _backView.convenit=netConversations;
+    [_backView.chatListTable reloadData];
+    [_backView.chatListTable setContentOffset:CGPointMake(0, _backView.chatListTable.contentSize.height-_backView.chatListTable.frame.size.height)];
     
 }
 
 
 -(void)createUI{
 
-    self.automaticallyAdjustsScrollViewInsets=NO;
+//    self.automaticallyAdjustsScrollViewInsets=NO;
     _backView=[[messageView alloc]init];
+    _backView.delegate=self;
     self.view=_backView;
-    XMChatBar*bar=[[XMChatBar alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-45, SCREEN_WIDTH, 45)];
-    [self.view addSubview:bar];
    
+}
+
+
+-(void)sendMessage:(NSString *)messageText{
+
+    EMChatText*tx=[[EMChatText alloc]initWithText:messageText];
+    EMTextMessageBody*body=[[EMTextMessageBody alloc]initWithChatObject:tx];
+    EMMessage*message=[[EMMessage alloc]initWithReceiver:self.buddy.username bodies:@[body]];
+    message.messageType=eMessageTypeChat;
+   EMMessage*temp=[[EaseMob sharedInstance].chatManager asyncSendMessage:message progress:self];
+    [[EaseMob sharedInstance].chatManager insertMessageToDB:temp append2Chat:YES];
+    
+     EMConversation *netConversations= [[EaseMob sharedInstance].chatManager conversationForChatter:self.buddy.username conversationType:YES];
+    _backView.convenit=netConversations;
+    [_backView.chatListTable reloadData];
+    [_backView.chatListTable setContentOffset:CGPointMake(0, _backView.chatListTable.contentSize.height-_backView.chatListTable.frame.size.height)];
+    
+}
+
+
+
+-(void)didSendMessage:(EMMessage *)message error:(EMError *)error{
+
+    [self request];
+
+}
+
+
+-(void)didReceiveMessage:(EMMessage *)message{
+
+    [self request];
+
 }
 
 
