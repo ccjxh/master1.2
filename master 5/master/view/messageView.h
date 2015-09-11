@@ -14,7 +14,7 @@
 @required
 -(void)sendMessage:(NSString*)messageText;
 @end
-@interface messageView : RootView<UITableViewDataSource,UITableViewDelegate,keyboardBarDelegate,GJGCChatInputPanelDelegate>
+@interface messageView : RootView<UITableViewDataSource,UITableViewDelegate,GJGCChatInputPanelDelegate>
 @property(nonatomic)UITableView*chatListTable;
 @property(nonatomic)id<MessageDelegate>delegate;
 @property(nonatomic)EMConversation*convenit;

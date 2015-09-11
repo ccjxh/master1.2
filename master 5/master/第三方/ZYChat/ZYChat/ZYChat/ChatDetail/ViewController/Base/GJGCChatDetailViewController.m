@@ -14,8 +14,8 @@
 
 
 @interface GJGCChatDetailViewController ()<
-                                            GJGCRefreshHeaderViewDelegate
-                                          >
+GJGCRefreshHeaderViewDelegate
+>
 
 @property (nonatomic,strong)GJGCParticleEffectLayer *effectLayer;
 
@@ -40,7 +40,12 @@
 - (void)initDataManager
 {
     
+    
+    
+    
 }
+
+
 
 - (void)dealloc
 {
@@ -64,6 +69,16 @@
     
 }
 
+
+
+-(void)viewWillAppear:(BOOL)animated{
+
+    [super viewWillAppear:animated];
+    [[IQKeyboardManager sharedManager] setEnable:NO];
+
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -72,7 +87,64 @@
     
     /* 初始化下载组件 */
     [self configFileDownloadManager];
+    [self request];
     
+}
+
+
+
+-(void)request{
+
+   EMConversation*netConversation=[[EaseMob sharedInstance].chatManager conversationForChatter:self.buddy.username conversationType:0];
+   NSArray*array=[netConversation loadAllMessages];
+    for (NSInteger i=array.count-1; i<array.count; i++) {
+        EMMessage*message=array[i];
+        GJGCChatFriendContentModel*model=[[GJGCChatFriendContentModel alloc]init];
+        model.senderId=message.from;
+        model.contentType=0;
+        model.baseMessageType=GJGCChatBaseMessageTypeChatMessage;
+        model.toId=message.to;
+        model.talkType=0;
+        model.localMsgId=message.messageId;
+        model.originTextMessage=((EMTextMessageBody*)message.messageBodies.firstObject).text;
+        
+        
+        
+        
+            GJGCChatFriendContentModel *chatContentModel = [[GJGCChatFriendContentModel alloc]init];
+            chatContentModel.baseMessageType = GJGCChatBaseMessageTypeChatMessage;
+            chatContentModel.contentType = GJGCChatFriendContentTypeText;
+            NSString *text =((EMTextMessageBody*)message.messageBodies.firstObject).text;
+            NSDictionary *parseTextDict = [GJGCChatFriendCellStyle formateSimpleTextMessage:text];
+            chatContentModel.simpleTextMessage = [parseTextDict objectForKey:@"contentString"];
+            chatContentModel.originTextMessage = text;
+            chatContentModel.emojiInfoArray = [parseTextDict objectForKey:@"imageInfo"];
+            chatContentModel.phoneNumberArray = [parseTextDict objectForKey:@"phone"];
+            chatContentModel.toId = self.taklInfo.toId;
+            chatContentModel.toUserName = self.taklInfo.toUserName;
+            NSDate *sendTime = GJCFDateFromStringByFormat(@"2015-7-15 10:22:11", @"Y-M-d HH:mm:ss");
+            chatContentModel.sendTime = [sendTime timeIntervalSince1970];
+            chatContentModel.timeString = [GJGCChatSystemNotiCellStyle formateTime:GJCFDateToString(sendTime)];
+            chatContentModel.sendStatus = GJGCChatFriendSendMessageStatusSuccess;
+            chatContentModel.isFromSelf = NO;
+            chatContentModel.talkType = self.taklInfo.talkType;
+            chatContentModel.headUrl = @"http://v1.qzone.cc/avatar/201403/30/09/33/533774802e7c6272.jpg!200x200.jpg";
+        
+        
+        
+        
+        
+            [self.dataSourceManager addChatContentModel:model];
+        
+            [self.dataSourceManager updateTheNewMsgTimeString:model];
+        
+        
+        
+        [self.dataSourceManager.chatListArray addObject:chatContentModel];
+        
+    }
+    [self.chatListTable reloadData];
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -83,6 +155,8 @@
     [self.inputPanel inputBarRegsionFirstResponse];
     
     [self clearAllFirstResponse];
+    
+     [[IQKeyboardManager sharedManager] setEnable:YES];
 }
 
 - (void)clearAllFirstResponse
@@ -124,7 +198,7 @@
     self.chatListTable.delegate = self;
     self.chatListTable.backgroundColor = [GJGCChatInputPanelStyle mainBackgroundColor];
     self.chatListTable.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.chatListTable.frame = (CGRect){0,0,GJCFSystemScreenWidth,GJCFSystemScreenHeight  - 50};
+    self.chatListTable.frame = (CGRect){0,64,GJCFSystemScreenWidth,GJCFSystemScreenHeight  - 50-64};
     [self.view addSubview:self.chatListTable];
     
     /* 滚动到最底部 */
@@ -150,8 +224,8 @@
         
         [UIView animateWithDuration:duration animations:^{
             
-            weakSelf.chatListTable.gjcf_height = GJCFSystemScreenHeight - weakSelf.inputPanel.inputBarHeight  - keyboardEndFrame.size.height;
-
+            weakSelf.chatListTable.gjcf_height = GJCFSystemScreenHeight - weakSelf.inputPanel.inputBarHeight  - keyboardEndFrame.size.height-64;
+            
             if (keyboardEndFrame.origin.y == GJCFSystemScreenHeight) {
                 
                 if (isPanelReserve) {
@@ -159,13 +233,13 @@
                     weakSelf.inputPanel.gjcf_top = GJCFSystemScreenHeight - weakSelf.inputPanel.inputBarHeight ;
                     
                     weakSelf.chatListTable.gjcf_height = GJCFSystemScreenHeight - weakSelf.inputPanel.inputBarHeight ;
-
+                    
                 }else{
                     
                     weakSelf.inputPanel.gjcf_top = GJCFSystemScreenHeight - 216 - weakSelf.inputPanel.inputBarHeight ;
                     
                     weakSelf.chatListTable.gjcf_height = GJCFSystemScreenHeight - weakSelf.inputPanel.inputBarHeight  - 216;
-
+                    
                 }
                 
             }else{
@@ -173,19 +247,19 @@
                 weakSelf.inputPanel.gjcf_top = weakSelf.chatListTable.gjcf_bottom;
                 
             }
-
+            
         }];
         
-      [weakSelf.chatListTable scrollRectToVisible:CGRectMake(0, weakSelf.chatListTable.contentSize.height - weakSelf.chatListTable.bounds.size.height, weakSelf.chatListTable.gjcf_width, weakSelf.chatListTable.gjcf_height) animated:NO];
+        [weakSelf.chatListTable scrollRectToVisible:CGRectMake(0, weakSelf.chatListTable.contentSize.height - weakSelf.chatListTable.bounds.size.height, weakSelf.chatListTable.gjcf_width, weakSelf.chatListTable.gjcf_height) animated:NO];
         
     }];
     
     [self.inputPanel configInputPanelRecordStateChange:^(GJGCChatInputPanel *panel, BOOL isRecording) {
-       
+        
         if (isRecording) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
-               
+                
                 [weakSelf stopPlayCurrentAudio];
                 
                 weakSelf.chatListTable.userInteractionEnabled = NO;
@@ -197,24 +271,24 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 
                 weakSelf.chatListTable.userInteractionEnabled = YES;
-
+                
             });
         }
         
     }];
     
     [self.inputPanel configInputPanelInputTextViewHeightChangedBlock:^(GJGCChatInputPanel *panel, CGFloat changeDelta) {
-       
+        
         panel.gjcf_top = panel.gjcf_top - changeDelta;
         
         panel.gjcf_height = panel.gjcf_height + changeDelta;
         
         [UIView animateWithDuration:0.2 animations:^{
-
+            
             weakSelf.chatListTable.gjcf_height = weakSelf.chatListTable.gjcf_height - changeDelta;
-
+            
             [weakSelf.chatListTable scrollRectToVisible:CGRectMake(0, weakSelf.chatListTable.contentSize.height - weakSelf.chatListTable.bounds.size.height, weakSelf.chatListTable.gjcf_width, weakSelf.chatListTable.gjcf_height) animated:NO];
-
+            
         }];
         
     }];
@@ -247,10 +321,10 @@
         
         CGRect newFrame = [[change objectForKey:NSKeyValueChangeNewKey] CGRectValue];
         
-        CGFloat originY = GJCFSystemNavigationBarHeight + GJCFSystemOriginYDelta;
+//        CGFloat originY = GJCFSystemNavigationBarHeight + GJCFSystemOriginYDelta;
         
         //50.f 高度是输入条在底部的时候显示的高度，在录音状态下就是50
-        if (newFrame.origin.y < GJCFSystemScreenHeight - 50.f - originY) {
+        if (newFrame.origin.y < GJCFSystemScreenHeight - 50.f ) {
             
             self.inputPanel.isFullState = YES;
             
@@ -287,8 +361,8 @@
 
 - (void)inputBar:(GJGCChatInputBar *)inputBar changeToAction:(GJGCChatInputBarActionType)actionType
 {
-    CGFloat originY = GJCFSystemNavigationBarHeight + GJCFSystemOriginYDelta;
-
+//    CGFloat originY = GJCFSystemNavigationBarHeight + GJCFSystemOriginYDelta;
+    
     switch (actionType) {
         case GJGCChatInputBarActionTypeRecordAudio:
         {
@@ -296,12 +370,12 @@
                 
                 [UIView animateWithDuration:0.26 animations:^{
                     
-                    self.inputPanel.gjcf_top = GJCFSystemScreenHeight - self.inputPanel.inputBarHeight - originY;
+                    self.inputPanel.gjcf_top = GJCFSystemScreenHeight - self.inputPanel.inputBarHeight ;
                     
-                    self.chatListTable.gjcf_height = GJCFSystemScreenHeight - self.inputPanel.inputBarHeight - originY;
-
+                    self.chatListTable.gjcf_height = GJCFSystemScreenHeight - self.inputPanel.inputBarHeight ;
+                    
                 }];
-
+                
                 [self.chatListTable scrollRectToVisible:CGRectMake(0, self.chatListTable.contentSize.height - self.chatListTable.bounds.size.height, self.chatListTable.gjcf_width, self.chatListTable.gjcf_height) animated:NO];
             }
         }
@@ -313,13 +387,13 @@
                 
                 [UIView animateWithDuration:0.26 animations:^{
                     
-                    self.inputPanel.gjcf_top = GJCFSystemScreenHeight - self.inputPanel.inputBarHeight - 216 - originY;
-                   
-                    self.chatListTable.gjcf_height = GJCFSystemScreenHeight - self.inputPanel.inputBarHeight - 216 - originY;
-
+                    self.inputPanel.gjcf_top = GJCFSystemScreenHeight - self.inputPanel.inputBarHeight - 216 ;
+                    
+                    self.chatListTable.gjcf_height = GJCFSystemScreenHeight - self.inputPanel.inputBarHeight - 216 ;
+                    
                 }];
-               
-
+                
+                
                 [self.chatListTable scrollRectToVisible:CGRectMake(0, self.chatListTable.contentSize.height - self.chatListTable.bounds.size.height, self.chatListTable.gjcf_width, self.chatListTable.gjcf_height) animated:NO];
                 
             }
@@ -367,7 +441,7 @@
 - (void)reloadData
 {
     [self cancelMenuVisiableCellFirstResponse];
-
+    
     [self.chatListTable reloadData];
     [self stopRefresh];
     [self stopLoadMore];
@@ -383,11 +457,11 @@
     [self stopRefreshNoAnimated];
     [self stopLoadMore];
     [self addOrRemoveLoadMore];
-
+    
 }
 #pragma mark - 下拉刷新代理方法
 - (void)refreshHeaderViewTriggerRefresh:(GJGCRefreshHeaderView *)headerView
-{    
+{
     [self triggleRefreshing];
 }
 
@@ -492,11 +566,11 @@
     /* 收起输入键盘 */
     if (self.inputPanel.isFullState) {
         
-        CGFloat originY = GJCFSystemNavigationBarHeight + GJCFSystemOriginYDelta;
+//        CGFloat originY = GJCFSystemNavigationBarHeight + GJCFSystemOriginYDelta;
         
-        self.inputPanel.gjcf_top = GJCFSystemScreenHeight - self.inputPanel.inputBarHeight - originY;
+        self.inputPanel.gjcf_top = GJCFSystemScreenHeight - self.inputPanel.inputBarHeight ;
         
-        self.chatListTable.gjcf_height = GJCFSystemScreenHeight - self.inputPanel.inputBarHeight - originY;
+        self.chatListTable.gjcf_height = GJCFSystemScreenHeight - self.inputPanel.inputBarHeight ;
         
         [self.chatListTable scrollRectToVisible:CGRectMake(0, self.chatListTable.contentSize.height - self.chatListTable.bounds.size.height, self.chatListTable.gjcf_width, self.chatListTable.gjcf_height) animated:NO];
         
@@ -516,15 +590,15 @@
         
     }
     
-    CGFloat originY = GJCFSystemNavigationBarHeight + GJCFSystemOriginYDelta;
+//    CGFloat originY = GJCFSystemNavigationBarHeight + GJCFSystemOriginYDelta;
     
     if (self.inputPanel.isFullState) {
         
-        self.chatListTable.gjcf_height = GJCFSystemScreenHeight - self.inputPanel.inputBarHeight - originY;
-
+        self.chatListTable.gjcf_height = GJCFSystemScreenHeight - self.inputPanel.inputBarHeight ;
+        
         [UIView animateWithDuration:0.26 animations:^{
             
-            self.inputPanel.gjcf_top = GJCFSystemScreenHeight - self.inputPanel.inputBarHeight - originY;
+            self.inputPanel.gjcf_top = GJCFSystemScreenHeight - self.inputPanel.inputBarHeight ;
             
         }];
         
@@ -536,7 +610,7 @@
         if (self.dataSourceManager.isFinishLoadAllHistoryMsg == NO) {
             
             [self.refreshHeadView scrollViewWillBeginDragging:scrollView];
-
+            
         }
     }
 }
@@ -559,7 +633,7 @@
         if (self.dataSourceManager.isFinishLoadAllHistoryMsg == NO) {
             
             [self.refreshHeadView scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
-
+            
         }
     }
 }
@@ -622,6 +696,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+   
     return [self.dataSourceManager totalCount];
 }
 
@@ -641,7 +716,7 @@
     if (!cellClass) {
         
         GJGCChatBaseCell *baseCell = (GJGCChatBaseCell *)[tableView dequeueReusableCellWithIdentifier:DefaultBaseCellIdentifier];
-
+        
         if (!baseCell) {
             
             baseCell = [[GJGCChatBaseCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
@@ -682,7 +757,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    
 }
 
 - (void)downloadImageFile:(GJGCChatContentBaseModel *)contentModel forIndexPath:(NSIndexPath *)indexPath
@@ -716,7 +791,7 @@
         [self reloadData];
         
         [self.dataSourceManager resetFirstAndLastMsgId];
-
+        
         if (isNeedScrollToBottom) {
             
             [self.chatListTable scrollRectToVisible:CGRectMake(0, self.chatListTable.contentSize.height - self.chatListTable.bounds.size.height, self.chatListTable.gjcf_width, self.chatListTable.gjcf_height) animated:NO];
@@ -724,7 +799,7 @@
         }
         
     });
-
+    
 }
 
 - (void)dataSourceManagerRequireFinishRefresh:(GJGCChatDetailDataSourceManager *)dataManager
@@ -746,10 +821,10 @@
                 if (isNormalFriendChat || isSystemAssistChat) {
                     
                     NSIndexPath *moveToPath = [NSIndexPath indexPathForRow:lastFirstMsgIndex inSection:0];
-
+                    
                     [self.chatListTable scrollToRowAtIndexPath:moveToPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-
-                    /* 
+                    
+                    /*
                      *  28: 单行时间cell的高度
                      *  50: refreshHeadView的高度
                      */
@@ -765,7 +840,7 @@
                 }
                 
                 [self.dataSourceManager resetFirstAndLastMsgId];
-
+                
             }
             
         }
@@ -798,7 +873,7 @@
 - (void)dataSourceManagerRequireUpdateListTable:(GJGCChatDetailDataSourceManager *)dataManager reloadAtIndex:(NSInteger)index
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-       
+        
         if (index >= 0 && index < self.dataSourceManager.totalCount) {
             
             NSIndexPath *reloadPath = [NSIndexPath indexPathForRow:index inSection:0];
@@ -838,11 +913,11 @@
 - (void)dataSourceManagerRequireUpdateListTable:(GJGCChatDetailDataSourceManager *)dataManager insertWithIndex:(NSInteger)index
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-       
+        
         if (index >= 0 && index < self.dataSourceManager.totalCount) {
-       
+            
             [self cancelMenuVisiableCellFirstResponse];
-
+            
             NSIndexPath *insertPath = [NSIndexPath indexPathForRow:index inSection:0];
             
             [self.chatListTable insertRowsAtIndexPaths:@[insertPath] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -920,9 +995,5 @@
 {
     
 }
-
-
-
-
 
 @end

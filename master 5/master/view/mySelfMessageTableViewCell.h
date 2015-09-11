@@ -11,7 +11,7 @@
 @interface mySelfMessageTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *backHeight;
 @property (weak, nonatomic) IBOutlet UIImageView *headImage;
-@property (weak, nonatomic) IBOutlet XHMessageTextView *content;
+@property (weak, nonatomic) IBOutlet UITextView *content;
 @property (weak, nonatomic) IBOutlet UILabel *date;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentHeight;
 @property (weak, nonatomic) IBOutlet UIImageView *backImahe;

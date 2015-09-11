@@ -28,8 +28,8 @@
     NSDate*date=[[NSDate alloc]initWithTimeIntervalSince1970:(self.model.timestamp-1)/1000];
     NSDateFormatter*forrmater=[[NSDateFormatter alloc]init];
     [forrmater setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    self.content.text=temp;
     self.date.text=[forrmater stringFromDate:date];
-   
      self.backImahe.image= [[UIImage imageNamed:@"bubbleSomeone.png"] stretchableImageWithLeftCapWidth:21 topCapHeight:14];
     if (temp.length<=13) {
         
@@ -40,13 +40,25 @@
         
         self.imageWidth.constant=13*15+25;
         self.contentWidth.constant=self.imageWidth.constant-10;
-        self.backHeight.constant=[self accountStringHeightFromString:temp Width:13*15+15]+10;
-        self.contentHeight.constant=self.backHeight.constant;
+        CGFloat height= [self heightForTextView:self.content WithText:temp];
+        self.contentHeight.constant=height;
+        self.backHeight.constant=height-15;
         
     }
     
-     self.content.text=temp;
+    
 }
 
+
+- (float) heightForTextView: (UITextView *)textView WithText: (NSString *) strText{
+    float fPadding = 16.0; // 8.0px x 2
+    CGSize constraint = CGSizeMake(textView.contentSize.width - fPadding, CGFLOAT_MAX);
+    
+    CGSize size = [strText sizeWithFont: textView.font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    
+    float fHeight = size.height + 16.0;
+    
+    return fHeight;
+}
 
 @end

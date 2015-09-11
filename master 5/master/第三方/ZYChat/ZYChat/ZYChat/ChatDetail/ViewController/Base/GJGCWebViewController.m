@@ -41,14 +41,4 @@
 }
 
 
-//获取聊天记录
--(void)request{
-    
-    //获取会话
-   EMConversation *conversation = [[EaseMob sharedInstance].chatManager conversationForChatter:self.buddy.username conversationType:eConversationTypeChat];
-    [[EaseMob sharedInstance].chatManager insertConversationToDB:conversation append2Chat:YES];
-   
-}
-
-
 @end

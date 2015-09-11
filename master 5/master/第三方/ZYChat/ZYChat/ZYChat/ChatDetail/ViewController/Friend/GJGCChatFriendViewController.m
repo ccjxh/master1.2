@@ -36,7 +36,7 @@ static NSString * const GJGCActionSheetAssociateKey = @"GJIMSimpleCellActionShee
                                             UIImagePickerControllerDelegate,
                                             UINavigationControllerDelegate,
                                             GJCFAssetsPickerViewControllerDelegate,
-                                            GJCUCaptureViewControllerDelegate>
+                                            GJCUCaptureViewControllerDelegate,IEMChatProgressDelegate>
 
 @property (nonatomic,strong)GJCFAudioPlayer *audioPlayer;
 
@@ -55,8 +55,27 @@ static NSString * const GJGCActionSheetAssociateKey = @"GJIMSimpleCellActionShee
 
 @implementation GJGCChatFriendViewController
 
+
+-(void)viewWillAppear:(BOOL)animated{
+
+    [super viewWillAppear:animated];
+    [[IQKeyboardManager sharedManager]setEnable:NO];
+
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+
+    [super viewWillDisappear:animated];
+    [[IQKeyboardManager sharedManager] setEnable:YES];
+
+}
+
+
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    self.automaticallyAdjustsScrollViewInsets=NO;
     // Do any additional setup after loading the view.
     
     [self setRightButtonWithStateImage:@"title-icon-个人资料" stateHighlightedImage:nil stateDisabledImage:nil titleName:nil];
@@ -84,9 +103,8 @@ static NSString * const GJGCActionSheetAssociateKey = @"GJIMSimpleCellActionShee
     NSString *formateNoti = [GJGCChatInputConst panelNoti:GJGCChatInputPanelBeginRecordNoti formateWithIdentifier:self.inputPanel.panelIndentifier];
     [GJCFNotificationCenter addObserver:self selector:@selector(observeChatInputPanelBeginRecord:) name:formateNoti object:nil];
     [GJCFNotificationCenter addObserver:self selector:@selector(observeApplicationResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
-
-    
 }
+
 
 #pragma mark - 应用程序事件
 - (void)observeApplicationResignActive:(NSNotification *)noti
@@ -109,6 +127,9 @@ static NSString * const GJGCActionSheetAssociateKey = @"GJIMSimpleCellActionShee
     [super viewDidAppear:animated];
     [self.inputPanel startKeyboardObserve];
 }
+
+
+
 
 - (void)rightButtonPressed:(id)sender
 {
@@ -134,6 +155,8 @@ static NSString * const GJGCActionSheetAssociateKey = @"GJIMSimpleCellActionShee
 {
     NSLog(@"self.talkInfo.toId:%@",self.taklInfo.toId);
     self.dataSourceManager = [[GJGCChatFriendDataSourceManager alloc]initWithTalk:self.taklInfo withDelegate:self];
+    
+    
     
 }
 
@@ -1014,7 +1037,7 @@ static NSString * const GJGCActionSheetAssociateKey = @"GJIMSimpleCellActionShee
 - (void)chatInputPanel:(GJGCChatInputPanel *)panel sendTextMessage:(NSString *)text
 {
     /* 清除过早消息，减轻内存压力 */
-    [self clearAllEarlyMessage];
+      [self clearAllEarlyMessage];
     
     /* 创建内容 */
     GJGCChatFriendContentModel *chatContentModel = [[GJGCChatFriendContentModel alloc]init];
@@ -1039,6 +1062,30 @@ static NSString * const GJGCActionSheetAssociateKey = @"GJIMSimpleCellActionShee
     [self setSendChatContentModelWithTalkInfo:chatContentModel];
     
     [self.dataSourceManager mockSendAnMesssage:chatContentModel];
+    [self sendWithText:text];
+
+}
+
+
+-(void)sendWithText:(NSString*)text{
+    
+    EMChatText*tx=[[EMChatText alloc]initWithText:text];
+    EMTextMessageBody*body=[[EMTextMessageBody alloc]initWithChatObject:tx];
+    EMMessage*message=[[EMMessage alloc]initWithReceiver:self.buddy.username bodies:@[body]];
+    message.messageType=eMessageTypeChat;
+    [[EaseMob sharedInstance].chatManager asyncSendMessage:message progress:nil];
+    [[EaseMob sharedInstance].chatManager insertMessageToDB:message];
+    
+    
+}
+
+
+
+- (void)setProgress:(float)progress
+         forMessage:(EMMessage *)message
+     forMessageBody:(id<IEMMessageBody>)messageBody{
+
+    
 
 }
 
@@ -1317,7 +1364,11 @@ static NSString * const GJGCActionSheetAssociateKey = @"GJIMSimpleCellActionShee
 - (void)setSendChatContentModelWithTalkInfo:(GJGCChatFriendContentModel *)contentModel
 {
     
+    
 }
+
+
+
 
 #pragma mark - 图片处理UI方法
 

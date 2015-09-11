@@ -33,6 +33,8 @@
 
 @property (nonatomic,readonly)GJGCChatFriendTalkModel *taklInfo;
 
+@property(nonatomic)EMBuddy*buddy;
+
 - (instancetype)initWithTalkInfo:(GJGCChatFriendTalkModel *)talkModel;
 
 /**

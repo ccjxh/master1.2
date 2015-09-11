@@ -61,7 +61,7 @@
     EMConversation *netConversations = [[EaseMob sharedInstance].chatManager conversationForChatter:self.buddy.username conversationType:eConversationTypeChat];
     _backView.convenit=netConversations;
     [_backView.chatListTable reloadData];
-    [_backView.chatListTable setContentOffset:CGPointMake(0, _backView.chatListTable.contentSize.height-_backView.chatListTable.frame.size.height)];
+//    [_backView.chatListTable setContentOffset:CGPointMake(0, _backView.chatListTable.contentSize.height-_backView.chatListTable.frame.size.height)];
     
 }
 

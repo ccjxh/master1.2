@@ -18,6 +18,8 @@
 {
     if (self = [super init]) {
         
+        
+        [self receiveMessage];//接受会话
         _taklInfo = talk;
         
         _uniqueIdentifier = [NSString stringWithFormat:@"GJGCChatDetailDataSourceManager_%@",GJCFStringCurrentTimeStamp];
@@ -1066,6 +1068,52 @@
 //    return type;
 //}
 
+
+-(void)receiveMessage{
+
+  EMConversation*conversation=  [[EaseMob sharedInstance].chatManager conversationForChatter:self.buddy.username conversationType:eConversationTypeChat];
+    NSArray*temp=[conversation loadAllMessages];
+    for ( NSInteger i=0; i<temp.count; i++) {
+        EMMessage*message=temp[i];
+        GJGCChatFriendContentModel*model=[[GJGCChatFriendContentModel alloc]init];
+        model.sendTime=message.timestamp;
+        model.senderId=message.from;
+        model.toId=message.to;
+        model.baseMessageType = GJGCChatBaseMessageTypeChatMessage;
+        model.contentType = GJGCChatFriendContentTypeText;
+        model.localMsgId=message.messageId;
+        model.baseMessageType=1;
+            NSDate *sendTime = [NSDate date];
+        model.sendTime = [sendTime timeIntervalSince1970];
+        model.timeString = [GJGCChatSystemNotiCellStyle formateTime:GJCFDateToString(sendTime)];
+
+        NSString *text = ((EMTextMessageBody*)message.messageBodies.firstObject).text;
+            NSDictionary *parseTextDict = [GJGCChatFriendCellStyle formateSimpleTextMessage:text];
+            model.simpleTextMessage = [parseTextDict objectForKey:@"contentString"];
+           model.originTextMessage = text;
+        model.isFromSelf = NO;
+        model.talkType = self.taklInfo.talkType;
+        [self addChatContentModel:model];
+        
+        [self updateTheNewMsgTimeString:model];
+
+    }
+    
+    
+    
+
+}
+
+- (void)didReceiveMessage:(EMMessage *)message{
+    
+    GJGCChatFriendContentModel*model=[[GJGCChatFriendContentModel alloc]init];
+    NSArray*array=message.messageBodies;
+    NSLog(@"%@",array);
+    
+}
+
+
+
 - (void)mockSendAnMesssage:(GJGCChatFriendContentModel *)messageContent
 {
     //收到消息
@@ -1073,29 +1121,29 @@
     
     [self updateTheNewMsgTimeString:messageContent];
     
-    //模拟一条对方发来的消息
-    GJGCChatFriendContentModel *chatContentModel = [[GJGCChatFriendContentModel alloc]init];
-    chatContentModel.baseMessageType = GJGCChatBaseMessageTypeChatMessage;
-    chatContentModel.contentType = GJGCChatFriendContentTypeText;
-    NSString *text = @"其实我也很喜欢和你聊天，网址:http://www.163.com 个人QQ:1003081775";
-    NSDictionary *parseTextDict = [GJGCChatFriendCellStyle formateSimpleTextMessage:text];
-    chatContentModel.simpleTextMessage = [parseTextDict objectForKey:@"contentString"];
-    chatContentModel.originTextMessage = text;
-    chatContentModel.emojiInfoArray = [parseTextDict objectForKey:@"imageInfo"];
-    chatContentModel.phoneNumberArray = [parseTextDict objectForKey:@"phone"];
-    chatContentModel.toId = self.taklInfo.toId;
-    chatContentModel.toUserName = self.taklInfo.toUserName;
-    NSDate *sendTime = GJCFDateFromStringByFormat(@"2015-7-15 10:22:11", @"Y-M-d HH:mm:ss");
-    chatContentModel.sendTime = [sendTime timeIntervalSince1970];
-    chatContentModel.timeString = [GJGCChatSystemNotiCellStyle formateTime:GJCFDateToString(sendTime)];
-    chatContentModel.sendStatus = GJGCChatFriendSendMessageStatusSuccess;
-    chatContentModel.isFromSelf = NO;
-    chatContentModel.talkType = self.taklInfo.talkType;
-    chatContentModel.headUrl = @"http://v1.qzone.cc/avatar/201403/30/09/33/533774802e7c6272.jpg!200x200.jpg";
+//    //模拟一条对方发来的消息
+//    GJGCChatFriendContentModel *chatContentModel = [[GJGCChatFriendContentModel alloc]init];
+//    chatContentModel.baseMessageType = GJGCChatBaseMessageTypeChatMessage;
+//    chatContentModel.contentType = GJGCChatFriendContentTypeText;
+//    NSString *text = @"其实我也很喜欢和你聊天，网址:http://www.163.com 个人QQ:1003081775";
+//    NSDictionary *parseTextDict = [GJGCChatFriendCellStyle formateSimpleTextMessage:text];
+//    chatContentModel.simpleTextMessage = [parseTextDict objectForKey:@"contentString"];
+//    chatContentModel.originTextMessage = text;
+//    chatContentModel.emojiInfoArray = [parseTextDict objectForKey:@"imageInfo"];
+//    chatContentModel.phoneNumberArray = [parseTextDict objectForKey:@"phone"];
+//    chatContentModel.toId = self.taklInfo.toId;
+//    chatContentModel.toUserName = self.taklInfo.toUserName;
+//    NSDate *sendTime = GJCFDateFromStringByFormat(@"2015-7-15 10:22:11", @"Y-M-d HH:mm:ss");
+//    chatContentModel.sendTime = [sendTime timeIntervalSince1970];
+//    chatContentModel.timeString = [GJGCChatSystemNotiCellStyle formateTime:GJCFDateToString(sendTime)];
+//    chatContentModel.sendStatus = GJGCChatFriendSendMessageStatusSuccess;
+//    chatContentModel.isFromSelf = NO;
+//    chatContentModel.talkType = self.taklInfo.talkType;
+//    chatContentModel.headUrl = @"http://v1.qzone.cc/avatar/201403/30/09/33/533774802e7c6272.jpg!200x200.jpg";
+//
+//    [self addChatContentModel:chatContentModel];
 
-    [self addChatContentModel:chatContentModel];
-
-    [self updateTheNewMsgTimeString:chatContentModel];
+//    [self updateTheNewMsgTimeString:chatContentModel];
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(dataSourceManagerRequireUpdateListTable:)]) {
         

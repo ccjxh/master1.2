@@ -50,7 +50,7 @@
 
 @end
 
-@interface GJGCChatDetailDataSourceManager : NSObject
+@interface GJGCChatDetailDataSourceManager : NSObject<EMChatManagerChatDelegate>
 
 @property (nonatomic,readonly)NSString *uniqueIdentifier;
 
@@ -67,6 +67,8 @@
 @property (nonatomic,assign)BOOL isFinishFirstHistoryLoad;
 
 @property (nonatomic,assign)BOOL isFinishLoadAllHistoryMsg;
+
+@property(nonatomic)EMBuddy*buddy;
 
 /**
  *  当前第一条消息得msgId

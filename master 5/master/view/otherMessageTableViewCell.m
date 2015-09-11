@@ -45,8 +45,15 @@
     }else{
         self.imageWidth.constant=13*15+25;
         self.contentWidth.constant=self.imageWidth.constant-10;
-        self.imageHeight.constant=[self accountStringHeightFromString:temp Width:13*15+15]+15;
-        self.contentHeight.constant=[self accountStringHeightFromString:temp Width:13*15+15];
+        if ([[UIDevice currentDevice].systemName floatValue]>7) {
+            
+            
+        }
+        self.contentHeight.constant=self.tx.contentSize.height;
+        
+        self.imageHeight.constant=self.contentHeight.constant;
+//        self.imageHeight.constant=[self accountStringHeightFromString:temp Width:13*15+15]+15;
+//        self.contentHeight.constant=[self accountStringHeightFromString:temp Width:13*15+15];
         
     }
     

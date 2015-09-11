@@ -10,7 +10,6 @@
 
 @interface GJGCWebViewController : GJGCBaseViewController
 
-@property(nonatomic)EMBuddy*buddy;
 - (void)setUrl:(NSString *)url;
 
 @end

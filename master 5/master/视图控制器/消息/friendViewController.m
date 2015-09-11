@@ -56,6 +56,9 @@
     // Do any additional setup after loading the view.
 }
 
+
+
+
 -(void)updateUI{
 
     [self request];
@@ -90,13 +93,20 @@
     __weak typeof(self)WeSelf=self;
     __weak typeof(myFriendView*)WeView=backView;
     backView.friendDidSelect=^(NSIndexPath*indexPath){
-        myCheatViewController*cvc=[[myCheatViewController alloc]init];
+//        myCheatViewController*cvc=[[myCheatViewController alloc]init];
         EMBuddy*buddy=WeView.dataArray[indexPath.section];
-        cvc.buddy=buddy;
-        cvc.hidesBottomBarWhenPushed=YES;
-//        GJGCChatFriendViewController*gvc=[[GJGCChatFriendViewController alloc]init];
-//        gvc.hidesBottomBarWhenPushed=YES;
-        [WeSelf pushWinthAnimation:WeSelf.navigationController Viewcontroller:cvc];
+//        cvc.buddy=buddy;
+//        cvc.hidesBottomBarWhenPushed=YES;
+        
+        
+        GJGCChatFriendTalkModel *talk = [[GJGCChatFriendTalkModel alloc]init];
+        talk.talkType = GJGCChatFriendTalkTypePrivate;
+//        talk.toId = contenModel.toId;
+//        talk.toUserName = contenModel.name.string;
+        GJGCChatFriendViewController*gvc=[[GJGCChatFriendViewController alloc]initWithTalkInfo:talk];
+        gvc.hidesBottomBarWhenPushed=YES;
+        gvc.buddy=buddy;
+        [WeSelf pushWinthAnimation:WeSelf.navigationController Viewcontroller:gvc];
         
     };
     

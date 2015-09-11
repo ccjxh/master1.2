@@ -9,15 +9,10 @@
 #import "messageView.h"
 #import "otherMessageTableViewCell.h"
 #import "mySelfMessageTableViewCell.h"
+
 @implementation messageView
 
 
--(void)dealloc{
-
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-
-}
 
 
 -(instancetype)initWithFrame:(CGRect)frame{
@@ -25,15 +20,7 @@
     if (self=[super initWithFrame:frame]) {
         
         [self createTableview];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillShow:)
-                                                     name:UIKeyboardWillShowNotification
-                                                   object:nil];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillHide:)
-                                                     name:UIKeyboardWillHideNotification
-                                                   object:nil];
     }
     
     return self;
@@ -43,38 +30,14 @@
 
 
 
-
--(void)keyboardWillHide:(NSNotification*)nc{
-
-
-
-
-}
-
--(void)keyboardWillShow:(NSNotification*)nc{
-
-
-
-}
-
 -(void)createTableview{
 
-//    self.tableview=[[UITableView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT-64-45)];
-//    self.tableview.delegate=self;
-//    self.tableview.dataSource=self;
-//    self.tableview.separatorStyle=0;
-//    UITapGestureRecognizer*tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hideKeyBoard)];
-//    tap.numberOfTapsRequired=1;
-//    tap.numberOfTouchesRequired=1;
-//    [self addGestureRecognizer:tap];
-    
     /* 对话列表 */
-    self.chatListTable = [[UITableView alloc]init];
+    self.chatListTable = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-50)];
     self.chatListTable.dataSource = self;
     self.chatListTable.delegate = self;
     self.chatListTable.backgroundColor = [GJGCChatInputPanelStyle mainBackgroundColor];
     self.chatListTable.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.chatListTable.frame = (CGRect){0,0,GJCFSystemScreenWidth,GJCFSystemScreenHeight  - 50};
     [self addSubview:self.chatListTable];
     
     /* 滚动到最底部 */
@@ -89,7 +52,6 @@
     /* 输入面板 */
     self.inputPanel = [[GJGCChatInputPanel alloc]initWithPanelDelegate:self];
     self.inputPanel.frame = (CGRect){0,GJCFSystemScreenHeight-self.inputPanel.inputBarHeight,GJCFSystemScreenWidth,self.inputPanel.inputBarHeight+216};
-    
     GJCFWeakSelf weakSelf = self;
     [self.inputPanel configInputPanelKeyboardFrameChange:^(GJGCChatInputPanel *panel,CGRect keyboardBeginFrame, CGRect keyboardEndFrame, NSTimeInterval duration,BOOL isPanelReserve) {
         
@@ -186,11 +148,16 @@
     
     
     /* 观察输入面板变化 */
-//    [self.inputPanel addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:nil];
-//    
-//    [self.chatListTable addObserver:self forKeyPath:@"panGestureRecognizer.state" options:NSKeyValueObservingOptionNew context:nil];
+    [self.inputPanel addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:nil];
+    
+    [self.chatListTable addObserver:self forKeyPath:@"panGestureRecognizer.state" options:NSKeyValueObservingOptionNew context:nil];
 }
 
+
+-(void)chatInputPanel:(GJGCChatInputPanel *)panel sendTextMessage:(NSString *)text{
+
+    [self.delegate sendMessage:text];
+}
 
 -(void)hideKeyBoard{
 
@@ -303,16 +270,10 @@
 
 
 
--(void)send:(UIButton*)button{
-
-   
-
-}
-
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
 
-    return 0;
+    
     return [[self.convenit loadAllMessages] count];
 
 }
@@ -325,14 +286,23 @@
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     EMMessage*message=[self.convenit loadAllMessages][indexPath.section];
-     if ([message isKindOfClass:[EMTextMessageBody class]]==YES) {
+   
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     PersonalDetailModel*model=[[dataBase share]findPersonInformation:delegate.id];
-   
     if ([model.mobile isEqualToString:message.from]==YES) {
-        mySelfMessageTableViewCell*cell=[tableView dequeueReusableCellWithIdentifier:@"mySelfMessageTableViewCell"];
+        static NSString*shortCell=@"shortCell";
+        static NSString*longCell=@"longCell";
+        NSString*temp;
+        if ([((EMTextMessageBody*)message.messageBodies.firstObject).text length]<=13) {
+            temp=shortCell;
+        }else{
+        
+            temp=longCell;
+        }
+        mySelfMessageTableViewCell*cell=[tableView dequeueReusableCellWithIdentifier:temp];
         if (!cell) {
             cell=[[[NSBundle mainBundle]loadNibNamed:@"mySelfMessageTableViewCell" owner:nil  options:nil]lastObject];
+            [cell setRestorationIdentifier:temp];
         }
         
         cell.selectionStyle=0;
@@ -341,30 +311,36 @@
         return cell;
         
     }
+         
     otherMessageTableViewCell*Cell=[tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (!Cell) {
        Cell=[[[NSBundle mainBundle]loadNibNamed:@"otherMessageTableViewCell" owner:nil options:nil]lastObject];
     }
+    
     Cell.selectionStyle=0;
     Cell.model=message;
     [Cell reloadData];
     return Cell;
-     }
+    
+    
+    
     UITableViewCell*cell=[[UITableViewCell alloc]initWithStyle:0 reuseIdentifier:@"CELL"];
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
 
     EMMessage*message=[self.convenit loadAllMessages][indexPath.section];
-    if ([message isKindOfClass:[EMTextMessageBody class]]==YES) {
+  
         NSString*temp=((EMTextMessageBody*)message.messageBodies.firstObject).text;
         if (temp.length<=13) {
             return 75;
         }else{
             
-            return 75+[self accountStringHeightFromString:temp Width:13*15+15]-16;
+            return 150;
             
-        }
+//            return 75+[self accountStringHeightFromString:temp Width:13*15+15]-16;
+            
+        
     }
     return 50;
 }
@@ -377,14 +353,6 @@
 }
 
 
-
-- (void)chatInputPanel:(GJGCChatInputPanel *)panel sendTextMessage:(NSString *)text{
-
-
-    [self.delegate sendMessage:text];
-    
-
-}
 
 
 @end
