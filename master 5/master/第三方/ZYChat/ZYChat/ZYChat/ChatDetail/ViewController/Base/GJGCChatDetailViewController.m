@@ -108,9 +108,6 @@ GJGCRefreshHeaderViewDelegate
         model.localMsgId=message.messageId;
         model.originTextMessage=((EMTextMessageBody*)message.messageBodies.firstObject).text;
         
-        
-        
-        
             GJGCChatFriendContentModel *chatContentModel = [[GJGCChatFriendContentModel alloc]init];
             chatContentModel.baseMessageType = GJGCChatBaseMessageTypeChatMessage;
             chatContentModel.contentType = GJGCChatFriendContentTypeText;
@@ -130,15 +127,9 @@ GJGCRefreshHeaderViewDelegate
             chatContentModel.talkType = self.taklInfo.talkType;
             chatContentModel.headUrl = @"http://v1.qzone.cc/avatar/201403/30/09/33/533774802e7c6272.jpg!200x200.jpg";
         
+        [self.dataSourceManager addChatContentModel:model];
         
-        
-        
-        
-            [self.dataSourceManager addChatContentModel:model];
-        
-            [self.dataSourceManager updateTheNewMsgTimeString:model];
-        
-        
+        [self.dataSourceManager updateTheNewMsgTimeString:model];
         
         [self.dataSourceManager.chatListArray addObject:chatContentModel];
         
@@ -850,6 +841,7 @@ GJGCRefreshHeaderViewDelegate
 
 - (void)dataSourceManagerRequireUpdateListTable:(GJGCChatDetailDataSourceManager *)dataManager
 {
+    
     dispatch_async(dispatch_get_main_queue(),^{
         
         BOOL isNeedScrollToBottom = NO;
@@ -862,7 +854,6 @@ GJGCRefreshHeaderViewDelegate
         if (isNeedScrollToBottom) {
             
             [self.chatListTable scrollRectToVisible:CGRectMake(0, self.chatListTable.contentSize.height - self.chatListTable.bounds.size.height, self.chatListTable.gjcf_width, self.chatListTable.gjcf_height) animated:NO];
-            
         }
         
         [self setStrNavTitle:self.dataSourceManager.title];
@@ -879,6 +870,8 @@ GJGCRefreshHeaderViewDelegate
             NSIndexPath *reloadPath = [NSIndexPath indexPathForRow:index inSection:0];
             [self.chatListTable reloadRowsAtIndexPaths:@[reloadPath] withRowAnimation:UITableViewRowAnimationNone];
         }
+        
+        
         
     });
 }
@@ -925,6 +918,7 @@ GJGCRefreshHeaderViewDelegate
         }
         
     });
+    
 }
 
 - (void)dataSourceManagerRequireUpdateListTable:(GJGCChatDetailDataSourceManager *)dataManager insertIndexPaths:(NSArray *)indexPaths

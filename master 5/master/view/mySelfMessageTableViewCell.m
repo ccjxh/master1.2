@@ -41,23 +41,19 @@
         self.imageWidth.constant=13*15+25;
         self.contentWidth.constant=self.imageWidth.constant-10;
         CGFloat height= [self heightForTextView:self.content WithText:temp];
-        self.contentHeight.constant=height;
-        self.backHeight.constant=height-15;
+        self.contentHeight.constant=height+15;
+        self.backHeight.constant=height;
         
     }
-    
     
 }
 
 
 - (float) heightForTextView: (UITextView *)textView WithText: (NSString *) strText{
     float fPadding = 16.0; // 8.0px x 2
-    CGSize constraint = CGSizeMake(textView.contentSize.width - fPadding, CGFLOAT_MAX);
-    
+    CGSize constraint = CGSizeMake(13*15+25, CGFLOAT_MAX);
     CGSize size = [strText sizeWithFont: textView.font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
-    
     float fHeight = size.height + 16.0;
-    
     return fHeight;
 }
 

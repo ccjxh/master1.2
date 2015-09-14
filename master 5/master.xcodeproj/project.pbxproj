@@ -945,6 +945,10 @@
 		3CCD2E9D1B95A87300BCA4F7 /* 导航栏.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CCD2E9C1B95A87300BCA4F7 /* 导航栏.png */; };
 		3CCE2AC21B8EA7E800A0B49E /* myPublicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCE2AC11B8EA7E800A0B49E /* myPublicViewController.m */; };
 		3CCE2AC71B8EA82500A0B49E /* mypublicListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCE2AC61B8EA82500A0B49E /* mypublicListView.m */; };
+		3CD2D4651BA66A12006C6553 /* myserviceDataSouce.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD2D4641BA66A12006C6553 /* myserviceDataSouce.m */; };
+		3CD2D46E1BA67181006C6553 /* myServiceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD2D46D1BA67181006C6553 /* myServiceView.m */; };
+		3CD2D4741BA67A1F006C6553 /* myservieBaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD2D4731BA67A1F006C6553 /* myservieBaseTableViewCell.m */; };
+		3CD2D4AE1BA6D275006C6553 /* messageHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD2D4AD1BA6D275006C6553 /* messageHelp.m */; };
 		3CD2DD101B9FD78700E3105E /* bubbleMine.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CD2DD0C1B9FD78700E3105E /* bubbleMine.png */; };
 		3CD2DD111B9FD78700E3105E /* bubbleMine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CD2DD0D1B9FD78700E3105E /* bubbleMine@2x.png */; };
 		3CD2DD121B9FD78700E3105E /* bubbleSomeone.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CD2DD0E1B9FD78700E3105E /* bubbleSomeone.png */; };
@@ -2510,6 +2514,14 @@
 		3CCE2AC11B8EA7E800A0B49E /* myPublicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = myPublicViewController.m; path = "视图控制器/我的发布/myPublicViewController.m"; sourceTree = "<group>"; };
 		3CCE2AC51B8EA82500A0B49E /* mypublicListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mypublicListView.h; path = view/mypublicListView.h; sourceTree = "<group>"; };
 		3CCE2AC61B8EA82500A0B49E /* mypublicListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = mypublicListView.m; path = view/mypublicListView.m; sourceTree = "<group>"; };
+		3CD2D4631BA66A12006C6553 /* myserviceDataSouce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = myserviceDataSouce.h; path = "视图控制器/我/我的服务/myserviceDataSouce.h"; sourceTree = "<group>"; };
+		3CD2D4641BA66A12006C6553 /* myserviceDataSouce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = myserviceDataSouce.m; path = "视图控制器/我/我的服务/myserviceDataSouce.m"; sourceTree = "<group>"; };
+		3CD2D46C1BA67181006C6553 /* myServiceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = myServiceView.h; path = view/myServiceView.h; sourceTree = "<group>"; };
+		3CD2D46D1BA67181006C6553 /* myServiceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = myServiceView.m; path = view/myServiceView.m; sourceTree = "<group>"; };
+		3CD2D4721BA67A1F006C6553 /* myservieBaseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = myservieBaseTableViewCell.h; path = view/myservieBaseTableViewCell.h; sourceTree = "<group>"; };
+		3CD2D4731BA67A1F006C6553 /* myservieBaseTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = myservieBaseTableViewCell.m; path = view/myservieBaseTableViewCell.m; sourceTree = "<group>"; };
+		3CD2D4AC1BA6D275006C6553 /* messageHelp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = messageHelp.h; path = class/messageHelp.h; sourceTree = "<group>"; };
+		3CD2D4AD1BA6D275006C6553 /* messageHelp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = messageHelp.m; path = class/messageHelp.m; sourceTree = "<group>"; };
 		3CD2DD0C1B9FD78700E3105E /* bubbleMine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubbleMine.png; sourceTree = "<group>"; };
 		3CD2DD0D1B9FD78700E3105E /* bubbleMine@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bubbleMine@2x.png"; sourceTree = "<group>"; };
 		3CD2DD0E1B9FD78700E3105E /* bubbleSomeone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubbleSomeone.png; sourceTree = "<group>"; };
@@ -3233,6 +3245,8 @@
 				3CCD2E8E1B95821000BCA4F7 /* myTabViewController.m */,
 				3C2C22231B9ED54400F66B21 /* RootView.h */,
 				3C2C22241B9ED54400F66B21 /* RootView.m */,
+				3CD2D4AC1BA6D275006C6553 /* messageHelp.h */,
+				3CD2D4AD1BA6D275006C6553 /* messageHelp.m */,
 			);
 			name = class;
 			sourceTree = "<group>";
@@ -3549,6 +3563,7 @@
 		3C8C05851AF8BEE900CF994E /* view */ = {
 			isa = PBXGroup;
 			children = (
+				3CD2D46A1BA67130006C6553 /* 我的 */,
 				3CCA7F0F1B9C2BA400DA9574 /* 消息 */,
 				3CCE2AC31B8EA7F300A0B49E /* 我的 */,
 				3C6728C51B86D821003ACE3E /* 找活干 */,
@@ -6074,6 +6089,34 @@
 			name = "我的发布";
 			sourceTree = "<group>";
 		};
+		3CD2D4621BA669DC006C6553 /* dataSource封装 */ = {
+			isa = PBXGroup;
+			children = (
+				3CD2D4631BA66A12006C6553 /* myserviceDataSouce.h */,
+				3CD2D4641BA66A12006C6553 /* myserviceDataSouce.m */,
+			);
+			name = "dataSource封装";
+			sourceTree = "<group>";
+		};
+		3CD2D46A1BA67130006C6553 /* 我的 */ = {
+			isa = PBXGroup;
+			children = (
+				3CD2D46B1BA67143006C6553 /* 我的服务 */,
+			);
+			name = "我的";
+			sourceTree = "<group>";
+		};
+		3CD2D46B1BA67143006C6553 /* 我的服务 */ = {
+			isa = PBXGroup;
+			children = (
+				3CD2D46C1BA67181006C6553 /* myServiceView.h */,
+				3CD2D46D1BA67181006C6553 /* myServiceView.m */,
+				3CD2D4721BA67A1F006C6553 /* myservieBaseTableViewCell.h */,
+				3CD2D4731BA67A1F006C6553 /* myservieBaseTableViewCell.m */,
+			);
+			name = "我的服务";
+			sourceTree = "<group>";
+		};
 		3CD2DD0B1B9FD78700E3105E /* images */ = {
 			isa = PBXGroup;
 			children = (
@@ -6184,6 +6227,7 @@
 		3CE7BD151B0D726300965836 /* 我的服务 */ = {
 			isa = PBXGroup;
 			children = (
+				3CD2D4621BA669DC006C6553 /* dataSource封装 */,
 				3CE7BD161B0D729900965836 /* MyserviceViewController.h */,
 				3CE7BD171B0D729900965836 /* MyserviceViewController.m */,
 				3CE7BD181B0D729900965836 /* MyserviceViewController.xib */,
@@ -7035,6 +7079,7 @@
 				3CCB20011BA282310075AC4E /* GJGCProgressView.m in Sources */,
 				3CB1621D1B0B12B900B490FE /* secondTableViewCell.m in Sources */,
 				3CC247451B12ED4900BDBB7D /* selectCityViewController.m in Sources */,
+				3CD2D4651BA66A12006C6553 /* myserviceDataSouce.m in Sources */,
 				3CCB1FE81BA282310075AC4E /* GJGCChatSystemNotiBaseCell.m in Sources */,
 				3C9382B61B56519100D34D7A /* SVIndefiniteAnimatedView.m in Sources */,
 				3CCB202C1BA282310075AC4E /* GJCFAssetsPickerPreviewItemViewController.m in Sources */,
@@ -7097,6 +7142,7 @@
 				3CCB20621BA282310075AC4E /* GJGCChatInputExpandEmojiPanelMenuBarDataSource.m in Sources */,
 				3CCB20601BA282310075AC4E /* GJGCChatInputExpandEmojiPanelGifSubItem.m in Sources */,
 				3CC247131B11A6D900BDBB7D /* FeVietNamBar.m in Sources */,
+				3CD2D4741BA67A1F006C6553 /* myservieBaseTableViewCell.m in Sources */,
 				3CCB20361BA282310075AC4E /* GJCFFileUploadTask+GJCFAudioUpload.m in Sources */,
 				3C0860F91B16A1ED004C0383 /* HelpAndFeedbackViewController.m in Sources */,
 				3C0860F71B16A1ED004C0383 /* AboutViewController.m in Sources */,
@@ -7135,6 +7181,7 @@
 				3CCB20651BA282310075AC4E /* GJGCChatInputExpandMenuPanel.m in Sources */,
 				3C6728CD1B86F157003ACE3E /* datePcikView.m in Sources */,
 				3CCB20581BA282310075AC4E /* GJCUProgressView.m in Sources */,
+				3CD2D46E1BA67181006C6553 /* myServiceView.m in Sources */,
 				3C5EAE221B292A4C00307FEA /* myActionViewController.m in Sources */,
 				3C9B27941B58D69100442528 /* myServiceSelectedViewController.m in Sources */,
 				3CCB202F1BA282310075AC4E /* GJCFPhotosViewController.m in Sources */,
@@ -7303,6 +7350,7 @@
 				3CBB0E1A1B6B62C600175A46 /* nameViewController.m in Sources */,
 				3CBE7D901B1C36EA00D8CCDF /* recommendViewController.m in Sources */,
 				3CCB205E1BA282310075AC4E /* GJGCChatInputExpandEmojiPanel.m in Sources */,
+				3CD2D4AE1BA6D275006C6553 /* messageHelp.m in Sources */,
 				3CCB205F1BA282310075AC4E /* GJGCChatInputExpandEmojiPanelGifPageItem.m in Sources */,
 				3CBB86471B54DAED0070E4B7 /* UIImage+ImageEffects.m in Sources */,
 				3CCB203B1BA282310075AC4E /* GJCFCoreTextContentView.m in Sources */,

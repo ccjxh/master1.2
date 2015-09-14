@@ -28,10 +28,9 @@
 }
 
 
-
-
 -(void)createTableview{
 
+    
     /* 对话列表 */
     self.chatListTable = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-50)];
     self.chatListTable.dataSource = self;
@@ -40,14 +39,10 @@
     self.chatListTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self addSubview:self.chatListTable];
     
-    /* 滚动到最底部 */
-//    if (self.dataSourceManager.totalCount > 0) {
-//        [self.chatListTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.dataSourceManager.totalCount-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-//    }
-//    
-//    if (GJCFSystemVersionIs7) {
-//        self.edgesForExtendedLayout = UIRectEdgeNone;
-//    }
+    UITapGestureRecognizer*tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hideKeyBoard)];
+    tap.numberOfTapsRequired=1;
+    tap.numberOfTouchesRequired=1;
+    [self addGestureRecognizer:tap];
     
     /* 输入面板 */
     self.inputPanel = [[GJGCChatInputPanel alloc]initWithPanelDelegate:self];
@@ -77,7 +72,6 @@
                     weakSelf.inputPanel.gjcf_top = GJCFSystemScreenHeight - 216 - weakSelf.inputPanel.inputBarHeight ;
                     
                     weakSelf.chatListTable.gjcf_height = GJCFSystemScreenHeight - weakSelf.inputPanel.inputBarHeight  - 216;
-                    
                 }
                 
             }else{
@@ -97,9 +91,7 @@
         if (isRecording) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                
-//                [weakSelf stopPlayCurrentAudio];
-                
+                                
                 weakSelf.chatListTable.userInteractionEnabled = NO;
                 
             });
@@ -126,26 +118,11 @@
             weakSelf.chatListTable.gjcf_height = weakSelf.chatListTable.gjcf_height - changeDelta;
             
             [weakSelf.chatListTable scrollRectToVisible:CGRectMake(0, weakSelf.chatListTable.contentSize.height - weakSelf.chatListTable.bounds.size.height, weakSelf.chatListTable.gjcf_width, weakSelf.chatListTable.gjcf_height) animated:NO];
-            
         }];
         
     }];
-    
-//    /* 动作变化 */
-//    [self.inputPanel setActionChangeBlock:^(GJGCChatInputBar *inputBar, GJGCChatInputBarActionType toActionType) {
-////        [weakSelf inputBar:inputBar changeToAction:toActionType];
-//    }];
+
     [self addSubview:self.inputPanel];
-    
-    /* 顶部刷新 */
-//    self.refreshHeadView = [[GJGCRefreshHeaderView alloc]init];
-//    self.refreshHeadView.delegate = self;
-//    [self.refreshHeadView setupChatFooterStyle];
-//    [self.chatListTable addSubview:self.refreshHeadView];
-    
-    /* 拉取最新历史消息 */
-//    [self addOrRemoveLoadMore];
-    
     
     /* 观察输入面板变化 */
     [self.inputPanel addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:nil];
@@ -160,7 +137,6 @@
 }
 
 -(void)hideKeyBoard{
-
     
     __weak typeof(self)weakSelf=self;
     [UIView animateWithDuration:0.2 animations:^{
@@ -168,8 +144,8 @@
         weakSelf.inputPanel.gjcf_top = GJCFSystemScreenHeight - weakSelf.inputPanel.inputBarHeight ;
         
         weakSelf.chatListTable.gjcf_height = GJCFSystemScreenHeight - weakSelf.inputPanel.inputBarHeight ;
+        [self.inputPanel reserveState];
     }];
-
 
 }
 
@@ -253,7 +229,6 @@
                     
                 }];
                 
-                
                 [self.chatListTable scrollRectToVisible:CGRectMake(0, self.chatListTable.contentSize.height - self.chatListTable.bounds.size.height, self.chatListTable.gjcf_width, self.chatListTable.gjcf_height) animated:NO];
                 
             }
@@ -264,11 +239,6 @@
             break;
     }
 }
-
-
-
-
-
 
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -286,7 +256,6 @@
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     EMMessage*message=[self.convenit loadAllMessages][indexPath.section];
-   
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     PersonalDetailModel*model=[[dataBase share]findPersonInformation:delegate.id];
     if ([model.mobile isEqualToString:message.from]==YES) {
@@ -322,10 +291,6 @@
     [Cell reloadData];
     return Cell;
     
-    
-    
-    UITableViewCell*cell=[[UITableViewCell alloc]initWithStyle:0 reuseIdentifier:@"CELL"];
-    return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
 
@@ -336,14 +301,22 @@
             return 75;
         }else{
             
-            return 150;
-            
-//            return 75+[self accountStringHeightFromString:temp Width:13*15+15]-16;
-            
+            return 75+[self heightForTextView:nil WithText:temp]+16;
         
     }
     return 50;
 }
+
+
+
+- (float) heightForTextView: (UITextView *)textView WithText: (NSString *) strText{
+    float fPadding = 16.0; // 8.0px x 2
+    CGSize constraint = CGSizeMake(13*15+25, CGFLOAT_MAX);
+    CGSize size = [strText sizeWithFont: textView.font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    float fHeight = size.height + 16.0;
+    return fHeight;
+}
+
 
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 20)];
@@ -351,8 +324,6 @@
     return label;
 
 }
-
-
 
 
 @end

@@ -9,9 +9,9 @@
 #import "myCheatViewController.h"
 #import "messageView.h"
 //#import "XMChatBar.h"
+#import "messageHelp.h"
 
-
-@interface myCheatViewController ()<MessageDelegate,IEMChatProgressDelegate,EMChatManagerChatDelegate>
+@interface myCheatViewController ()<MessageDelegate,IEMChatProgressDelegate,EMChatManagerChatDelegate,IChatManagerDelegate>
 
 @end
 
@@ -61,7 +61,11 @@
     EMConversation *netConversations = [[EaseMob sharedInstance].chatManager conversationForChatter:self.buddy.username conversationType:eConversationTypeChat];
     _backView.convenit=netConversations;
     [_backView.chatListTable reloadData];
-//    [_backView.chatListTable setContentOffset:CGPointMake(0, _backView.chatListTable.contentSize.height-_backView.chatListTable.frame.size.height)];
+    CGRect rect=_backView.frame;
+    if (_backView.chatListTable.contentSize.height>=rect.size.height) {
+       
+         [_backView.chatListTable setContentOffset:CGPointMake(0, _backView.chatListTable.contentSize.height-_backView.chatListTable.frame.size.height+60)];
+    }
     
 }
 
@@ -71,6 +75,13 @@
 //    self.automaticallyAdjustsScrollViewInsets=NO;
     _backView=[[messageView alloc]init];
     _backView.delegate=self;
+//    [EMCDDeviceManager sharedInstance].delegate = self;
+    [[EaseMob sharedInstance].chatManager removeDelegate:self];
+    //注册为SDK的ChatManager的delegate
+    [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
+    
+//    [[EaseMob sharedInstance].callManager removeDelegate:self];
+
     self.view=_backView;
    
 }
@@ -78,13 +89,9 @@
 
 -(void)sendMessage:(NSString *)messageText{
 
-    EMChatText*tx=[[EMChatText alloc]initWithText:messageText];
-    EMTextMessageBody*body=[[EMTextMessageBody alloc]initWithChatObject:tx];
-    EMMessage*message=[[EMMessage alloc]initWithReceiver:self.buddy.username bodies:@[body]];
-    message.messageType=eMessageTypeChat;
-   EMMessage*temp=[[EaseMob sharedInstance].chatManager asyncSendMessage:message progress:self];
-    [[EaseMob sharedInstance].chatManager insertMessageToDB:temp append2Chat:YES];
     
+    [messageHelp share].delegate=self;
+    [[messageHelp share]sendTextMessageWithMessageText:messageText Buddy:self.buddy];
      EMConversation *netConversations= [[EaseMob sharedInstance].chatManager conversationForChatter:self.buddy.username conversationType:YES];
     _backView.convenit=netConversations;
     [_backView.chatListTable reloadData];

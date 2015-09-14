@@ -607,15 +607,10 @@
 #pragma mark-QQShare
 -(void)setupQQShare{
     
-    
-  
     NSString*urlString=recommModel.url;
     NSString*imageUrl=nil;
     QQApiNewsObject *newsObj = [QQApiNewsObject
                                 objectWithURL:[NSURL URLWithString:urlString] title:recommModel.title description:recommModel.content previewImageURL:[NSURL URLWithString:imageUrl]];
-    NSLog(@"%@",imageUrl);
-    
-    
     SendMessageToQQReq *req = [SendMessageToQQReq reqWithContent:newsObj];
     QQApiSendResultCode sent = [QQApiInterface sendReq:req];
     
@@ -628,7 +623,6 @@
     [[httpManager share]POST:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
         
         data=(NSData*)responseObject;
-        
         
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
        

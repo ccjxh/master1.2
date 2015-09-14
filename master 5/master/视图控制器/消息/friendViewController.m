@@ -51,7 +51,6 @@
     [self netIll];
     [self request];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateUI) name:@"huanxinLogin" object:nil];
-   
     
     // Do any additional setup after loading the view.
 }
@@ -90,23 +89,23 @@
 -(void)createUI{
 
     backView=[[myFriendView alloc]init];
+    backView.tableview.bounces=YES;
     __weak typeof(self)WeSelf=self;
     __weak typeof(myFriendView*)WeView=backView;
     backView.friendDidSelect=^(NSIndexPath*indexPath){
-//        myCheatViewController*cvc=[[myCheatViewController alloc]init];
+        myCheatViewController*cvc=[[myCheatViewController alloc]init];
         EMBuddy*buddy=WeView.dataArray[indexPath.section];
-//        cvc.buddy=buddy;
-//        cvc.hidesBottomBarWhenPushed=YES;
+        cvc.buddy=buddy;
+        cvc.hidesBottomBarWhenPushed=YES;
         
-        
-        GJGCChatFriendTalkModel *talk = [[GJGCChatFriendTalkModel alloc]init];
-        talk.talkType = GJGCChatFriendTalkTypePrivate;
+//        GJGCChatFriendTalkModel *talk = [[GJGCChatFriendTalkModel alloc]init];
+//        talk.talkType = GJGCChatFriendTalkTypePrivate;
 //        talk.toId = contenModel.toId;
 //        talk.toUserName = contenModel.name.string;
-        GJGCChatFriendViewController*gvc=[[GJGCChatFriendViewController alloc]initWithTalkInfo:talk];
-        gvc.hidesBottomBarWhenPushed=YES;
-        gvc.buddy=buddy;
-        [WeSelf pushWinthAnimation:WeSelf.navigationController Viewcontroller:gvc];
+//        GJGCChatFriendViewController*gvc=[[GJGCChatFriendViewController alloc]initWithTalkInfo:talk];
+//        gvc.hidesBottomBarWhenPushed=YES;
+//        gvc.buddy=buddy;
+        [WeSelf pushWinthAnimation:WeSelf.navigationController Viewcontroller:cvc];
         
     };
     

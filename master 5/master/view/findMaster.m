@@ -7,7 +7,7 @@
 //
 
 #import "findMaster.h"
-
+#import "UIImage+GIF.h"
 @implementation findMaster
 
 -(id)initWithCoder:(NSCoder *)aDecoder{
@@ -53,6 +53,7 @@
     self.workHeadButton.layer.masksToBounds=YES;
     self.wokerButton.layer.cornerRadius=20;
     self.workHeadButton.layer.cornerRadius=20;
+    
 
 }
 

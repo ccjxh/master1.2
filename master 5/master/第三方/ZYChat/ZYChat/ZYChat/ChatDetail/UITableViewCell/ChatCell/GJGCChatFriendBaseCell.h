@@ -46,7 +46,6 @@
 
 @property (nonatomic,strong)UIImageView *sexIconView;
 
-
 - (void)adjustContent;
 
 - (NSArray *)myAudioPlayIndicatorImages;
