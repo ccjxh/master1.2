@@ -39,7 +39,6 @@
 -(void)customNavigation{
 
     if (self.type==1) {
-    
     UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, 50, 30)];
     [button addTarget:self action:@selector(certain) forControlEvents:UIControlEventTouchUpInside];
     [button setTitle:@"确定" forState:UIControlStateNormal];
@@ -47,11 +46,9 @@
     button.titleLabel.font=[UIFont systemFontOfSize:16];
     self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithCustomView:button];
     }
-    
 }
 
 -(void)certain{
-    
     
     NSString*urlString=[self interfaceFromString:interface_updateServicerRegion];
     NSString*str;
@@ -62,11 +59,13 @@
                 str=[NSString stringWithFormat:@"%lu",model.id];
             }else{
                 str=[NSString stringWithFormat:@"%@,%lu",str,model.id];
-                
             }
         }
     }
+    
     [self flowShow];
+    
+    
     NSDictionary*dict=@{@"regions":str};
     [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
         NSDictionary*dict=(id)responseObject;
@@ -75,16 +74,12 @@
            if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
                [self popWithnimation:self.navigationController];
            }
-           
        }];
         
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
-        
         [self flowHide];
-
         [self.view makeToast:@"网络异常" duration:1 position:@"center"];
     }];
-
 }
 
 -(void)initData
@@ -98,39 +93,38 @@
         _currentArray=[[NSMutableArray alloc]init];
     }
     [_currentArray removeAllObjects];
-        NSMutableArray*tempArray=[[dataBase share] findWithPid:30000];
+    NSMutableArray*tempArray=[[dataBase share] findWithPid:30000];
     for (NSInteger i=0; i<tempArray.count; i++) {
         AreaModel*model=tempArray[i];
         model.isselect=NO;
         if (self.selectedArray.count!=0) {
-            
         for (NSInteger j=1; j<[self.selectedArray[0] count]; j++) {
            NSArray*tempArray=self.selectedArray[0];
             AreaModel*compareModel=tempArray[j];
             if (model.id==compareModel.id) {
                 model.isselect=YES;
                }
-           }
+          }
+            
         }
+        
         [_currentArray addObject:model];
-        }
-    
+        
+    }
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     CGFloat paddingY = 20;
     CGFloat paddingX = 40;
 //    layout.sectionInset = UIEdgeInsetsMake(5, paddingX, paddingY, paddingX);
     layout.minimumLineSpacing = 10;
     layout.sectionInset = UIEdgeInsetsMake(10,15,10,15);
-    
     self.collectionviwe.collectionViewLayout=layout;
-
     [self.collectionviwe registerNib:[UINib nibWithNibName:@"cityCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:@"cell"];
     self.collectionviwe.backgroundColor=COLOR(245, 245, 245, 1);
-    
     [self.collectionviwe registerNib:[UINib nibWithNibName:@"headCollectionReusableView" bundle:nil] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"head"];
     [_dataArray addObject:@"定位城市"];
     [_dataArray addObject:@"已开通的城市"];
     [_tableview reloadData];
+    
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -159,19 +153,15 @@
     UITableViewCell*cell=[table dequeueReusableCellWithIdentifier:@"cell"];
     if (!cell) {
         cell=[[UITableViewCell alloc]initWithStyle:0 reuseIdentifier:@"cell"];
-        
     }
     cell.selectionStyle=0;
-
     UIView*view=(id)[table viewWithTag:30];
     if (view ) {
         [view removeFromSuperview];
     }
-    
     view=[[UIView alloc]initWithFrame:cell.contentView.bounds];
     view.tag=30;
     view.userInteractionEnabled=YES;
-   
     for (NSInteger i=0; i<_currentArray.count; i++) {
         AreaModel*model=_currentArray[i];
         UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(10+i%3*100, 10+i/3*40, 90, 25)];
@@ -179,14 +169,13 @@
         button.layer.borderColor=[UIColor lightGrayColor].CGColor;
         button.layer.borderWidth=1;
         button.layer.cornerRadius=2;
-
         [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-                button.titleLabel.font=[UIFont systemFontOfSize:13];
+        button.titleLabel.font=[UIFont systemFontOfSize:13];
         [button addTarget:self action:@selector(select:) forControlEvents:UIControlEventTouchUpInside];
-        
         [view addSubview:button];
         
     }
+    
     [cell.contentView addSubview:view];
     return cell;
 
@@ -201,9 +190,10 @@
     }
     UIView*view=(id)[table viewWithTag:33];
     if (view ) {
+        
         [view removeFromSuperview];
+        
     }
-    
     view=[[UIView alloc]initWithFrame:cell.bounds];
     view.userInteractionEnabled=YES;
     view.tag=33;
@@ -220,11 +210,10 @@
     [view addSubview:button];
         
     }else{
-    
+        
         cell.textLabel.text=@"当前定位未打开,请稍后重试";
-    
+        
     }
-    
     [cell addSubview:view];
     return cell;
 
@@ -241,7 +230,6 @@
             [self popWithnimation:self.navigationController];
         }
     }
-    
 }
 
 -(NSInteger)accountCity{
@@ -253,8 +241,6 @@
     
         return (array.count/3+1)*40+20;
     }
-
-
 }
 
 -(void)select:(UIButton*)button{
@@ -268,16 +254,15 @@
             [self popWithnimation:self.navigationController];
         }
     }
-
 }
-
 
 
 -(NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
+    
     NSArray*array=@[@"定位的城市",@"已开通的城市"];
     return array[section];
-
+    
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -287,6 +272,7 @@
     return 50;
         
     }
+    
     return [self accountCity];
     
 }
@@ -299,21 +285,14 @@
 -(NSArray*)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
     return _AZArray;
-
 }
-
-
 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
    
 
-
 }
-
-
-
 
 
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
@@ -336,7 +315,6 @@
     }
     
     return 0;
-
 }
 
 -(UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -355,7 +333,9 @@
         if (detelate.city) {
             Cell.name.text=detelate.city;
         }else{
+            
         Cell.name.text=@"定位中";
+            
         }
         
         Cell.selectImage.hidden=YES;
@@ -365,15 +345,15 @@
         if (model.isselect==NO) {
             Cell.selectImage.hidden=YES;
         }else{
+            
             Cell.selectImage.hidden=NO;
+            
         }
     }
     Cell.name.layer.borderColor=COLOR(231, 231, 231, 1).CGColor;
     Cell.name.layer.backgroundColor=[UIColor whiteColor].CGColor;
     Cell.name.layer.borderWidth=1;
     Cell.name.layer.cornerRadius=3;
-//    Cell.selectImage.hidden=model.isselect;
-    
     return Cell;
     
 }
@@ -396,7 +376,6 @@
                 
                 model.isselect=NO;
             }
-            
             [_currentArray replaceObjectAtIndex:indexPath.row withObject:model];
             [collectionView reloadData];;
             return;
@@ -409,7 +388,6 @@
             AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
             
         if (delegate.city) {
-            
             AreaModel*model1=[[dataBase share]findWithCity:delegate.city];
             self.TBlock(model1);
             [self popWithnimation:self.navigationController];
@@ -418,6 +396,7 @@
         
             [self.view makeToast:@"定位中" duration:1 position:@"center"];
             return;
+            
             }
         }
         
@@ -428,8 +407,6 @@
         }
     }
 }
-
-
 
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
@@ -450,7 +427,6 @@
     label.text=array[indexPath.section];
     [view addSubview:label];
         return view;
-    
     
 }
 
@@ -475,17 +451,6 @@
     CGSize size={SCREEN_WIDTH,35};
     return size;
 }
-
-
-//-( UIEdgeInsets )collectionView:( UICollectionView *)collectionView layout:( UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:( NSInteger )section
-//
-//{
-//    
-//    return UIEdgeInsetsMake ( 5 , 5 , 10 , 5 );
-//    
-//}
-
-
 
 
 @end

@@ -9,11 +9,14 @@
 #import "messageView.h"
 #import "otherMessageTableViewCell.h"
 #import "mySelfMessageTableViewCell.h"
+#import "imageCellTableViewCell.h"
 
 @implementation messageView
+{
 
+    NSMutableDictionary*_typeDict;//装着数据源类型的字典
 
-
+}
 
 -(instancetype)initWithFrame:(CGRect)frame{
 
@@ -28,9 +31,18 @@
 }
 
 
+
+-(void)initData{
+
+    if (!_typeDict) {
+        _typeDict=[[NSMutableDictionary alloc]init];
+    }
+   
+}
+
+
 -(void)createTableview{
 
-    
     /* 对话列表 */
     self.chatListTable = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-50)];
     self.chatListTable.dataSource = self;
@@ -38,6 +50,7 @@
     self.chatListTable.backgroundColor = [GJGCChatInputPanelStyle mainBackgroundColor];
     self.chatListTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self addSubview:self.chatListTable];
+//    [self setupHeaderWithTableview:self.chatListTable];
     
     UITapGestureRecognizer*tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hideKeyBoard)];
     tap.numberOfTapsRequired=1;
@@ -123,7 +136,6 @@
     }];
 
     [self addSubview:self.inputPanel];
-    
     /* 观察输入面板变化 */
     [self.inputPanel addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:nil];
     
@@ -145,6 +157,7 @@
         
         weakSelf.chatListTable.gjcf_height = GJCFSystemScreenHeight - weakSelf.inputPanel.inputBarHeight ;
         [self.inputPanel reserveState];
+        
     }];
 
 }
@@ -156,9 +169,7 @@
     if ([keyPath isEqualToString:@"frame"] && object == self.inputPanel) {
         
         CGRect newFrame = [[change objectForKey:NSKeyValueChangeNewKey] CGRectValue];
-        
         CGFloat originY = GJCFSystemNavigationBarHeight + GJCFSystemOriginYDelta;
-        
         //50.f 高度是输入条在底部的时候显示的高度，在录音状态下就是50
         if (newFrame.origin.y < GJCFSystemScreenHeight - 50.f - originY) {
             
@@ -178,13 +189,15 @@
             case UIGestureRecognizerStateBegan:
             case UIGestureRecognizerStateChanged:
             {
-//                [self makeVisiableGifCellPause];
+
+            
             }
                 break;
             case UIGestureRecognizerStateCancelled:
             case UIGestureRecognizerStateEnded:
             {
-//                [self makeVisiableGifCellResume];
+
+            
             }
                 break;
             default:
@@ -194,7 +207,6 @@
 }
 
 #pragma mark - 输入动作变化
-
 - (void)inputBar:(GJGCChatInputBar *)inputBar changeToAction:(GJGCChatInputBarActionType)actionType
 {
     CGFloat originY = GJCFSystemNavigationBarHeight + GJCFSystemOriginYDelta;
@@ -243,7 +255,6 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
 
-    
     return [[self.convenit loadAllMessages] count];
 
 }
@@ -255,25 +266,33 @@
 
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     EMMessage*message=[self.convenit loadAllMessages][indexPath.section];
+    EMTextMessageBody*body=message.messageBodies[0];
+    if (body.messageBodyType==1) {
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     PersonalDetailModel*model=[[dataBase share]findPersonInformation:delegate.id];
     if ([model.mobile isEqualToString:message.from]==YES) {
         static NSString*shortCell=@"shortCell";
         static NSString*longCell=@"longCell";
         NSString*temp;
+        
         if ([((EMTextMessageBody*)message.messageBodies.firstObject).text length]<=13) {
+            
             temp=shortCell;
+            
+            
         }else{
         
             temp=longCell;
+            
         }
+        
         mySelfMessageTableViewCell*cell=[tableView dequeueReusableCellWithIdentifier:temp];
         if (!cell) {
             cell=[[[NSBundle mainBundle]loadNibNamed:@"mySelfMessageTableViewCell" owner:nil  options:nil]lastObject];
             [cell setRestorationIdentifier:temp];
         }
-        
         cell.selectionStyle=0;
         cell.model=message;
         [cell reloadData];
@@ -283,42 +302,58 @@
          
     otherMessageTableViewCell*Cell=[tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (!Cell) {
+        
        Cell=[[[NSBundle mainBundle]loadNibNamed:@"otherMessageTableViewCell" owner:nil options:nil]lastObject];
     }
-    
+        
     Cell.selectionStyle=0;
     Cell.model=message;
     [Cell reloadData];
-    return Cell;
+        return Cell;
+    }else{
+    
+        imageCellTableViewCell*cell=[[[NSBundle mainBundle]loadNibNamed:@"imageCellTableViewCell" owner:nil options:nil]lastObject];
+        
+//    cell.contentImage sd_setImageWithURL:[] placeholderImage:<#(UIImage *)#>
+        return nil;
+    }
     
 }
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
 
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     EMMessage*message=[self.convenit loadAllMessages][indexPath.section];
-  
+    EMTextMessageBody*body=message.messageBodies[0];
+    if (body.messageBodyType==1) {
         NSString*temp=((EMTextMessageBody*)message.messageBodies.firstObject).text;
         if (temp.length<=13) {
             return 75;
         }else{
             
             return 75+[self heightForTextView:nil WithText:temp]+16;
-        
+        }
     }
+    
     return 50;
 }
 
 
-
 - (float) heightForTextView: (UITextView *)textView WithText: (NSString *) strText{
+    
+    
     float fPadding = 16.0; // 8.0px x 2
     CGSize constraint = CGSizeMake(13*15+25, CGFLOAT_MAX);
     CGSize size = [strText sizeWithFont: textView.font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
     float fHeight = size.height + 16.0;
     return fHeight;
+    
+    
 }
 
 
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    
     UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 20)];
     label.backgroundColor=self.chatListTable.backgroundColor;
     return label;

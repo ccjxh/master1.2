@@ -40,10 +40,11 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _currentPage=1;
     [self createUI];
     [self CreateFlow];
     [self request];
-    
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];  
     // Do any additional setup after loading the view.
 }
 

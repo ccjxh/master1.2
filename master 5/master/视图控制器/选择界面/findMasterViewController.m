@@ -168,7 +168,6 @@
     [KGModal sharedInstance].showCloseButton=NO;
     [[KGModal sharedInstance] showWithContentView:contentView andAnimated:YES];
     
-    
 }
 
 
@@ -205,6 +204,7 @@
         _currentCityName=CityModel.name;
         [self initUI];
     };
+    
     [self pushWinthAnimation:self.navigationController Viewcontroller:cvc];
     
 }
@@ -323,7 +323,6 @@
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
         
     }];
-    
 }
 
 
@@ -388,10 +387,6 @@
 }
 
 
-
-
-
-
 -(void)requestAdImage{
     if (!_ADArray) {
         _ADArray=[[NSMutableArray alloc]init];
@@ -410,7 +405,6 @@
                 [model setValuesForKeysWithDictionary:[inforDic objectForKey:@"advertising"]];
                 [_ADArray addObject:model];
             }
-            
         }
         [[NSNotificationCenter defaultCenter]postNotificationName:@"updateUI" object:nil userInfo:nil];
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {

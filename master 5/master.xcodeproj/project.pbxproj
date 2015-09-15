@@ -945,6 +945,16 @@
 		3CCD2E9D1B95A87300BCA4F7 /* 导航栏.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CCD2E9C1B95A87300BCA4F7 /* 导航栏.png */; };
 		3CCE2AC21B8EA7E800A0B49E /* myPublicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCE2AC11B8EA7E800A0B49E /* myPublicViewController.m */; };
 		3CCE2AC71B8EA82500A0B49E /* mypublicListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCE2AC61B8EA82500A0B49E /* mypublicListView.m */; };
+		3CD202501BA7B7E800CA7005 /* searchFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD2024E1BA7B7E800CA7005 /* searchFriendViewController.m */; };
+		3CD202511BA7B7E800CA7005 /* searchFriendViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CD2024F1BA7B7E800CA7005 /* searchFriendViewController.xib */; };
+		3CD202581BA7EEAB00CA7005 /* friendDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD202561BA7EEAB00CA7005 /* friendDetailViewController.m */; };
+		3CD202591BA7EEAB00CA7005 /* friendDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CD202571BA7EEAB00CA7005 /* friendDetailViewController.xib */; };
+		3CD2025D1BA806ED00CA7005 /* imageCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD2025B1BA806ED00CA7005 /* imageCellTableViewCell.m */; };
+		3CD2025E1BA806ED00CA7005 /* imageCellTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CD2025C1BA806ED00CA7005 /* imageCellTableViewCell.xib */; };
+		3CD202641BA80A7100CA7005 /* rootTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD202631BA80A7100CA7005 /* rootTableViewCell.m */; };
+		3CD202671BA81C9A00CA7005 /* AppDelegate+methods.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD202661BA81C9A00CA7005 /* AppDelegate+methods.m */; };
+		3CD2026A1BA81EE300CA7005 /* AppDelegate+request.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD202691BA81EE300CA7005 /* AppDelegate+request.m */; };
+		3CD2026D1BA8216600CA7005 /* AppDelegate+setting.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD2026C1BA8216600CA7005 /* AppDelegate+setting.m */; };
 		3CD2D4651BA66A12006C6553 /* myserviceDataSouce.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD2D4641BA66A12006C6553 /* myserviceDataSouce.m */; };
 		3CD2D46E1BA67181006C6553 /* myServiceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD2D46D1BA67181006C6553 /* myServiceView.m */; };
 		3CD2D4741BA67A1F006C6553 /* myservieBaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD2D4731BA67A1F006C6553 /* myservieBaseTableViewCell.m */; };
@@ -2514,6 +2524,23 @@
 		3CCE2AC11B8EA7E800A0B49E /* myPublicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = myPublicViewController.m; path = "视图控制器/我的发布/myPublicViewController.m"; sourceTree = "<group>"; };
 		3CCE2AC51B8EA82500A0B49E /* mypublicListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mypublicListView.h; path = view/mypublicListView.h; sourceTree = "<group>"; };
 		3CCE2AC61B8EA82500A0B49E /* mypublicListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = mypublicListView.m; path = view/mypublicListView.m; sourceTree = "<group>"; };
+		3CD2024D1BA7B7E800CA7005 /* searchFriendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = searchFriendViewController.h; path = "视图控制器/消息/searchFriendViewController.h"; sourceTree = "<group>"; };
+		3CD2024E1BA7B7E800CA7005 /* searchFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = searchFriendViewController.m; path = "视图控制器/消息/searchFriendViewController.m"; sourceTree = "<group>"; };
+		3CD2024F1BA7B7E800CA7005 /* searchFriendViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = searchFriendViewController.xib; path = "视图控制器/消息/searchFriendViewController.xib"; sourceTree = "<group>"; };
+		3CD202551BA7EEAB00CA7005 /* friendDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = friendDetailViewController.h; path = class/friendDetailViewController.h; sourceTree = "<group>"; };
+		3CD202561BA7EEAB00CA7005 /* friendDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = friendDetailViewController.m; path = class/friendDetailViewController.m; sourceTree = "<group>"; };
+		3CD202571BA7EEAB00CA7005 /* friendDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = friendDetailViewController.xib; path = class/friendDetailViewController.xib; sourceTree = "<group>"; };
+		3CD2025A1BA806ED00CA7005 /* imageCellTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imageCellTableViewCell.h; path = view/imageCellTableViewCell.h; sourceTree = "<group>"; };
+		3CD2025B1BA806ED00CA7005 /* imageCellTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = imageCellTableViewCell.m; path = view/imageCellTableViewCell.m; sourceTree = "<group>"; };
+		3CD2025C1BA806ED00CA7005 /* imageCellTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = imageCellTableViewCell.xib; path = view/imageCellTableViewCell.xib; sourceTree = "<group>"; };
+		3CD202621BA80A7100CA7005 /* rootTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rootTableViewCell.h; path = view/rootTableViewCell.h; sourceTree = "<group>"; };
+		3CD202631BA80A7100CA7005 /* rootTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = rootTableViewCell.m; path = view/rootTableViewCell.m; sourceTree = "<group>"; };
+		3CD202651BA81C9A00CA7005 /* AppDelegate+methods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+methods.h"; sourceTree = "<group>"; };
+		3CD202661BA81C9A00CA7005 /* AppDelegate+methods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+methods.m"; sourceTree = "<group>"; };
+		3CD202681BA81EE300CA7005 /* AppDelegate+request.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+request.h"; sourceTree = "<group>"; };
+		3CD202691BA81EE300CA7005 /* AppDelegate+request.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+request.m"; sourceTree = "<group>"; };
+		3CD2026B1BA8216600CA7005 /* AppDelegate+setting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+setting.h"; sourceTree = "<group>"; };
+		3CD2026C1BA8216600CA7005 /* AppDelegate+setting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+setting.m"; sourceTree = "<group>"; };
 		3CD2D4631BA66A12006C6553 /* myserviceDataSouce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = myserviceDataSouce.h; path = "视图控制器/我/我的服务/myserviceDataSouce.h"; sourceTree = "<group>"; };
 		3CD2D4641BA66A12006C6553 /* myserviceDataSouce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = myserviceDataSouce.m; path = "视图控制器/我/我的服务/myserviceDataSouce.m"; sourceTree = "<group>"; };
 		3CD2D46C1BA67181006C6553 /* myServiceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = myServiceView.h; path = view/myServiceView.h; sourceTree = "<group>"; };
@@ -3247,6 +3274,9 @@
 				3C2C22241B9ED54400F66B21 /* RootView.m */,
 				3CD2D4AC1BA6D275006C6553 /* messageHelp.h */,
 				3CD2D4AD1BA6D275006C6553 /* messageHelp.m */,
+				3CD202551BA7EEAB00CA7005 /* friendDetailViewController.h */,
+				3CD202561BA7EEAB00CA7005 /* friendDetailViewController.m */,
+				3CD202571BA7EEAB00CA7005 /* friendDetailViewController.xib */,
 			);
 			name = class;
 			sourceTree = "<group>";
@@ -3556,6 +3586,12 @@
 				3C8C056A1AF8B61700CF994E /* Images.xcassets */,
 				3C6783471B7DD2BA00E26BD0 /* guideViewController.h */,
 				3C6783481B7DD2BA00E26BD0 /* guideViewController.m */,
+				3CD202651BA81C9A00CA7005 /* AppDelegate+methods.h */,
+				3CD202661BA81C9A00CA7005 /* AppDelegate+methods.m */,
+				3CD202681BA81EE300CA7005 /* AppDelegate+request.h */,
+				3CD202691BA81EE300CA7005 /* AppDelegate+request.m */,
+				3CD2026B1BA8216600CA7005 /* AppDelegate+setting.h */,
+				3CD2026C1BA8216600CA7005 /* AppDelegate+setting.m */,
 			);
 			name = "起始文件";
 			sourceTree = "<group>";
@@ -4949,6 +4985,9 @@
 				3CCA7F0D1B9C280A00DA9574 /* friendViewController.m */,
 				3CCA7F131B9C313400DA9574 /* myCheatViewController.h */,
 				3CCA7F141B9C313400DA9574 /* myCheatViewController.m */,
+				3CD2024D1BA7B7E800CA7005 /* searchFriendViewController.h */,
+				3CD2024E1BA7B7E800CA7005 /* searchFriendViewController.m */,
+				3CD2024F1BA7B7E800CA7005 /* searchFriendViewController.xib */,
 			);
 			name = "消息";
 			sourceTree = "<group>";
@@ -4967,6 +5006,11 @@
 				3CD2DD1B1BA0053100E3105E /* mySelfMessageTableViewCell.h */,
 				3CD2DD1C1BA0053100E3105E /* mySelfMessageTableViewCell.m */,
 				3CD2DD1D1BA0053100E3105E /* mySelfMessageTableViewCell.xib */,
+				3CD2025A1BA806ED00CA7005 /* imageCellTableViewCell.h */,
+				3CD2025B1BA806ED00CA7005 /* imageCellTableViewCell.m */,
+				3CD2025C1BA806ED00CA7005 /* imageCellTableViewCell.xib */,
+				3CD202621BA80A7100CA7005 /* rootTableViewCell.h */,
+				3CD202631BA80A7100CA7005 /* rootTableViewCell.m */,
 			);
 			name = "消息";
 			sourceTree = "<group>";
@@ -6630,6 +6674,7 @@
 				3CA7F54C1B906D0100A99072 /* 找师傅@3x.png in Resources */,
 				3C62C2501B0C2C8B00CD82A2 /* 预约按钮.png in Resources */,
 				3C6394C81B818900009B528C /* 29@3x.png in Resources */,
+				3CD2025E1BA806ED00CA7005 /* imageCellTableViewCell.xib in Resources */,
 				3CAA50931B7A04680063DD16 /* 9@3x.png in Resources */,
 				3CC2471D1B11A6D900BDBB7D /* WifiMan_Sign_2@2x.png in Resources */,
 				3C08907A1B8EE46B0032C41E /* menueSelectTableViewCell.xib in Resources */,
@@ -6725,6 +6770,7 @@
 				3CCB20CA1BA282310075AC4E /* 094[差劲]@2x.png in Resources */,
 				3CCB20FA1BA282310075AC4E /* 诱惑.gif in Resources */,
 				3C57B9EE1B40E280009DB823 /* waitCaseViewController.xib in Resources */,
+				3CD202511BA7B7E800CA7005 /* searchFriendViewController.xib in Resources */,
 				3CA95A451B2541D4007ABD60 /* replyViewController.xib in Resources */,
 				3C62C2511B0C2C8B00CD82A2 /* ic_fooder.png in Resources */,
 				3CCB20EC1BA282310075AC4E /* 惊吓.gif in Resources */,
@@ -6804,6 +6850,7 @@
 				3C8C056B1AF8B61700CF994E /* Images.xcassets in Resources */,
 				3CCB20961BA282310075AC4E /* 038[白眼]@2x.png in Resources */,
 				3CBB3ACE1B0F2DFB0085959A /* SMS_SDKLocalizable.strings in Resources */,
+				3CD202591BA7EEAB00CA7005 /* friendDetailViewController.xib in Resources */,
 				3C62C2531B0C2C8B00CD82A2 /* 手机-icon.png in Resources */,
 				3C65AE101B7B2314002BF24C /* search.png in Resources */,
 				3C0860F01B16A1ED004C0383 /* ModifyInfoViewController.xib in Resources */,
@@ -7009,6 +7056,7 @@
 				3CCB1FF01BA282310075AC4E /* GJGCCommonFontColorStyle.m in Sources */,
 				3CCB20331BA282310075AC4E /* GJCFAudioModel.m in Sources */,
 				3C704CDA1B2A676000F87475 /* UINavigationController+ABExtras.m in Sources */,
+				3CD202501BA7B7E800CA7005 /* searchFriendViewController.m in Sources */,
 				0139990A1B1EAC7B0005FB1F /* OrderDetailViewController.m in Sources */,
 				3CCB1FD11BA282310075AC4E /* GJGCChatBaseConstans.m in Sources */,
 				3CCB1FEA1BA282310075AC4E /* GJGCChatSystemNotiConstans.m in Sources */,
@@ -7020,6 +7068,7 @@
 				3CCB205A1BA282310075AC4E /* TKRoundedView.m in Sources */,
 				3CCB20221BA282310075AC4E /* UIButton+GJCFAssetsPickerStyle.m in Sources */,
 				3CCB1FD81BA282310075AC4E /* GJGCChatFriendContentModel.m in Sources */,
+				3CD202581BA7EEAB00CA7005 /* friendDetailViewController.m in Sources */,
 				3CCB1FD41BA282310075AC4E /* GJGCChatFriendAudioMessageCell.m in Sources */,
 				3C9382811B56519100D34D7A /* PhotoModel.m in Sources */,
 				3C08610B1B16A2DD004C0383 /* peopleDetail2TableViewCell.m in Sources */,
@@ -7066,6 +7115,7 @@
 				3CCB1FE91BA282310075AC4E /* GJGCChatSystemNotiCellStyle.m in Sources */,
 				3C6728C81B86D8B9003ACE3E /* worksList.m in Sources */,
 				3CA706D31AF9E9320085F498 /* RootViewController.m in Sources */,
+				3CD2026A1BA81EE300CA7005 /* AppDelegate+request.m in Sources */,
 				3C93828F1B56519100D34D7A /* CALayer+Transition.m in Sources */,
 				3CCB20571BA282310075AC4E /* GJCUImageBrowserViewController.m in Sources */,
 				3CCB20471BA282310075AC4E /* GJCFDispatchCenterUitil.m in Sources */,
@@ -7087,6 +7137,8 @@
 				01A0F0791B16C75300140524 /* CityTableViewController.m in Sources */,
 				3C029A8C1B09D7EF0020F67B /* orderViewController.m in Sources */,
 				3CD2DD2F1BA0276D00E3105E /* DXChatBarMoreView.m in Sources */,
+				3CD2026D1BA8216600CA7005 /* AppDelegate+setting.m in Sources */,
+				3CD202671BA81C9A00CA7005 /* AppDelegate+methods.m in Sources */,
 				3CCB20001BA282310075AC4E /* GJGCDriftBottleImageScrollView.m in Sources */,
 				3CCB20351BA282310075AC4E /* GJCFFileDownloadTask+GJCFAudioDownload.m in Sources */,
 				3CD2DD191BA0023500E3105E /* NSDate+Category.m in Sources */,
@@ -7277,6 +7329,7 @@
 				019080CC1B450B5A000181F0 /* ReportTableViewCell.m in Sources */,
 				3C6783491B7DD2BA00E26BD0 /* guideViewController.m in Sources */,
 				3C9616571B3CEC3500C1C614 /* PayViewController.m in Sources */,
+				3CD202641BA80A7100CA7005 /* rootTableViewCell.m in Sources */,
 				3C2C22311B9EDC8B00F66B21 /* otherMessageTableViewCell.m in Sources */,
 				3CCB1FE01BA282310075AC4E /* GJGCChatFriendTextMessageCell.m in Sources */,
 				3C8C05601AF8B61700CF994E /* main.m in Sources */,
@@ -7398,6 +7451,7 @@
 				3C6394AA1B81868B009B528C /* selectedCityinforView.m in Sources */,
 				3C5EBC3A1B822BAF00BF8F4F /* headCollectionReusableView.m in Sources */,
 				3C6D3D6F1B8C0F5000A08AA7 /* findAddNewWorkModel.m in Sources */,
+				3CD2025D1BA806ED00CA7005 /* imageCellTableViewCell.m in Sources */,
 				3C7D2D501B719D310042E798 /* informationDetail.m in Sources */,
 				3CCB20171BA282310075AC4E /* GJCFFileDownloadManager.m in Sources */,
 				3C0860D31B16A1D3004C0383 /* PersonalDetailModel.m in Sources */,

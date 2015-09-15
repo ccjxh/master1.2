@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "XHMessageTextView.h"
+#import "rootTableViewCell.h"
 
-@interface otherMessageTableViewCell : UITableViewCell
+@interface otherMessageTableViewCell : rootTableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *date;
 @property(nonatomic)EMMessage*model;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentHeight;

@@ -10,6 +10,7 @@
 #import "keyboardBar.h"
 #import "keyboardMoreView.h"
 #import "GJGCChatInputPanel.h"
+
 @protocol MessageDelegate<NSObject>;
 @required
 -(void)sendMessage:(NSString*)messageText;

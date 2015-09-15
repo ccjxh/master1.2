@@ -33,6 +33,9 @@
 #import "myTabViewController.h"
 #import "Appirater.h"
 #import "friendViewController.h"
+#import "AppDelegate+methods.h"
+#import "AppDelegate+request.h"
+#import "AppDelegate+setting.h"
 
 
 @interface AppDelegate ()<TencentSessionDelegate,WXApiDelegate,UIAlertViewDelegate>
@@ -40,8 +43,6 @@
 @property(nonatomic)BOOL havePushMessage;//是否有推送消息
 @property(nonatomic)NSDictionary*pushDictory;//推送字典
 @property(nonatomic)BOOL isLoginSuccess;//登陆是否成功
-@property(nonatomic)NSTimer*timer;
-
 @end
 /**
  * 用户岗位(1--雇主,2--师傅，3--包工头，4--项目经理)
@@ -49,15 +50,8 @@
 @implementation AppDelegate
 
 
--(void)dealloc{
-
-    [_timer invalidate];
-
-}
-
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
     
     [self setupRecommend];  //评分相关设置
     
@@ -82,7 +76,6 @@
     
     [self.window makeKeyAndVisible];
     
-    
     [[dataBase share]CreateAllTables]; //创建数据库
     
     [self getOpenCity];   //缓存已开通城市
@@ -98,9 +91,6 @@
             _havePushMessage=YES;
         }
         
-//        [self setupBaiDuMap];//设置地图
-       
-        
         [WXApi registerApp:@"wxaa561e93e30b45ca"];//微信注册
         
         [self setupADImage];
@@ -112,36 +102,8 @@
         [self setupguide];
         
     }
-    
-
-    
+        
     return YES;
-}
-
-
-
-
-/*评分相关设置**/
--(void)setupRecommend{
-
-    //评分
-    [Appirater setAppId:@"1031874136"];
-    [Appirater setDaysUntilPrompt:0];
-    [Appirater setUsesUntilPrompt:5];
-    [Appirater setSignificantEventsUntilPrompt:-1];
-    [Appirater setTimeBeforeReminding:2];
-    [Appirater setDebug:NO];
-    [Appirater appLaunched:YES];
-
-}
-
-
-//云测相关设置
--(void)setupTestLin{
-
-    [TestinAgent init:@"c5ea5096fd7481f747bbad61c3005e8d" channel:nil config:[TestinConfig defaultConfig]];
-    
-
 }
 
 
@@ -153,72 +115,13 @@
         
         [self setupLoginView];
     }
-
-
 }
-
-//推送
--(void)setupPushWithDictory {
-    
-    //注销之后需要再次注册前的准备
-    void (^successCallback)(void) = ^(void){
-        //如果变成需要注册状态
-        if(![XGPush isUnRegisterStatus])
-        {
-            //iOS8注册push方法
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= _IPHONE80_
-            
-            float sysVer = [[[UIDevice currentDevice] systemVersion] floatValue];
-            if(sysVer < 8){
-                [self resignNoticeation];
-            }
-            else{
-                [self registerPushForIOS8];
-            }
-#else
-            //iOS8之前注册push方法
-            //注册Push服务，注册后才能收到推送
-            [self resignNoticeation];
-#endif
-        }
-    };
-    [XGPush initForReregister:successCallback];
-    
-    //推送反馈回调版本示例
-    void (^successBlock)(void) = ^(void){
-        //成功之后的处理
-        NSLog(@"[XGPush]handleLaunching's successBlock");
-    };
-    
-    void (^errorBlock)(void) = ^(void){
-        //失败之后的处理
-        NSLog(@"[XGPush]handleLaunching's errorBlock");
-    };
-    
-    //角标清0
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-    //清除所有通知(包含本地通知)
-    //[[UIApplication sharedApplication] cancelAllLocalNotifications];
-    
-}
-
 
 
 #pragma mark-获取已开通城市的列表
 -(void)getOpenCity{
 
-    NSString*urlString=[self interfaceFromString: interface_getOpenCityList];
-    [[httpManager share]GET:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
-        NSDictionary*dict=(NSDictionary*)responseObject;
-        if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
-            NSArray*array=[dict objectForKey:@"entities"];
-    
-            [[dataBase share]addCityToDataBase:array Pid:30000];
-        }
-        
-    } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
-        
-    }];
+    [self getAllOpenCity];
 }
 
 //设置广告界面
@@ -262,19 +165,12 @@
     [imageview removeFromSuperview];
 }
 
-//-(void)setupBaiDuMap{
-//
-//    _mapManager = [[BMKMapManager alloc]init];
-//    // 如果要关注网络及授权验证事件，请设定     generalDelegate参数
-//    BOOL ret = [_mapManager start:@"GK6ttaQ8hXmIyFRjafl9gGP2"  generalDelegate:nil];
-//    if (!ret) {
-//        
-//    }
-//
-//}
 
+-(void)setHomeView{
 
-
+    [self setHomePageWithMessage:_havePushMessage Dict:_pushDictory];
+    
+}
 
 -(void)removeAdImageView{
 
@@ -308,104 +204,6 @@
     }
 }
 
-
-
--(void)setHomeView{
-    
-    findMasterViewController*hvc=[[findMasterViewController alloc]init];
-    hvc.title=@"找师傅";
-    UINavigationController*nc=[[UINavigationController alloc]initWithRootViewController:hvc];
-    nc.navigationBar.barTintColor=COLOR(22, 168, 234, 1);
-    nc.navigationBar.barStyle=1;
-    orderViewController*ovc=[[orderViewController alloc]initWithNibName:@"orderViewController" bundle:nil];
-    UINavigationController*nc1=[[UINavigationController alloc]initWithRootViewController:ovc];
-    nc1.navigationBar.barTintColor=COLOR(67, 172, 219, 1);
-//    [nc.navigationBar setBackgroundImage:[self returnImageFromName:@"导航栏.png"] forBarMetrics:UIBarMetricsDefault];
-//    nc.navigationController.navigationBar.translucent = NO;
-//    UIImageView*imageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 64)];
-//    imageview.image=[UIImage imageNamed:@"导航栏.png"];
-//    
-//    [nc.navigationBar insertSubview:imageview atIndex:0];
-    ovc.title=@"订单";
-    [nc1.navigationController.navigationBar.layer setMasksToBounds:YES];
-//    nc1.navigationBar.barStyle=1;
-    MyViewController*mvc=[[MyViewController alloc]init];
-    UINavigationController*nc2=[[UINavigationController alloc]initWithRootViewController:mvc];
-    nc2.navigationBar.barStyle=1;
-    nc2.navigationBar.barTintColor=COLOR(22, 168, 234, 1);
-    mvc.title=@"我";
-    UITabBarItem*item1=[[UITabBarItem alloc]initWithTitle:@"找师傅" image: [UIImage imageNamed:@"找师傅-未选择"] selectedImage: [self returnImageFromName:@"找师傅"]];
-    
-    UITabBarItem*item2=[[UITabBarItem alloc]initWithTitle:@"找活干" image: [UIImage imageNamed:@"找工作-未选择"] selectedImage: [self returnImageFromName:@"找工作"]];
-    UITabBarItem*item3=[[UITabBarItem alloc]initWithTitle:@"我的" image: [UIImage imageNamed:@"我的-未选择"] selectedImage: [self returnImageFromName:@"我的"]];
-    findWorkViewController*fvc=[[findWorkViewController alloc]init];
-    fvc.title=@"找活干";
-    UITabBarItem*friendItem=[[UITabBarItem alloc]initWithTitle:@"消息" image: [UIImage imageNamed:@"我的-未选择"] selectedImage: [self returnImageFromName:@"我的"]];
-    UINavigationController*nc4=[[UINavigationController alloc]initWithRootViewController:fvc];
-    nc4.navigationBar.barTintColor=COLOR(22, 168, 234, 1);
-    nc4.navigationBar.barStyle=1;
-    
-    friendViewController*frvc=[[friendViewController alloc]init];
-    frvc.title=@"消息";
-    UINavigationController*friendNC=[[UINavigationController alloc]initWithRootViewController:frvc];
-    friendNC.navigationBar.barTintColor=COLOR(22, 168, 234, 1);
-    friendNC.navigationBar.barStyle=1;
-
-    UITabBarController*cvc=[[UITabBarController alloc]init];
-    cvc.viewControllers=@[nc,nc4,friendNC,nc2];
-    cvc.tabBar.selectedImageTintColor=COLOR(0, 166, 237, 1);
-    nc.tabBarItem=item1;
-    nc1.tabBarItem=item2;
-    nc2.tabBarItem=item3;
-    nc4.tabBarItem=item2;
-    friendNC.tabBarItem=friendItem;
-    self.window.rootViewController=cvc;
-    if (_havePushMessage) {
-        NSString*str=[_pushDictory objectForKey:PUSHKEY];
-        NSArray*array=[str componentsSeparatedByString:@"\"type\":\""];
-        NSString*type=[array[1] componentsSeparatedByString:@"\"}"][0];
-        if ([type isEqualToString:@"masterOrderContact"]==YES||[type isEqualToString:@"masterOrderAccept"]==YES||[type isEqualToString:@"masterOrderReject"]==YES||[type isEqualToString:@"masterOrderFinish"]==YES||[type isEqualToString:@"masterOrderStop"]==YES||[type isEqualToString:@"masterOrderStop"]==YES) {
-            cvc.selectedIndex=1;
-            NSArray*sepArray=[str componentsSeparatedByString:@"\"entityId\":"];
-            NSString*ID=[sepArray[1] componentsSeparatedByString:@","][0];
-            MNextOrderDetailViewController*mvc=[[MNextOrderDetailViewController alloc]initWithNibName:@"orderDetailOrderViewController" bundle:nil];
-            mvc.id=[ID integerValue];
-            [nc1 pushViewController:mvc animated:NO];
-           
-        }else if ([type isEqualToString:@"personalPass"]==YES||[type isEqualToString:@"personalFail"]==YES||[type isEqualToString:@"masterPostPass"]==YES||[type isEqualToString:@"masterPostFail"]==YES||[type isEqualToString:@"foremanPostPass"]==YES||[type isEqualToString:@"foremanPostFail"]==YES||[type isEqualToString:@"managerPostPass"]==YES||[type isEqualToString:@"managerPostFail"]==YES){
-            
-        }else if ([type isEqualToString:@"requestRecommend"]==YES){
-            cvc.selectedIndex=2;
-            myRecommendPeopleViewController*rvc=[[myRecommendPeopleViewController alloc]initWithNibName:@"myRecommendPeopleViewController" bundle:nil];
-            rvc.hidesBottomBarWhenPushed=YES;
-            [nc2 pushViewController:rvc animated:NO];
-        }else if ([type isEqualToString:@"projectAuditPass"]==YES||[type isEqualToString:@"projectAuditFail"]==YES){
-        
-            cvc.selectedIndex=2;
-            myPublicViewController*mvc=[[myPublicViewController alloc]init];
-            [nc2 pushViewController:mvc animated:NO];
-        }
-        
-        if (!type) {
-            CustomDialogView *dialog = [[CustomDialogView alloc]initWithTitle:@"" message:@"当前账号在其他设备登陆,若非本人操作,你的登陆密码可能已经已经泄露,请及时修改密码.紧急情况可以联系客服" buttonTitles:@"确定", nil];
-            [dialog showWithCompletion:^(NSInteger selectIndex) {
-                
-                [self setLogout];
-                
-            }];
-        }
-    }
-}
-
-
--(UIImage*)returnImageFromName:(NSString*)name{
-
-    UIImage *img = [UIImage imageNamed:name];
-    img =  [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    return img;
-    
-}
-
 -(void)setupLoginView{
     LoginViewController*lvc=[[LoginViewController alloc]init];
     UINavigationController*nc=[[UINavigationController alloc]initWithRootViewController:lvc];
@@ -436,7 +234,6 @@
             [users synchronize];
             _isLogin=YES;
             [delegate requestInformation];
-            [delegate requestAdImage];
             [XGPush setAccount:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"pullTag"]];
             _isLoginSuccess=YES;
             
@@ -469,15 +266,11 @@
     
     [user synchronize];
 
-    
-
 }
 
 
 -(void)sendData:(NSString*)pull{
     
-//    static dispatch_once_t once;
-//    dispatch_once(&once, ^{
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     if (delegate.pullTokenFinish==YES&&delegate.isSend==NO) {
     NSString* openUDID = [OpenUDID value];
@@ -493,72 +286,15 @@
     
         } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
     
-            }];
-
-         }
-//    });
-    
+        }];
+    }
 }
 
 
 
 -(NSString*)getPhoneType{
 
-    int mib[2];
-    size_t len;
-    char *machine;
-    
-    mib[0] = CTL_HW;
-    mib[1] = HW_MACHINE;
-    sysctl(mib, 2, NULL, &len, NULL, 0);
-    machine = malloc(len);
-    sysctl(mib, 2, machine, &len, NULL, 0);
-    
-    NSString *platform = [NSString stringWithCString:machine encoding:NSASCIIStringEncoding];
-    NSString* userPhoneName = [[UIDevice currentDevice] name];
-
-    free(machine);
-    
-    if ([platform isEqualToString:@"iPhone1,1"]) return @"iPhone 2G";
-    else if ([platform isEqualToString:@"iPhone1,2"]) platform= @"iPhone 3G ";
-    else if ([platform isEqualToString:@"iPhone3,1"]) platform= @"iPhone 4";
-    else if ([platform isEqualToString:@"iPhone3,2"]) platform= @"iPhone 4";
-    else if ([platform isEqualToString:@"iPhone3,3"]) platform= @"iPhone 4";
-    else  if ([platform isEqualToString:@"iPhone4,1"]) platform= @"iPhone 4S";
-    else if ([platform isEqualToString:@"iPhone5,1"]) platform= @"iPhone 5";
-    else  if ([platform isEqualToString:@"iPhone5,2"]) platform= @"iPhone 5";
-    else if ([platform isEqualToString:@"iPhone5,3"]) platform= @"iPhone 5c";
-    else if ([platform isEqualToString:@"iPhone5,4"]) platform= @"iPhone 5c";
-    else  if ([platform isEqualToString:@"iPhone6,1"]) platform= @"iPhone 5s";
-    else if ([platform isEqualToString:@"iPhone6,2"]) platform= @"iPhone 5s";
-    else  if ([platform isEqualToString:@"iPhone7,1"]) platform= @"iPhone 6 Plus ";
-    else  if ([platform isEqualToString:@"iPhone7,2"]) platform= @"iPhone 6";
-    else if ([platform isEqualToString:@"iPad2,5"])   platform= @"iPad Mini 1G (A1432)";
-    else if ([platform isEqualToString:@"iPad2,6"])   platform= @"iPad Mini 1G (A1454)";
-    else if ([platform isEqualToString:@"iPad2,7"])   platform= @"iPad Mini 1G (A1455)";
-    
-    else if ([platform isEqualToString:@"iPad3,1"])   platform= @"iPad 3 (A1416)";
-    else if ([platform isEqualToString:@"iPad3,2"])   platform= @"iPad 3 (A1403)";
-   else  if ([platform isEqualToString:@"iPad3,3"])   platform= @"iPad 3 (A1430)";
-   else  if ([platform isEqualToString:@"iPad3,4"])   platform= @"iPad 4 (A1458)";
-   else  if ([platform isEqualToString:@"iPad3,5"])   platform= @"iPad 4 (A1459)";
-  else   if ([platform isEqualToString:@"iPad3,6"])   platform= @"iPad 4 (A1460)";
-    
-   else  if ([platform isEqualToString:@"iPad4,1"])   platform= @"iPad Air (A1474)";
-   else  if ([platform isEqualToString:@"iPad4,2"])   platform= @"iPad Air (A1475)";
-   else  if ([platform isEqualToString:@"iPad4,3"])   platform= @"iPad Air (A1476)";
-   else  if ([platform isEqualToString:@"iPad4,4"])   platform= @"iPad Mini 2G (A1489)";
-    else if ([platform isEqualToString:@"iPad4,5"])   platform= @"iPad Mini 2G (A1490)";
-    else if ([platform isEqualToString:@"iPad4,6"])   platform= @"iPad Mini 2G (A1491)";
-    
-   else  if ([platform isEqualToString:@"i386"])      platform= @"iPhone Simulator";
-    else if ([platform isEqualToString:@"x86_64"])    platform= @"iPhone Simulator";
-    
-    else{
-    
-        return [NSString stringWithFormat:@"%@的%@",userPhoneName,@"iphone6s/iphone6s+"];
-    }
-    return [NSString stringWithFormat:@"%@的%@",userPhoneName,platform];
+    return [self getPhoneType];
 
 }
 
@@ -591,7 +327,6 @@
 -(void)setupQQShare{
 
     TencentOAuth*tencentOAuth = [[TencentOAuth alloc] initWithAppId:@"1104650241" andDelegate:self];
-    
 }
 
 
@@ -625,7 +360,6 @@
     [_mapManager startUpdatingLocation];
     if (![CLLocationManager locationServicesEnabled]) {
         [self.window makeToast:@"定位尚未打开，请检查设置" duration:1 position:@"center"];
-        
     }else{
         if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusNotDetermined){
             if ([[UIDevice currentDevice].systemVersion integerValue]>=8) {
@@ -684,69 +418,10 @@
 }
 
 
-
-
-//技能筛选项请求
--(void)requestSkills
-{
-    NSString*urlString=[self interfaceFromString:interface_skill];
-    [[httpManager share]GET:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
-        NSMutableArray*array =[self arrayFromJosn:responseObject Type:@"servicerSkills" Model:@"skillModel"];
-        [[dataBase share]deleAllSkillInformation];
-        
-        for (NSInteger i=0; i<array.count; i++) {
-            skillModel*model=array[i];
-            [[dataBase share]addSkillModel:model];
-            
-        }
-        
-    } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
-        
-    }];
-}
-
-
-//广告栏图片
--(void)requestAdImage{
-    [_pictureArray removeAllObjects];
-    NSString*urlString=[self interfaceFromString:interface_banners];
-    [[httpManager manager]GET:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
-        NSDictionary*dict=(NSDictionary*)responseObject;
-        if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
-            NSArray*Array=[dict objectForKey:@"entities"];
-            for (NSInteger i=0; i<Array.count; i++) {
-                NSDictionary*inforDic=Array[i];
-                NSString*url=[[inforDic objectForKey:@"advertising"] objectForKey:@"resource"];
-                NSString*temp=[NSString stringWithFormat:@"%@%@",changeURL,url];
-                
-                [_pictureArray addObject:temp];
-            }
-        
-        }
-         [[NSNotificationCenter defaultCenter]postNotificationName:@"updateUI" object:nil userInfo:nil];
-        } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
-        
-    }];
-}
-
-
-
-
-
 //缓存个人信息
 -(void)requestInformation{
-    NSString *urlString = [self interfaceFromString:interface_personalDetail];
-    [[httpManager share]GET:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
-        NSDictionary *dict = (NSDictionary*)responseObject;
-        NSDictionary *entityDic = [dict objectForKey:@"entity"];
-        NSDictionary *userDic = [entityDic objectForKey:@"user"];
-        PersonalDetailModel*model=[[PersonalDetailModel alloc]init];
-        [model setValuesForKeysWithDictionary:userDic];
-        [[dataBase share]addInformationWithModel:model];
-         [[NSNotificationCenter defaultCenter]postNotificationName:@"updateUI" object:nil userInfo:nil];
-        } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
-        
-    }];
+    
+    [self requestPersonalInformation];
 }
 
 -(void)resignNoticeation{
@@ -755,54 +430,6 @@
     
 }
 
-
-//- (void)registerPushForIOS8{
-//#if __IPHONE_OS_VERSION_MAX_ALLOWED >= _IPHONE80_
-//    
-//    //Types
-//    UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
-//    
-//    //Actions
-//    UIMutableUserNotificationAction *acceptAction = [[UIMutableUserNotificationAction alloc] init];
-//    acceptAction.identifier = @"单据通知";
-//    acceptAction.title = @"进入";
-//    acceptAction.activationMode = UIUserNotificationActivationModeForeground;
-//    acceptAction.destructive = NO;
-//    acceptAction.authenticationRequired = NO;
-//    
-//    //Categories
-//    UIMutableUserNotificationCategory *inviteCategory = [[UIMutableUserNotificationCategory alloc] init];
-//    
-//    inviteCategory.identifier = @"INVITE_CATEGORY";
-//    
-//    [inviteCategory setActions:@[acceptAction] forContext:UIUserNotificationActionContextMinimal];
-//    
-//    [inviteCategory setActions:@[acceptAction] forContext:UIUserNotificationActionContextMinimal];
-//    
-//    NSSet *categories = [NSSet setWithObjects:inviteCategory, nil];
-//    
-//    
-//    UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:categories];
-//    
-//    [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
-//    [[UIApplication sharedApplication] registerForRemoteNotifications];
-//    
-//    
-//#endif
-//}
-//
-
-//-(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
-//    //notification是发送推送时传入的字典信息
-//    [XGPush localNotificationAtFrontEnd:notification userInfoKey:@"clockID" userInfoValue:@"myid"];
-//    
-//    //删除推送列表中的这一条
-//    [XGPush delLocalNotification:notification];
-//    //[XGPush delLocalNotification:@"clockID" userInfoValue:@"myid"];
-//    
-//    //清空推送列表
-//    //[XGPush clearLocalNotifications];
-//}
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= _IPHONE80_
 
@@ -829,7 +456,6 @@
         //接受消息的处理
         
         
-        
     }
     
         if([identifier isEqualToString:@"ACCEPT_IDENTIFIER"]){
@@ -854,11 +480,6 @@
         //失败之后的处理
         NSLog(@"信鸽服务器接受注册失败");
     };
-
-    
-//    注册设备
-//    [[XGSetting getInstance] setChannel:@"appstore"];
-//    [[XGSetting getInstance] setGameServer:@"巨神峰"];
 
     
      [XGPush registerDevice:deviceToken successCallback:successBlock errorCallback:errorBlock];
@@ -889,9 +510,10 @@
     NSString*type=[array[1] componentsSeparatedByString:@"\"}"][0];
     if ([type isEqualToString:@"personalPass"]==YES||[type isEqualToString:@"personalFail"]==YES||[type isEqualToString:@"masterPostPass"]==YES||[type isEqualToString:@"masterPostFail"]==YES||[type isEqualToString:@"foremanPostPass"]==YES||[type isEqualToString:@"foremanPostFail"]==YES||[type isEqualToString:@"managerPostPass"]==YES||[type isEqualToString:@"managerPostFail"]==YES) {
         AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+        
         if ([type isEqualToString:@"foremanPostPass"]==YES) {
             
-            //3是工头  4是项目经理
+         //3是工头  4是项目经理
             delegate.userPost=3;
         }else if ([type isEqualToString:@"managerPostPass"]==YES){
             delegate.userPost=4;
@@ -904,7 +526,6 @@
         [self getOpenCity];
         
     }
-    
     
     NSString*content=[[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
     UILocalNotification *notification=[[UILocalNotification alloc] init];
@@ -924,7 +545,6 @@
             
             [self setLogout];
             
-           
         }];
         
     }
@@ -939,12 +559,8 @@
          [[NSNotificationCenter defaultCenter]postNotificationName:@"public" object:nil userInfo:nil];
     }
 
-    
-   
     [[NSNotificationCenter defaultCenter]postNotificationName:@"updateUI" object:nil userInfo:nil];
 }
-
-
 
 
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
@@ -952,11 +568,6 @@
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     
-//    if (application.applicationState == UIApplicationStateActive) {
-//        [JKNotifier showNotifer:notification.alertBody];
-//    }
-
-
 }
 
 
@@ -974,15 +585,15 @@
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+   
+    
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     
     [[EaseMob sharedInstance] applicationDidEnterBackground:application];
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+   
+    
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -991,9 +602,9 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+  
+    
 }
-
 
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -1001,52 +612,5 @@
     [[EaseMob sharedInstance] applicationWillTerminate:application];
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
-
-
-- (void)registerPushForIOS8{
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= _IPHONE80_
-    
-    //Types
-    UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
-    
-    //Actions
-    UIMutableUserNotificationAction *acceptAction = [[UIMutableUserNotificationAction alloc] init];
-    
-    acceptAction.identifier = @"ACCEPT_IDENTIFIER";
-    acceptAction.title = @"Accept";
-    
-    acceptAction.activationMode = UIUserNotificationActivationModeForeground;
-    acceptAction.destructive = NO;
-    acceptAction.authenticationRequired = NO;
-    
-    //Categories
-    UIMutableUserNotificationCategory *inviteCategory = [[UIMutableUserNotificationCategory alloc] init];
-    
-    inviteCategory.identifier = @"INVITE_CATEGORY";
-    
-    [inviteCategory setActions:@[acceptAction] forContext:UIUserNotificationActionContextDefault];
-    
-    [inviteCategory setActions:@[acceptAction] forContext:UIUserNotificationActionContextMinimal];
-    
-    NSSet *categories = [NSSet setWithObjects:inviteCategory, nil];
-    
-    
-    UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:categories];
-    
-    [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
-    
-    
-    [[UIApplication sharedApplication] registerForRemoteNotifications];
-#endif
-}
-
-- (void)registerPush{
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
-}
-
-
-
-
-
 
 @end

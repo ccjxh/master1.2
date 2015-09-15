@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "XHMessageTextView.h"
+#import "rootTableViewCell.h"
 
-@interface mySelfMessageTableViewCell : UITableViewCell
+
+@interface mySelfMessageTableViewCell :rootTableViewCell
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *backHeight;
 @property (weak, nonatomic) IBOutlet UIImageView *headImage;
 @property (weak, nonatomic) IBOutlet UITextView *content;

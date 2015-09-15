@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface myFriendView : UIView<UITableViewDataSource,UITableViewDelegate>
-@property(nonatomic)UITableView*tableview;
-@property(nonatomic)NSMutableArray*dataArray;
+#import "UIScrollView+UzysAnimatedGifPullToRefresh.h"
+@interface myFriendView : RootView<UITableViewDataSource,UITableViewDelegate>
+@property(nonatomic,strong)UITableView*tableview;
+@property(nonatomic,strong)NSMutableArray*dataArray;
 @property(nonatomic,copy)void(^friendDidSelect)(NSIndexPath*indexPath);
+@property(nonatomic,copy)void(^delegateFriend)(NSIndexPath*indexpath);
 @end
