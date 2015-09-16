@@ -95,9 +95,12 @@
 {
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     cityViewController*cvc=[[cityViewController alloc]init];
+    
     if (delegate.city) {
         
+        if (delegate.id!=381) {
         cvc.city=delegate.city;
+        }
         
     }
     cvc.TBlock=^(AreaModel*CityModel){

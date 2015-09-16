@@ -28,9 +28,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"注册界面被建立");
-    
-    // Do any additional setup after loading the view from its nib.
+       // Do any additional setup after loading the view from its nib.
     value = NO;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.view.backgroundColor = [UIColor colorWithRed:79/255.0 green:187/255.0 blue:226/255.0 alpha:1.0];
@@ -38,7 +36,6 @@
     if (self.states == 1) {
         [self.registerButton removeFromSuperview];
         UIButton *resetPasswordBtn = [UIButton buttonWithType:UIButtonTypeSystem];
-//        resetPasswordBtn.backgroundColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1.0];
         resetPasswordBtn.frame = CGRectMake(120, 300, 80, 40);
         [resetPasswordBtn setTitle:@"重置密码" forState:UIControlStateNormal];
         [resetPasswordBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -87,13 +84,11 @@
     }
     if (buttonClick == YES) {
         [SMS_SDK getVerificationCodeBySMSWithPhone:self.telephoneTextField.text zone:@"86" result:^(SMS_SDKError *error) {
-            
-            
             //error为nil表示获取验证码成功
             if(error == nil){
                 self.verificationCodeTextField.delegate = self;
                 
-            }
+             }
         }];
     }
 }
@@ -155,7 +150,7 @@
 #pragma mark - 注册或重置密码的实现
 -(void) requestAFNet
 {
-    value=YES;
+    
     NSString* openUDID = [OpenUDID value];
     NSString*name=[[UIDevice currentDevice] model];
     if (self.telephoneTextField.text.length == 0) {
@@ -227,7 +222,7 @@
                         delegate.isLogin=YES;
                         delegate.userPost=1;
                         [delegate requestInformation];
-                        [delegate requestAdImage];
+//                        [delegate requestAdImage];
                         [delegate setHomeView];
                         
                     }];

@@ -107,8 +107,6 @@
     
     [self CreateFlow];   //菊花
     
-   
-    
     [self receiveNotice];
 
 }
@@ -129,12 +127,7 @@
 -(void)pop{
     
     [self.navigationController popToViewController:self.navigationController.viewControllers[0] animated:YES];
-//    for (UIViewController*vc in self.navigationController.viewControllers) {
-//       
-//        if ([vc isKindOfClass:[myServiceSelectedViewController class]]==YES) {
-//            [self.navigationController popToViewController:vc animated:YES];
-//        }
-//    }
+
 }
 
 
@@ -427,8 +420,6 @@
     NSString*urlString=[self interfaceFromString:interface_myServicerDetail];
     [[httpManager share]GET:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
         NSDictionary*dict=(NSDictionary*)responseObject;
-        
-        
         NSArray*StartTemp=[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"starProjectCase"];
         //明星工程解析
         for (NSInteger i=0; i<StartTemp.count; i++) {
@@ -437,7 +428,6 @@
             [starModel setValuesForKeysWithDictionary:inforDict];
             [_starProject addObject:starModel];
         }
-        
         
         serviceModel*model=[[serviceModel alloc]init];
         [model setValuesForKeysWithDictionary:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"service"]];
@@ -521,7 +511,7 @@
                     citymodel.isselect=YES;
                     [citymodel setValuesForKeysWithDictionary:detailArray[j]];
                     [secondArray addObject:citymodel];
-                                                            }
+                                                    }
                 [_serviceArray addObject:secondArray];
             
             }
@@ -934,9 +924,9 @@
                     for (NSInteger i=0; i<array.count; i++) {
                         skillModel*model=array[i];
                         if (i==0) {
-                            valuerString=[NSString stringWithFormat:@"%lu",model.id];
+                            valuerString=[NSString stringWithFormat:@"%u",model.id];
                         }else{
-                            valuerString=[NSString stringWithFormat:@"%@,%lu",valuerString,model.id];
+                            valuerString=[NSString stringWithFormat:@"%@,%u",valuerString,model.id];
                         }
                     }
                     [self flowShow];
@@ -969,7 +959,6 @@
                 cvc.type=1;
                 cvc.selectedArray=_serviceArray;
                 [self pushWinthAnimation:self.navigationController Viewcontroller:cvc];
-                
                 
             }
                 break;
@@ -1271,6 +1260,8 @@
         cell.textLabel.text=@"技能";
         if (skillArray.count==0) {
             cell.detailTextLabel.text=@"点击选择技能";
+            UIView*view=(id)[cell.contentView viewWithTag:31];
+            [view removeFromSuperview];
             cell.detailTextLabel.textColor=[UIColor lightGrayColor];
             cell.detailTextLabel.font=[UIFont systemFontOfSize:16];
             return cell;
@@ -1323,6 +1314,7 @@
     UIView*view=(id)[self.view viewWithTag:30];
     if (view) {
         [view removeFromSuperview];
+        
     }
 
     if (_serviceArray.count==0) {

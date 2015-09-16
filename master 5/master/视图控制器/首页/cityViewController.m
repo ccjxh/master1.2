@@ -64,9 +64,14 @@
     }
     
     [self flowShow];
+    NSDictionary*dict;
+    if (!str) {
+        dict=@{@"regions":@"0"};
+    }else{
     
-    
-    NSDictionary*dict=@{@"regions":str};
+        dict=@{@"regions":str};
+        
+    }
     [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
         NSDictionary*dict=(id)responseObject;
         [self flowHide];
@@ -98,13 +103,15 @@
         AreaModel*model=tempArray[i];
         model.isselect=NO;
         if (self.selectedArray.count!=0) {
-        for (NSInteger j=1; j<[self.selectedArray[0] count]; j++) {
-           NSArray*tempArray=self.selectedArray[0];
-            AreaModel*compareModel=tempArray[j];
-            if (model.id==compareModel.id) {
-                model.isselect=YES;
-               }
-          }
+        for (NSInteger j=0; j<[self.selectedArray count]; j++) {
+           NSArray*tempArray=self.selectedArray[j];
+            for (NSInteger h=1; h<tempArray.count; h++) {
+                AreaModel*compareModel=tempArray[h];
+                if (model.id==compareModel.id) {
+                    model.isselect=YES;
+                    }
+                }
+            }
             
         }
         

@@ -37,7 +37,6 @@
 #import "AppDelegate+request.h"
 #import "AppDelegate+setting.h"
 
-
 @interface AppDelegate ()<TencentSessionDelegate,WXApiDelegate,UIAlertViewDelegate>
 @property (nonatomic) CLLocationManager *locMgr;
 @property(nonatomic)BOOL havePushMessage;//是否有推送消息
@@ -82,7 +81,6 @@
     
     [self requestSkills];//缓存技能列表并缓存
     
-
     NSUserDefaults*user=[NSUserDefaults standardUserDefaults];
     if ([[user objectForKey:@"first"] integerValue]==1) {
         [self setupRootView];
@@ -92,12 +90,9 @@
         }
         
         [WXApi registerApp:@"wxaa561e93e30b45ca"];//微信注册
-        
         [self setupADImage];
-        
-        
+    
     }else{
-        
         
         [self setupguide];
         
@@ -142,13 +137,9 @@
     [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.window cache:YES];
     [UIView setAnimationDelegate:self];
     //這裡還可以設置回調函數;
-    
     [UIView setAnimationDidStopSelector:@selector(startupAnimationDone)];
-   
     niceView.alpha = 0.99;
-    
     [UIView commitAnimations];
-    
 }
 
 
@@ -213,7 +204,6 @@
 }
 
 
-
 -(void)startRequestWithUsername:(NSString*)username Password:(NSString*)password{
     
     NSString*urlString=[self interfaceFromString:interface_login];
@@ -243,11 +233,9 @@
             delegate.id=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"id"] integerValue];
             
             [delegate sendData:delegate.pullToken];
-        } else if ([[dict objectForKey:@"rspCode"] integerValue]==500) {
+            } else if ([[dict objectForKey:@"rspCode"] integerValue]==500) {
             
-           
-        }
-        
+         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
@@ -259,11 +247,8 @@
 
     NSUserDefaults*user=[NSUserDefaults standardUserDefaults];
     guideViewController*gvc=[[guideViewController alloc]init];
-    
     self.window.rootViewController=gvc;
-    
     [user setObject:@"1" forKey:@"first"];
-    
     [user synchronize];
 
 }
@@ -280,10 +265,8 @@
     [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
     
         NSDictionary*sict=(NSDictionary*)responseObject;
-        NSLog(@"%@",[dict objectForKey:@"msg"]);
            _isSend=YES;
             
-    
         } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
     
         }];

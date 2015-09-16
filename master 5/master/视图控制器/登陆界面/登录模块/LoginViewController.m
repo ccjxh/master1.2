@@ -180,7 +180,7 @@
             if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
                   AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
                 [delegate requestInformation];
-                [delegate requestAdImage];
+//                [delegate requestAdImage];
                 [self.view makeToast:@"恭喜!登录成功。" duration:2.0f position:@"center"];
                 NSUserDefaults*users=[NSUserDefaults standardUserDefaults];
                 [users setObject:_account.text forKey:@"username"];

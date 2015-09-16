@@ -52,12 +52,9 @@
 }
 
 
-
 - (void)viewDidLoad {
-    
     [super viewDidLoad];
     _currentCityName=@"深圳市";
-//    [self requestAdImage];   广告栏图片
     [self requestPay];
     [self request];
     [self initUI];
