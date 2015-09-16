@@ -95,7 +95,7 @@
 #import "findWorkListModel.h"
 #import "findWorkDetailModel.h"
 #import "EaseMob.h"
-
+#import "FDAlertView.h"
 #import "RootView.h"
 
 #define kScreenBounds [UIScreen mainScreen].bounds

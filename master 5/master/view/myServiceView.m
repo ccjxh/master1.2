@@ -7,18 +7,16 @@
 //
 
 #import "myServiceView.h"
-#import "myservieBaseTableViewCell.h"
+#import "startTimeandcompensationTableViewCell.h"
 
 @implementation myServiceView
 {
-
     UITableView*_tableview;
     myserviceDataSouce*_dataSource;
 }
 -(instancetype)initWithDatasource:(myserviceDataSouce *)dataSource{
 
     if (self=[super init]) {
-        
         _dataSource=dataSource;
         [self createUI];
     }
@@ -51,22 +49,6 @@
     return 1;
 
 }
-
--(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-
-    NSString*identity=[_dataSource getIdentityFromIndexPath:indexPath];
-    Class TempClass=NSClassFromString([_dataSource getIdentityFromIndexPath:indexPath]);
-    myservieBaseTableViewCell*cell=[tableView dequeueReusableCellWithIdentifier:identity];
-    if (!cell) {
-        cell=[[TempClass alloc]init];
-    }
-    
-    [cell setContentWithModel:[_dataSource getModelFromIndexPath:indexPath]];
-    return cell;
-    
-}
-
-
 
 
 @end

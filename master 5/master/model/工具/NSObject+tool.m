@@ -172,4 +172,17 @@
     
 }
 
+
+- (float) heightForTextView: (UITextView *)textView WithText: (NSString *) strText{
+    
+    
+    float fPadding = 16.0; // 8.0px x 2
+    CGSize constraint = CGSizeMake(13*15+25, CGFLOAT_MAX);
+    CGSize size = [strText sizeWithFont: textView.font constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    float fHeight = size.height + 16.0;
+    return fHeight;
+    
+}
+
+
 @end

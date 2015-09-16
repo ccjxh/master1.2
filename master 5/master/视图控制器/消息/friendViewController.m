@@ -96,12 +96,9 @@
     __weak typeof(myFriendView*)WeView=backView;
     backView.friendDidSelect=^(NSIndexPath*indexPath){
         if (indexPath.section==0) {
-            
         //系统助手处理
-            
             return ;
         }
-        
         myCheatViewController*cvc=[[myCheatViewController alloc]init];
         EMBuddy*buddy=WeView.dataArray[indexPath.section-1];
         cvc.buddy=buddy;

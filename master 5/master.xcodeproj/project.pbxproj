@@ -501,7 +501,6 @@
 		3CB771C01B968D9600BAA6E8 /* AppiraterLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3CB7719A1B968D9600BAA6E8 /* AppiraterLocalizable.strings */; };
 		3CB771C11B968D9600BAA6E8 /* CHANGELOG.md in Sources */ = {isa = PBXBuildFile; fileRef = 3CB7719D1B968D9600BAA6E8 /* CHANGELOG.md */; };
 		3CB771C21B968D9600BAA6E8 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 3CB771B21B968D9600BAA6E8 /* README.md */; };
-		3CB771C61B9694FA00BAA6E8 /* libFNCheckUpdate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CB771C51B9694FA00BAA6E8 /* libFNCheckUpdate.a */; };
 		3CB8A0101B61C3D40075773F /* OpenUDID.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB8A00F1B61C3D40075773F /* OpenUDID.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		3CB8A0141B61D4220075773F /* SDiPhoneVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CB8A0131B61D4220075773F /* SDiPhoneVersion.m */; };
 		3CBA62581B676DF8003DC5BA /* masterModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CBA62571B676DF8003DC5BA /* masterModel.m */; };
@@ -931,6 +930,10 @@
 		3CCB21281BA282310075AC4E /* GJGCRecentChatCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCB1FB61BA282310075AC4E /* GJGCRecentChatCell.m */; };
 		3CCB21291BA282310075AC4E /* GJGCRecentChatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCB1FB81BA282310075AC4E /* GJGCRecentChatModel.m */; };
 		3CCB212A1BA282310075AC4E /* GJGCRecentChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCB1FBA1BA282310075AC4E /* GJGCRecentChatViewController.m */; };
+		3CCBD37A1BA8FA4600BD41CC /* startTimeandcompensationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCBD3781BA8FA4600BD41CC /* startTimeandcompensationTableViewCell.m */; };
+		3CCBD37B1BA8FA4600BD41CC /* startTimeandcompensationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CCBD3791BA8FA4600BD41CC /* startTimeandcompensationTableViewCell.xib */; };
+		3CCBD3831BA905E400BD41CC /* FDAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCBD3821BA905E400BD41CC /* FDAlertView.m */; };
+		3CCBD3871BA91B7500BD41CC /* checkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCBD3861BA91B7500BD41CC /* checkManager.m */; };
 		3CCBDB7F1B6F05C7005707D9 /* customOrderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCBDB7D1B6F05C7005707D9 /* customOrderTableViewCell.m */; };
 		3CCBDB801B6F05C7005707D9 /* customOrderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CCBDB7E1B6F05C7005707D9 /* customOrderTableViewCell.xib */; };
 		3CCBDB831B6F3D92005707D9 /* personalSkillViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CCBDB821B6F3D92005707D9 /* personalSkillViewController.m */; };
@@ -957,7 +960,6 @@
 		3CD2026D1BA8216600CA7005 /* AppDelegate+setting.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD2026C1BA8216600CA7005 /* AppDelegate+setting.m */; };
 		3CD2D4651BA66A12006C6553 /* myserviceDataSouce.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD2D4641BA66A12006C6553 /* myserviceDataSouce.m */; };
 		3CD2D46E1BA67181006C6553 /* myServiceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD2D46D1BA67181006C6553 /* myServiceView.m */; };
-		3CD2D4741BA67A1F006C6553 /* myservieBaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD2D4731BA67A1F006C6553 /* myservieBaseTableViewCell.m */; };
 		3CD2D4AE1BA6D275006C6553 /* messageHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD2D4AD1BA6D275006C6553 /* messageHelp.m */; };
 		3CD2DD101B9FD78700E3105E /* bubbleMine.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CD2DD0C1B9FD78700E3105E /* bubbleMine.png */; };
 		3CD2DD111B9FD78700E3105E /* bubbleMine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CD2DD0D1B9FD78700E3105E /* bubbleMine@2x.png */; };
@@ -1858,8 +1860,6 @@
 		3CB771BA1B968D9600BAA6E8 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/AppiraterLocalizable.strings; sourceTree = "<group>"; };
 		3CB771BB1B968D9600BAA6E8 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/AppiraterLocalizable.strings"; sourceTree = "<group>"; };
 		3CB771BC1B968D9600BAA6E8 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/AppiraterLocalizable.strings"; sourceTree = "<group>"; };
-		3CB771C41B9694FA00BAA6E8 /* FNCheckUpdate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNCheckUpdate.h; sourceTree = "<group>"; };
-		3CB771C51B9694FA00BAA6E8 /* libFNCheckUpdate.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFNCheckUpdate.a; sourceTree = "<group>"; };
 		3CB8A00E1B61C3D40075773F /* OpenUDID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenUDID.h; sourceTree = "<group>"; };
 		3CB8A00F1B61C3D40075773F /* OpenUDID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenUDID.m; sourceTree = "<group>"; };
 		3CB8A0121B61D4220075773F /* SDiPhoneVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDiPhoneVersion.h; sourceTree = "<group>"; };
@@ -2504,6 +2504,13 @@
 		3CCB1FB91BA282310075AC4E /* GJGCRecentChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GJGCRecentChatViewController.h; sourceTree = "<group>"; };
 		3CCB1FBA1BA282310075AC4E /* GJGCRecentChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GJGCRecentChatViewController.m; sourceTree = "<group>"; };
 		3CCB1FBB1BA282310075AC4E /* ZYChat-PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ZYChat-PrefixHeader.pch"; sourceTree = "<group>"; };
+		3CCBD3771BA8FA4600BD41CC /* startTimeandcompensationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = startTimeandcompensationTableViewCell.h; path = view/startTimeandcompensationTableViewCell.h; sourceTree = "<group>"; };
+		3CCBD3781BA8FA4600BD41CC /* startTimeandcompensationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = startTimeandcompensationTableViewCell.m; path = view/startTimeandcompensationTableViewCell.m; sourceTree = "<group>"; };
+		3CCBD3791BA8FA4600BD41CC /* startTimeandcompensationTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = startTimeandcompensationTableViewCell.xib; path = view/startTimeandcompensationTableViewCell.xib; sourceTree = "<group>"; };
+		3CCBD3811BA905E400BD41CC /* FDAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDAlertView.h; sourceTree = "<group>"; };
+		3CCBD3821BA905E400BD41CC /* FDAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDAlertView.m; sourceTree = "<group>"; };
+		3CCBD3851BA91B7500BD41CC /* checkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = checkManager.h; path = "class/版本更新/checkManager.h"; sourceTree = "<group>"; };
+		3CCBD3861BA91B7500BD41CC /* checkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = checkManager.m; path = "class/版本更新/checkManager.m"; sourceTree = "<group>"; };
 		3CCBDB7C1B6F05C7005707D9 /* customOrderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = customOrderTableViewCell.h; sourceTree = "<group>"; };
 		3CCBDB7D1B6F05C7005707D9 /* customOrderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = customOrderTableViewCell.m; sourceTree = "<group>"; };
 		3CCBDB7E1B6F05C7005707D9 /* customOrderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = customOrderTableViewCell.xib; sourceTree = "<group>"; };
@@ -2545,8 +2552,6 @@
 		3CD2D4641BA66A12006C6553 /* myserviceDataSouce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = myserviceDataSouce.m; path = "视图控制器/我/我的服务/myserviceDataSouce.m"; sourceTree = "<group>"; };
 		3CD2D46C1BA67181006C6553 /* myServiceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = myServiceView.h; path = view/myServiceView.h; sourceTree = "<group>"; };
 		3CD2D46D1BA67181006C6553 /* myServiceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = myServiceView.m; path = view/myServiceView.m; sourceTree = "<group>"; };
-		3CD2D4721BA67A1F006C6553 /* myservieBaseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = myservieBaseTableViewCell.h; path = view/myservieBaseTableViewCell.h; sourceTree = "<group>"; };
-		3CD2D4731BA67A1F006C6553 /* myservieBaseTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = myservieBaseTableViewCell.m; path = view/myservieBaseTableViewCell.m; sourceTree = "<group>"; };
 		3CD2D4AC1BA6D275006C6553 /* messageHelp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = messageHelp.h; path = class/messageHelp.h; sourceTree = "<group>"; };
 		3CD2D4AD1BA6D275006C6553 /* messageHelp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = messageHelp.m; path = class/messageHelp.m; sourceTree = "<group>"; };
 		3CD2DD0C1B9FD78700E3105E /* bubbleMine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubbleMine.png; sourceTree = "<group>"; };
@@ -2667,7 +2672,6 @@
 				3C42D78D1B25DAEB0041B374 /* OpenGLES.framework in Frameworks */,
 				3C62C2011B0C271900CD82A2 /* QuartzCore.framework in Frameworks */,
 				3CBB3AD51B0F2E470085959A /* MessageUI.framework in Frameworks */,
-				3CB771C61B9694FA00BAA6E8 /* libFNCheckUpdate.a in Frameworks */,
 				3CBB3AD11B0F2E3A0085959A /* libicucore.dylib in Frameworks */,
 				3CBB3ACF1B0F2DFB0085959A /* SMS_SDK.framework in Frameworks */,
 				846D1F3C1EE38EF8D25AC03B /* libPods.a in Frameworks */,
@@ -3261,6 +3265,7 @@
 		3C6728661B86B20E003ACE3E /* class */ = {
 			isa = PBXGroup;
 			children = (
+				3CCBD3841BA91B3800BD41CC /* 版本更新 */,
 				3CC908C41BA11905003487B4 /* keyboardBar */,
 				3CD2DD141BA0023500E3105E /* nsdate */,
 				3C6728BB1B86CC38003ACE3E /* RefershTableview.h */,
@@ -3655,9 +3660,9 @@
 		3C8C05881AF8BF1300CF994E /* thirdLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				3CCBD3801BA905E400BD41CC /* FDAlertView */,
 				3CCB1D581BA282300075AC4E /* ZYChat */,
 				3C9D41FA1B9C1CF3009EBC98 /* EaseMobSDK */,
-				3CB771C31B9694FA00BAA6E8 /* include */,
 				3CB771941B968D9600BAA6E8 /* appirater-master */,
 				3CB360DB1B8ACDB300FF5153 /* TestinAgent.framework */,
 				3C6EF49E1B830CC500D57DE9 /* DAPagesContainer */,
@@ -4539,6 +4544,7 @@
 		3CA706FC1AFA08A30085F498 /* 数据模型 */ = {
 			isa = PBXGroup;
 			children = (
+				3CCBD37C1BA8FEA500BD41CC /* 我的服务 */,
 				3C6D3D6C1B8C0F2900A08AA7 /* 找师傅 */,
 				0139990C1B1ED8220005FB1F /* 提交订单 */,
 				012F54D21B181726009949EC /* 常用地址 */,
@@ -4767,16 +4773,6 @@
 			);
 			name = "appirater-master";
 			path = "第三方/toast/appirater-master";
-			sourceTree = "<group>";
-		};
-		3CB771C31B9694FA00BAA6E8 /* include */ = {
-			isa = PBXGroup;
-			children = (
-				3CB771C41B9694FA00BAA6E8 /* FNCheckUpdate.h */,
-				3CB771C51B9694FA00BAA6E8 /* libFNCheckUpdate.a */,
-			);
-			name = include;
-			path = "第三方/toast/include";
 			sourceTree = "<group>";
 		};
 		3CB8A00D1B61C3D40075773F /* udid */ = {
@@ -6088,6 +6084,32 @@
 			path = RecentChat;
 			sourceTree = "<group>";
 		};
+		3CCBD37C1BA8FEA500BD41CC /* 我的服务 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "我的服务";
+			sourceTree = "<group>";
+		};
+		3CCBD3801BA905E400BD41CC /* FDAlertView */ = {
+			isa = PBXGroup;
+			children = (
+				3CCBD3811BA905E400BD41CC /* FDAlertView.h */,
+				3CCBD3821BA905E400BD41CC /* FDAlertView.m */,
+			);
+			name = FDAlertView;
+			path = "第三方/toast/FDAlertView";
+			sourceTree = "<group>";
+		};
+		3CCBD3841BA91B3800BD41CC /* 版本更新 */ = {
+			isa = PBXGroup;
+			children = (
+				3CCBD3851BA91B7500BD41CC /* checkManager.h */,
+				3CCBD3861BA91B7500BD41CC /* checkManager.m */,
+			);
+			name = "版本更新";
+			sourceTree = "<group>";
+		};
 		3CCD2E931B95A57900BCA4F7 /* 小图标 */ = {
 			isa = PBXGroup;
 			children = (
@@ -6155,8 +6177,9 @@
 			children = (
 				3CD2D46C1BA67181006C6553 /* myServiceView.h */,
 				3CD2D46D1BA67181006C6553 /* myServiceView.m */,
-				3CD2D4721BA67A1F006C6553 /* myservieBaseTableViewCell.h */,
-				3CD2D4731BA67A1F006C6553 /* myservieBaseTableViewCell.m */,
+				3CCBD3771BA8FA4600BD41CC /* startTimeandcompensationTableViewCell.h */,
+				3CCBD3781BA8FA4600BD41CC /* startTimeandcompensationTableViewCell.m */,
+				3CCBD3791BA8FA4600BD41CC /* startTimeandcompensationTableViewCell.xib */,
 			);
 			name = "我的服务";
 			sourceTree = "<group>";
@@ -6559,6 +6582,7 @@
 				3CA7A26A1B4D16B20031695E /* btn_close_selected@2x.png in Resources */,
 				3C6394D11B818900009B528C /* 60.png in Resources */,
 				3CA7F5521B906D0100A99072 /* 我的-未选择@3x.png in Resources */,
+				3CCBD37B1BA8FA4600BD41CC /* startTimeandcompensationTableViewCell.xib in Resources */,
 				3CA7F5461B906D0100A99072 /* 找工作@3x.png in Resources */,
 				3C62C2481B0C2C8B00CD82A2 /* 详情-微信-点击.png in Resources */,
 				3CCB20F01BA282310075AC4E /* 汗.gif in Resources */,
@@ -7030,6 +7054,7 @@
 				3CCB204C1BA282310075AC4E /* UIView+GJCFViewFrameUitil.m in Sources */,
 				3C0860FB1B16A1ED004C0383 /* SetViewController.m in Sources */,
 				3C93BE8A1B65CEDD001F2AB2 /* rootViewModel.m in Sources */,
+				3CCBD37A1BA8FA4600BD41CC /* startTimeandcompensationTableViewCell.m in Sources */,
 				3CC992EA1B8D56800023D8E9 /* findWorkDetailViewController.m in Sources */,
 				3C57B9ED1B40E280009DB823 /* waitCaseViewController.m in Sources */,
 				3CCB206C1BA282310075AC4E /* GJGCChatInputRecordAudioTipView.m in Sources */,
@@ -7041,6 +7066,7 @@
 				3C0860EE1B16A1ED004C0383 /* BasicInfoViewController.m in Sources */,
 				3CBE7D9D1B1C4FB400D8CCDF /* introlduceChangeViewController.m in Sources */,
 				3CCB201F1BA282310075AC4E /* GJCFAssetsPickerCommonStyleDescription.m in Sources */,
+				3CCBD3831BA905E400BD41CC /* FDAlertView.m in Sources */,
 				3CBB3AC51B0F2D5D0085959A /* LoginViewController.m in Sources */,
 				3CCB20061BA282310075AC4E /* GJGCChatGroupViewController.m in Sources */,
 				3CCB1FEB1BA282310075AC4E /* GJGCChatSystemNotiModel.m in Sources */,
@@ -7152,6 +7178,7 @@
 				3CD2DD2C1BA0276D00E3105E /* DXMessageToolBar.m in Sources */,
 				3CB498CC1B1EEDA600AC1270 /* myorderDetailViewController.m in Sources */,
 				3C93829D1B56519100D34D7A /* UITableViewCell+Extend.m in Sources */,
+				3CCBD3871BA91B7500BD41CC /* checkManager.m in Sources */,
 				3CCB20641BA282310075AC4E /* GJGCChatInputExpandEmojiPanelPageItem.m in Sources */,
 				3C57BA071B4117B3009DB823 /* mynextOrderlistrecommendViewController.m in Sources */,
 				3CCB1FE51BA282310075AC4E /* GJGCChatOtherApplyMyAuthorizWithStateCell.m in Sources */,
@@ -7194,7 +7221,6 @@
 				3CCB20621BA282310075AC4E /* GJGCChatInputExpandEmojiPanelMenuBarDataSource.m in Sources */,
 				3CCB20601BA282310075AC4E /* GJGCChatInputExpandEmojiPanelGifSubItem.m in Sources */,
 				3CC247131B11A6D900BDBB7D /* FeVietNamBar.m in Sources */,
-				3CD2D4741BA67A1F006C6553 /* myservieBaseTableViewCell.m in Sources */,
 				3CCB20361BA282310075AC4E /* GJCFFileUploadTask+GJCFAudioUpload.m in Sources */,
 				3C0860F91B16A1ED004C0383 /* HelpAndFeedbackViewController.m in Sources */,
 				3C0860F71B16A1ED004C0383 /* AboutViewController.m in Sources */,

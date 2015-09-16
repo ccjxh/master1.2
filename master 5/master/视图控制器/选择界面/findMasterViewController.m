@@ -12,8 +12,10 @@
 #import "contractorViewController.h"
 #import "webDetailViewController.h"
 #import "findMaster.h"
-#import "FNCheckUpdate.h"
-@interface findMasterViewController ()<UIScrollViewDelegate,SDCycleScrollViewDelegate,UIAlertViewDelegate,FNCheckUpdateDelegate>
+#import "checkManager.h"
+
+
+@interface findMasterViewController ()<UIScrollViewDelegate,SDCycleScrollViewDelegate,UIAlertViewDelegate,FDAlertViewDelegate>
 @property(nonatomic)NSString*currentCityName;
 @property(nonatomic)NSMutableArray*ADArray;
 @end
@@ -24,6 +26,7 @@
     findMaster*masterView;
     UITextField*_tx;
     UIView*contentView;
+    __block NSString*trackViewUrl;
     
 }
 
@@ -59,9 +62,9 @@
     [self request];
     [self initUI];
     [self createUI];
+    [self checkNewVersion];
     [self receiveNotice];
     [self customNavigation];
-    [self updateSetting];
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     [delegate setupMap];
     delegate.cityChangeBlock=^(NSString*name){
@@ -84,17 +87,6 @@
     
 }
 
-
-
--(void)updateSetting{
-
-//    [FNCheckUpdate shareInstance].forceUpdate=YES;
-//    
-//    [FNCheckUpdate shareInstance].delegate=self;
-//    
-//    [[FNCheckUpdate shareInstance] checkUpdateWithAppID:@"1031874136"];
-
-}
 
 #pragma mark-customNavigation
 -(void)customNavigation{
@@ -218,7 +210,6 @@
         return;
     }
     
-    
     if (_tx.text.length==0) {
         [self.view makeToast:@"内容不能为空" duration:1 position:@"center"];
         return;
@@ -327,32 +318,6 @@
 
 
 
-
-
-//- (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index
-//{
-//    webDetailViewController*wvc=[[webDetailViewController alloc]initWithNibName:@"webDetailViewController" bundle:nil];
-//    adModel*model=_ADArray[index];
-//    wvc.urlString=model.url;
-//    [self pushWinthAnimation:self.navigationController Viewcontroller:wvc];
-//
-//}
-
-
-
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (buttonIndex==1) {
-        AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-        _currentCityName=delegate.city;
-        [self initUI];
-    }
-    
-    
-}
-
-
-
-
 #pragma mark-网络数据请求
 -(void)request
 {
@@ -407,9 +372,18 @@
             }
         }
         [[NSNotificationCenter defaultCenter]postNotificationName:@"updateUI" object:nil userInfo:nil];
-    } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+        } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
         
     }];
+}
+
+
+
+//版本检测跟新
+-(void)checkNewVersion{
+
+    [[checkManager share]checkNewVersionWithAppleID:@"1031874136"];
+    
 }
 
 

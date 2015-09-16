@@ -43,4 +43,8 @@
 //环信登陆
 -(void)HXLoginWithUsername:(NSString*)username Password:(NSString*)password;
 
+
+//获得textview的高度
+- (float) heightForTextView: (UITextView *)textView WithText: (NSString *) strText;
+
 @end
