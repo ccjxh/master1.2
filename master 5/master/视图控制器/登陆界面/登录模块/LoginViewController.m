@@ -88,6 +88,7 @@
                     delegate.userPost=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"userPost"] integerValue];
                     delegate.id=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"id"] integerValue];
                 [delegate setupPushWithDictory];
+                delegate.isSignState=[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"signState"];
                 [MBProgressHUD hideHUDForView:weSelf.view animated:YES];
                     [delegate setHomeView];
                 
@@ -171,22 +172,26 @@
         NSString* openUDID = [OpenUDID value];
         NSString*name=[[UIDevice currentDevice] model];
         AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-        NSDictionary*dict=@{@"mobile":_account.text,@"password":_passWord.text,@"machineCode":openUDID,@"machineType":name};
+        NSString*phoneType;
+        if ([delegate getPhoneType]) {
+            phoneType=[delegate getPhoneType];
+        }else{
         
+            phoneType=@"unKnowIPhone";
+        }
+    NSDictionary*dict=@{@"mobile":_account.text,@"password":_passWord.text,@"machineCode":openUDID,@"machineType":phoneType};
         [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSDictionary*dict=(NSDictionary*)responseObject;
-            
             [self flowHide];
             if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
                   AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
                 [delegate requestInformation];
-                [delegate requestAdImage];
+//                [delegate requestAdImage];
                 [self.view makeToast:@"恭喜!登录成功。" duration:2.0f position:@"center"];
                 NSUserDefaults*users=[NSUserDefaults standardUserDefaults];
                 [users setObject:_account.text forKey:@"username"];
                 [users setObject:_passWord.text forKey:_account.text];
                 [users synchronize];
-//                [XGPush setTag:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"pullTag"]];
                 [XGPush setAccount:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"pullTag"]];
                 [delegate setupPushWithDictory];
                 delegate.userPost=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"userPost"] integerValue];
@@ -203,8 +208,6 @@
         
     }
 }
-
-
 
 
 - (IBAction)resign:(UIButton *)sender {
@@ -242,12 +245,34 @@
 
 
 
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 
+//qq登陆
+- (IBAction)qqLogin:(id)sender {
+    
+    [ShareSDK getUserInfo:SSDKPlatformTypeQQ onStateChanged:^(SSDKResponseState state, SSDKUser *user, NSError *error) {
+       
+        if (user) {
+            NSLog(@"%@",[user nickname]);
+        }
+        
+    }];
+}
+
+
+
+
+
+
+//微信登陆
+- (IBAction)weChatLogin:(id)sender {
+    
+    
+    
+}
 
 @end

@@ -34,7 +34,6 @@
     
     [TestinAgent init:@"c5ea5096fd7481f747bbad61c3005e8d" channel:nil config:[TestinConfig defaultConfig]];
     
-    
 }
 
 
@@ -167,14 +166,12 @@
     else if ([platform isEqualToString:@"iPad2,5"])   platform= @"iPad Mini 1G (A1432)";
     else if ([platform isEqualToString:@"iPad2,6"])   platform= @"iPad Mini 1G (A1454)";
     else if ([platform isEqualToString:@"iPad2,7"])   platform= @"iPad Mini 1G (A1455)";
-    
     else if ([platform isEqualToString:@"iPad3,1"])   platform= @"iPad 3 (A1416)";
     else if ([platform isEqualToString:@"iPad3,2"])   platform= @"iPad 3 (A1403)";
     else  if ([platform isEqualToString:@"iPad3,3"])   platform= @"iPad 3 (A1430)";
     else  if ([platform isEqualToString:@"iPad3,4"])   platform= @"iPad 4 (A1458)";
     else  if ([platform isEqualToString:@"iPad3,5"])   platform= @"iPad 4 (A1459)";
     else   if ([platform isEqualToString:@"iPad3,6"])   platform= @"iPad 4 (A1460)";
-    
     else  if ([platform isEqualToString:@"iPad4,1"])   platform= @"iPad Air (A1474)";
     else  if ([platform isEqualToString:@"iPad4,2"])   platform= @"iPad Air (A1475)";
     else  if ([platform isEqualToString:@"iPad4,3"])   platform= @"iPad Air (A1476)";

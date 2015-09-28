@@ -26,7 +26,9 @@
     findMaster*masterView;
     UITextField*_tx;
     UIView*contentView;
+    findMaster*findView;
     __block NSString*trackViewUrl;
+    myIntegralInforModel*_model;//积分数据模型
     
 }
 
@@ -57,14 +59,15 @@
     
     [super viewDidLoad];
     _currentCityName=@"深圳市";
-//    [self requestAdImage];   广告栏图片
-    [self requestPay];
-    [self request];
+    [self requestPay];   //缓存支付
+    [self request];      //城市对应的地区请求
     [self initUI];
     [self createUI];
-    [self checkNewVersion];
-    [self receiveNotice];
+    [self checkNewVersion];  //版本检测更新
+    [self receiveNotice];   //收到推送时刷新UI
     [self customNavigation];
+     [self requestNotice];   //请求通知公告
+    
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     [delegate setupMap];
     delegate.cityChangeBlock=^(NSString*name){
@@ -205,7 +208,6 @@
 -(void)changeDEsscribe:(UIButton*)button{
     
     [[KGModal sharedInstance]hideAnimated:YES];
-    
     if ([button.titleLabel.text isEqualToString:@"取消"]==YES) {
         return;
     }
@@ -225,7 +227,6 @@
                 [self.view makeToast:@"提交成功" duration:1 position:@"center"];
             }else{
                 [self.view makeToast:[dict objectForKey:@"msg"] duration:1 position:@"center"];
-                
             }
             
         } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
@@ -234,7 +235,6 @@
             [self.view makeToast:@"网络异常" duration:1 position:@"center"];
         }];
     }
-    
 }
 
 
@@ -242,9 +242,7 @@
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
     
     UIButton*button=(id)[contentView viewWithTag:40];
-    
     if (textField.text.length==0) {
-        
         [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         button.userInteractionEnabled=NO;
     }else{
@@ -256,9 +254,7 @@
     NSString *temp = [textField.text stringByReplacingCharactersInRange:range withString:string];
     if (temp.length>6) {
         
-        
         return NO;
-        
     }
     return YES;
     
@@ -268,7 +264,7 @@
 #pragma mark-主界面UI
 -(void)createUI{
     
-    findMaster*findView=[[[NSBundle mainBundle]loadNibNamed:@"findMaster" owner:nil options:nil]lastObject];
+    findView=[[[NSBundle mainBundle]loadNibNamed:@"findMaster" owner:nil options:nil]lastObject];
     findView.workBlock=^{
         
         headViewController*hvc=[[headViewController alloc]init];
@@ -288,12 +284,39 @@
         
     };
     
+    __weak typeof(self)weakSelf=self;
+    findView.signin=^(){
+    
+        [weakSelf sigin];
+    
+    };
+    
     self.view.backgroundColor=COLOR(232, 233, 232, 1);
     [self.view addSubview:findView];
     
 }
 
 
+//签到
+-(void)sigin{
+
+    NSString*urlString=[self interfaceFromString:interface_signIn];
+    [[httpManager share]POST:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
+        NSDictionary*dict=(NSDictionary*)responseObject;
+        [self.view makeToast:[dict objectForKey:@"msg"] duration:1 position:@"center" Finish:^{
+            //签到成功处理
+            
+            
+            
+        }];
+        
+    } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+       
+        
+    }];
+
+
+};
 
 //缓存支付
 -(void)requestPay{
@@ -323,8 +346,8 @@
 {
     [self flowShow];
     AreaModel*model3=[[dataBase share]findWithCity:_currentCityName];
-    NSArray*array=[[dataBase share]findWithPid:model3.id];
     if (model3) {
+    NSArray*array=[[dataBase share]findWithPid:model3.id];
     if (array.count==0) {
         NSString*urlString=[self interfaceFromString:interface_resigionList];
         NSDictionary*dict=@{@"cityId":[NSString stringWithFormat:@"%lu",model3.id]};
@@ -352,31 +375,38 @@
 }
 
 
--(void)requestAdImage{
-    if (!_ADArray) {
-        _ADArray=[[NSMutableArray alloc]init];
-    }
-    [_ADArray removeAllObjects];
-    NSString*urlString=[self interfaceFromString:interface_banners];
-    [[httpManager manager]GET:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
+#pragma mark-请求通知公告
+-(void)requestNotice{
+
+    NSString*urlString=[self interfaceFromString:interface_Notice];
+    [[httpManager share]GET:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
         NSDictionary*dict=(NSDictionary*)responseObject;
         if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
-            NSArray*Array=[dict objectForKey:@"entities"];
-            for (NSInteger i=0; i<Array.count; i++) {
-                NSDictionary*inforDic=Array[i];
-                NSString*url=[[inforDic objectForKey:@"advertising"] objectForKey:@"resource"];
-                NSString*temp=[NSString stringWithFormat:@"%@%@",changeURL,url];
-                adModel*model=[[adModel alloc]init];
-                [model setValuesForKeysWithDictionary:[inforDic objectForKey:@"advertising"]];
-                [_ADArray addObject:model];
-            }
+            NSDictionary*infordict=[dict objectForKey:@"entity"];
+        [findView.tv setText:[[infordict objectForKey:@"notice"] objectForKey:@"content"]];
         }
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"updateUI" object:nil userInfo:nil];
-        } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
         
+    } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+       
     }];
+
 }
 
+#pragma mark-签到信息请求
+-(void)requestSignInformation{
+
+    NSString*urlString=[self interfaceFromString:interface_signInformation];
+    [[httpManager share]GET:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
+        NSDictionary*dict=(NSDictionary*)responseObject;
+       _model=[[myIntegralInforModel alloc]init];
+        [_model setValuesForKeysWithDictionary:[[dict objectForKey:@"entity"] objectForKey:@"signLog"]];
+        findView.model=_model;
+        [findView reloadData];
+    } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+        
+    }];
+
+}
 
 
 //版本检测跟新

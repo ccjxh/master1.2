@@ -39,10 +39,4 @@
     }
 }
 
-
-//-(void)reloadData{
-//    [self.master_mobile setTitle:self.detailModel.mobile forState:UIControlStateNormal];
-//    self.master_workStatus.text=[self.detailModel.nativeProvince objectForKey:@"name"];
-//    self.master_region.text = [self.detailModel.nativeProvince objectForKey:@"name"];
-//}
 @end

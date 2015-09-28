@@ -290,6 +290,7 @@
     initModel.name=@"全市区";
     [_townArray addObject:initModel];
     AreaModel*model=[[dataBase share]findWithCity:_currentCityName];
+    if (model) {
     NSMutableArray*array=[[dataBase share]findWithPid:model.id];
     if (array.count==0) {
         NSString*urlString=[self interfaceFromString:interface_resigionList];
@@ -326,6 +327,7 @@
         [view.menue.leftTableView reloadData];
         self.isRefersh=YES;
         [self requestListInformation];
+        }
     }
     return _townArray;
     
@@ -345,12 +347,13 @@
     }
     self.isRefersh=NO;
     AreaModel*cityModel=[[dataBase share]findWithCity:_currentCityName];
+    if (cityModel) {
     [subDict setObject:[NSString stringWithFormat:@"%lu",cityModel.id] forKey:@"firstLocation"];
+    }
     [subDict setObject:[NSString stringWithFormat:@"%lu",_currentPage] forKey:@"pageNo"];
     NSString*urlString=[self interfaceFromString:interface_findWorkList];
     [[httpManager share]POST:urlString parameters:subDict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
         NSDictionary*dict=(NSDictionary*)responseObject;
-       
         if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
             _totalPage=[[dict objectForKey:@"totalPage"] integerValue];
             NSArray*array=[dict objectForKey:@"entities"] ;
@@ -380,7 +383,6 @@
         [self flowHide];
         
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
-        
         [view.weakRefreshHeader endRefreshing];
         [view.refreshFooter endRefreshing];
         [self flowHide];

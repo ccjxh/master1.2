@@ -160,12 +160,18 @@
     NSString*password=[users objectForKey:username];
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     NSString* openUDID = [OpenUDID value];
-     NSString*name=[[UIDevice currentDevice] model];
-    NSDictionary*dict=@{@"mobile":username,@"password":password,@"machineType":[delegate getPhoneType],@"machineCode":openUDID};
-    NSString*urlString=[self interfaceFromString:interface_login];
+    NSString*name=[[UIDevice currentDevice] model];
+    NSString*phoneType;
+    if ([delegate getPhoneType]) {
+        phoneType=[delegate getPhoneType];
+    }else{
+    
+        phoneType=@"unKnowIphone";
+    }
+ NSDictionary*dict=@{@"mobile":username,@"password":password,@"machineType":phoneType,@"machineCode":openUDID};
+     NSString*urlString=[self interfaceFromString:interface_login];
     [super POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
         NSDictionary*dict=(NSDictionary*)responseObject;
-        
     
         block();
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {

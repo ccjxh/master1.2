@@ -50,9 +50,6 @@
 
 @implementation PeoDetailViewController
 
-
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor=[UIColor whiteColor];
@@ -326,23 +323,21 @@
                 [[KGModal sharedInstance]hideAnimated:YES withCompletionBlock:^{
                     
                     [self.view makeToast:@"举报成功!" duration:2.0f position:@"center"];
-                    
                 }];
             }else{
                 
                 [self.view makeToast:[dict objectForKey:@"msg"] duration:1 position:@"center"];
             }
+            
         } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
             
             [self flowHide];
             [self.view makeToast:@"网络繁忙,请稍后重试" duration:1 position:@"center"];
+            
         }];
     }else{
         
-        
     }
-    
-    
 }
 
 
@@ -368,7 +363,6 @@
             [scrollview setContentOffset:CGPointMake(SCREEN_WIDTH, 0) animated:YES];
         }
     }
-    
 }
 
 
@@ -376,7 +370,6 @@
     
     UILabel*label=(id)[self.view viewWithTag:LABELTAG];
     label.frame=CGRectMake(scrollView.contentOffset.x/2, 108, SCREEN_WIDTH/2, 5);
-
 
 }
 
@@ -476,13 +469,11 @@
             break;
         case 21:
         {
-            
             //拒绝推荐
             NSString*urlString=[self interfaceFromString:interface_refuseRecommend];
             NSDictionary*dict=@{@"id":[NSString stringWithFormat:@"%lu",self.orderID]};
             [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
                 NSDictionary*dict=(NSDictionary*)responseObject;
-                
                 if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
                     [self.view makeToast:@"请求成功" duration:1 position:@"center" Finish:^{
                         [self popWithnimation:self.navigationController];
@@ -498,21 +489,17 @@
                 
             }];
             
-            
         }
             break;
             
         default:
             break;
     }
-    
-    
 }
 
 
 -(void) createUI
 {
-    
     //导航栏右边按钮
     shareBtn =[UIButton buttonWithType:UIButtonTypeSystem];
     shareBtn.frame = CGRectMake(210, 8, 21, 17);
@@ -520,7 +507,6 @@
     shareBtn.tag = 100;
     [shareBtn addTarget:self action:@selector(navRight:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:shareBtn];
-    
     collectBtn=[UIButton buttonWithType:UIButtonTypeSystem];
     collectBtn.frame = CGRectMake(250, 8, 21, 17);
     if (self.favoriteFlag == 1)
@@ -552,19 +538,19 @@
             [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
                 NSDictionary*dict=(NSDictionary*)responseObject;
                 [self flowHide];
-
                 if ([[dict objectForKey:@"rspCode"] intValue]==200) {
                     [self.view makeToast:@"取消成功" duration:1 position:@"center" Finish:^{
                         [collectBtn setBackgroundImage:[UIImage imageNamed:@"ic_un_great"] forState:UIControlStateNormal];
                         self.favoriteFlag=0;
                     }];
                 }else{
+                    
                     [self.view makeToast:[dict objectForKey:@"msg"] duration:1 position:@"center"];
-                
                 }
             } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+                
                 [self flowHide];
-               [self.view makeToast:[dict objectForKey:@"mag"] duration:1 position:@"center"];
+               [self.view makeToast:[dict objectForKey:@"msg"] duration:1 position:@"center"];
                 
             }];
         }
@@ -597,11 +583,12 @@
             self.favoriteFlag=1;
         }
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+        
         [self flowHide];
         [self.view makeToast:@"网络繁忙，请稍后重试" duration:1 position:@"center"];
+        
     }];
 }
-
 
 
 #pragma mark-QQShare
@@ -613,7 +600,6 @@
                                 objectWithURL:[NSURL URLWithString:urlString] title:recommModel.title description:recommModel.content previewImageURL:[NSURL URLWithString:imageUrl]];
     SendMessageToQQReq *req = [SendMessageToQQReq reqWithContent:newsObj];
     QQApiSendResultCode sent = [QQApiInterface sendReq:req];
-    
 }
 
 
@@ -621,16 +607,10 @@
 
     NSString*urlString=[NSString stringWithFormat:@"%@%@",changeURL,self.model.icon];
     [[httpManager share]POST:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
-        
         data=(NSData*)responseObject;
-        
-    } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
-       
-        
+        } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
         
     }];
-
-
 }
 
 -(void)selectShare{
@@ -638,7 +618,6 @@
     UIActionSheet*actionsheet=[[UIActionSheet alloc]initWithTitle:@"请选择分享的地方" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"分享到QQ" otherButtonTitles:@"分享到微信",@"分享到朋友圈", nil];
     actionsheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
     [actionsheet showInView:self.view];
-    
     
 }
 
@@ -650,11 +629,11 @@
     }else if (buttonIndex==1){
     
         [self WeiChatShare];
+        
     }else if (buttonIndex==2){
     
         [self shareWeichatCircle];
     }
-
 }
 
 
@@ -669,16 +648,20 @@
     WXImageObject*image=[WXImageObject object];
     image.imageUrl=imageUrl;
     WXWebpageObject *ext = [WXWebpageObject object];
-    NSString*urlString=[NSString stringWithFormat:@"%@%@",changeURL,@"s"];
+  NSString*urlString=[NSString stringWithFormat:@"%@%@",changeURL,@"s"];
     ext.webpageUrl = recommModel.url;
     message.mediaObject = ext;
     SendMessageToWXReq* req = [[SendMessageToWXReq alloc] init];
     req.bText = NO;
     req.message = message;
-    
     req.scene = 0;//0是好友  1是朋友圈  2是收藏
     [WXApi sendReq:req];
-    
+//    NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
+//    [shareParams SSDKSetupWeChatParamsByText:recommModel.content title:recommModel.title url:[NSURL URLWithString:recommModel.url] thumbImage:nil image:nil musicFileURL:nil extInfo:nil fileData:nil emoticonData:nil type:SSDKContentTypeWebPage forPlatformSubType:SSDKPlatformTypeCopy];
+//    [ShareSDK share:SSDKPlatformSubTypeWechatSession parameters:shareParams onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
+//        
+//    }];
+//
     
 }
 

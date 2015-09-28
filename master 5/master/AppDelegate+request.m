@@ -17,7 +17,6 @@
         NSDictionary*dict=(NSDictionary*)responseObject;
         if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
             NSArray*array=[dict objectForKey:@"entities"];
-            
             [[dataBase share]addCityToDataBase:array Pid:30000];
         }
         
@@ -34,11 +33,9 @@
     [[httpManager share]GET:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
         NSMutableArray*array =[self arrayFromJosn:responseObject Type:@"servicerSkills" Model:@"skillModel"];
         [[dataBase share]deleAllSkillInformation];
-        
         for (NSInteger i=0; i<array.count; i++) {
             skillModel*model=array[i];
             [[dataBase share]addSkillModel:model];
-            
         }
         
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
@@ -49,7 +46,6 @@
 
 -(void)requestPersonalInformation{
 
-
     NSString *urlString = [self interfaceFromString:interface_personalDetail];
     [[httpManager share]GET:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
         NSDictionary *dict = (NSDictionary*)responseObject;
@@ -59,10 +55,9 @@
         [model setValuesForKeysWithDictionary:userDic];
         [[dataBase share]addInformationWithModel:model];
         [[NSNotificationCenter defaultCenter]postNotificationName:@"updateUI" object:nil userInfo:nil];
-    } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+        } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
         
     }];
-
 }
 
 

@@ -19,6 +19,10 @@
 #import "certainViewController.h"
 #import "cityViewController.h"
 #import "myserviceDataSouce.h"
+#import "provinceViewController.h"
+#import "proviceSelectedViewController.h"
+#import "timetableviewCell.h"
+
 @interface MyserviceViewController ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate,UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property(nonatomic)NSMutableArray*noRecomandDataSource;//未认证的数据源
@@ -93,6 +97,7 @@
 
 
 - (void)viewDidLoad {
+    
     self.title=@"我的服务";
     
     [self customNaigationLeftButton];
@@ -106,8 +111,6 @@
     [self initUI];    //UI搭建
     
     [self CreateFlow];   //菊花
-    
-   
     
     [self receiveNotice];
 
@@ -965,11 +968,16 @@
                 break;
             case 2:{
                 
-                cityViewController*cvc=[[cityViewController alloc]initWithNibName:@"cityViewController" bundle:nil];
-                cvc.type=1;
-                cvc.selectedArray=_serviceArray;
-                [self pushWinthAnimation:self.navigationController Viewcontroller:cvc];
-                
+//                cityViewController*cvc=[[cityViewController alloc]initWithNibName:@"cityViewController" bundle:nil];
+//                cvc.type=1;
+//                cvc.selectedArray=_serviceArray;
+//                [self pushWinthAnimation:self.navigationController Viewcontroller:cvc];
+//                provinceViewController*pvc=[[provinceViewController alloc]init];
+//                pvc.array=_serviceArray;
+//                [self pushWinthAnimation:self.navigationController Viewcontroller:pvc];
+                proviceSelectedViewController*pvc=[[proviceSelectedViewController alloc]initWithNibName:@"proviceSelectedViewController" bundle:nil];
+                pvc.selectArray=_serviceArray;
+                [self pushWinthAnimation:self.navigationController Viewcontroller:pvc];
                 
             }
                 break;
@@ -1344,9 +1352,10 @@
         NSMutableArray*array=_serviceArray[i];
         for (NSInteger j=0; j<array.count; j++) {
             AreaModel*model=array[j];
+            
             if (j==0) {
                
-                    _cityString=[NSString stringWithFormat:@"%@:",model.name];
+            _cityString=[NSString stringWithFormat:@"%@:",model.name];
                 
             }
             else if (j==1) {
@@ -1381,10 +1390,9 @@
         [view addSubview:cityLabel];
         [view addSubview:townLabel];
         [cell.contentView addSubview:view];
-        
-
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            }
+        }
+    
     return cell;
 }
 
@@ -1423,7 +1431,6 @@
 }
 
 
-
 -(void)recommend{
     //推荐
     recommendViewController*rvc=[[recommendViewController alloc]init];
@@ -1431,8 +1438,8 @@
     rvc.block=^(BOOL isnet){
         
         [self request];
-        
     };
+    
     [self pushWinthAnimation:self.navigationController Viewcontroller:rvc];
     
 }
@@ -1495,18 +1502,6 @@
     return cell;
 
 }
-
-//推荐人
-//-(UITableViewCell*)getRecommendCellWithTableview:(UITableView*)tableView{
-//    UITableViewCell*cell=[tableView dequeueReusableCellWithIdentifier:@"Cell16"];
-//    if (!cell) {
-//        cell=[[UITableViewCell alloc]initWithStyle:1 reuseIdentifier:@"Cell16"];
-//    }
-//        [cell.contentView addSubview:view];
-//    return cell;
-//}
-
-
 
 
 //证书
@@ -1703,7 +1698,6 @@
 
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    
     
     [picker dismissViewControllerAnimated:YES completion:nil];
 }

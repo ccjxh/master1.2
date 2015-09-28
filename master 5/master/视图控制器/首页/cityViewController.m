@@ -63,23 +63,22 @@
         }
     }
     
-    [self flowShow];
     
-    
-    NSDictionary*dict=@{@"regions":str};
-    [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
-        NSDictionary*dict=(id)responseObject;
-        [self flowHide];
-       [self.view makeToast:[dict objectForKey:@"msg"] duration:1 position:@"center" Finish:^{
-           if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
-               [self popWithnimation:self.navigationController];
-           }
-       }];
-        
-    } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
-        [self flowHide];
-        [self.view makeToast:@"网络异常" duration:1 position:@"center"];
-    }];
+//    [self flowShow];
+//    NSDictionary*dict=@{@"regions":str};
+//    [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
+//        NSDictionary*dict=(id)responseObject;
+//        [self flowHide];
+//       [self.view makeToast:[dict objectForKey:@"msg"] duration:1 position:@"center" Finish:^{
+//           if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
+//               [self popWithnimation:self.navigationController];
+//           }
+//       }];
+//        
+//    } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+//        [self flowHide];
+//        [self.view makeToast:@"网络异常" duration:1 position:@"center"];
+//    }];
 }
 
 -(void)initData
@@ -98,13 +97,17 @@
         AreaModel*model=tempArray[i];
         model.isselect=NO;
         if (self.selectedArray.count!=0) {
-        for (NSInteger j=1; j<[self.selectedArray[0] count]; j++) {
-           NSArray*tempArray=self.selectedArray[0];
-            AreaModel*compareModel=tempArray[j];
+//        for (NSInteger j=1; j<[self.selectedArray[0] count]; j++) {
+//           NSArray*tempArray=self.selectedArray[0];
+//
+//            if (model.id==compareModel.id) {
+//                model.isselect=YES;
+//               }
+//          }
+           AreaModel*compareModel=self.selectedArray[0];
             if (model.id==compareModel.id) {
                 model.isselect=YES;
-               }
-          }
+            }
             
         }
         
@@ -257,42 +260,42 @@
 }
 
 
--(NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    
-    NSArray*array=@[@"定位的城市",@"已开通的城市"];
-    return array[section];
-    
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section==0) {
-        
-    return 50;
-        
-    }
-    
-    return [self accountCity];
-    
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 30;
-}
-
--(NSArray*)sectionIndexTitlesForTableView:(UITableView *)tableView
-{
-    return _AZArray;
-}
-
-
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-   
-
-}
+//-(NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+//{
+//    
+//    NSArray*array=@[@"定位的城市",@"已开通的城市"];
+//    return array[section];
+//    
+//}
+//
+//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    if (indexPath.section==0) {
+//        
+//    return 50;
+//        
+//    }
+//    
+//    return [self accountCity];
+//    
+//}
+//
+//-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//    return 30;
+//}
+//
+//-(NSArray*)sectionIndexTitlesForTableView:(UITableView *)tableView
+//{
+//    return _AZArray;
+//}
+//
+//
+//-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//   
+//
+//}
 
 
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
@@ -350,6 +353,7 @@
             
         }
     }
+    
     Cell.name.layer.borderColor=COLOR(231, 231, 231, 1).CGColor;
     Cell.name.layer.backgroundColor=[UIColor whiteColor].CGColor;
     Cell.name.layer.borderWidth=1;
@@ -363,12 +367,8 @@
     
     NSMutableArray*array=[[dataBase share]findWithPid:30000];
     AreaModel*model=array[indexPath.row];
-    
-    
     if (self.type==1){
-        
         if (indexPath.section==1) {
-            
             AreaModel*model=_currentArray[indexPath.row];
             if (model.isselect==NO) {
                 model.isselect=YES;

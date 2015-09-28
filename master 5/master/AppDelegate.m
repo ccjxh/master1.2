@@ -36,7 +36,9 @@
 #import "AppDelegate+methods.h"
 #import "AppDelegate+request.h"
 #import "AppDelegate+setting.h"
-
+//#import "QQApi.h"
+#import <TencentOpenAPI/QQApiInterface.h>
+#import <TencentOpenAPI/TencentOAuth.h>
 
 @interface AppDelegate ()<TencentSessionDelegate,WXApiDelegate,UIAlertViewDelegate>
 @property (nonatomic) CLLocationManager *locMgr;
@@ -49,58 +51,74 @@
  */
 @implementation AppDelegate
 
-
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    UIViewController*temp=[[UIViewController alloc]init];
+    self.window.rootViewController=temp;
     [self setupRecommend];  //评分相关设置
-    
     [self setupTestLin];    //云测相关设置
+    [ShareSDK registerApp:@"a8e3c1e1faa7" activePlatforms:@[@(SSDKPlatformTypeQQ),@(SSDKPlatformTypeWechat)] onImport:^(SSDKPlatformType platformType) {
+        switch (platformType)
+        {
+            case SSDKPlatformTypeWechat:
+                [ShareSDKConnector connectWeChat:[WXApi class]];
+                break;
+            case SSDKPlatformTypeQQ:
+                [ShareSDKConnector connectQQ:[QQApiInterface class] tencentOAuthClass:[TencentOAuth class]];
+                break;
+                default:
+                break;
+        }
+        
+    } onConfiguration:^(SSDKPlatformType platformType, NSMutableDictionary *appInfo) {
+        switch (platformType) {
+            case SSDKPlatformTypeQQ:
+            {
+                [appInfo SSDKSetupQQByAppId:@"1104650241" appKey:@"UtJK8xm1lTzepi46" authType:SSDKAuthTypeBoth];
+            }
+                break;
+            case SSDKPlatformTypeWechat:{
+                
+                [appInfo SSDKSetupWeChatByAppId:@"wxaa561e93e30b45ca" appSecret:@"c6a34cd399535499f8f77fb15cbe62d5"];
+                
+            }
+                break;
+            default:
+                break;
+        }
+
+    }];
     
-    [[EaseMob sharedInstance] registerSDKWithAppKey:@"baoself#baoselftest" apnsCertName:@"com.zhuobao.master"];    //环信初始化
-    [[EaseMob sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
+//    [[EaseMob sharedInstance] registerSDKWithAppKey:@"baoself#baoselftest" apnsCertName:@"com.zhuobao.master"];    //环信初始化
+//    [[EaseMob sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
     
     [XGPush startApp:2200123145 appKey:@"IT2RW4D1E84M"];  //信鸽推送初始化
-    
      [SMS_SDK registerApp:@"93852832ce02" withSecret:@"a28d5c5bfbb3ddee35bf3a9585895472"]; //短信验证初始化
-    
     if (!_pictureArray) {
         
         _pictureArray=[[NSMutableArray alloc]init];
         
     }
-    
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
     self.window.backgroundColor = [UIColor whiteColor];
-    
     [self.window makeKeyAndVisible];
-    
     [[dataBase share]CreateAllTables]; //创建数据库
-    
     [self getOpenCity];   //缓存已开通城市
-    
     [self requestSkills];//缓存技能列表并缓存
     
-
     NSUserDefaults*user=[NSUserDefaults standardUserDefaults];
     if ([[user objectForKey:@"first"] integerValue]==1) {
-        [self setupRootView];
         _pushDictory=[launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
         if (_pushDictory) {
             _havePushMessage=YES;
         }
-        
-        [WXApi registerApp:@"wxaa561e93e30b45ca"];//微信注册
-        
+//        [WXApi registerApp:@"wxaa561e93e30b45ca"];//微信注册
+        [self setupRootView];
         [self setupADImage];
-        
-        
     }else{
         
-        
         [self setupguide];
-        
+
     }
         
     return YES;
@@ -122,6 +140,7 @@
 -(void)getOpenCity{
 
     [self getAllOpenCity];
+    
 }
 
 //设置广告界面
@@ -154,13 +173,6 @@
 
 -(void)startupAnimationDone{
    
-    if (_isLoginSuccess) {
-        [self setHomeView];
-    }else{
-        
-        [self setupLoginView];
-    }
-
     UIImageView*imageview=(id)[self.window viewWithTag:10];
     [imageview removeFromSuperview];
 }
@@ -172,6 +184,7 @@
     
 }
 
+
 -(void)removeAdImageView{
 
     [UIView animateWithDuration:0.7f animations:^{
@@ -180,6 +193,7 @@
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.03 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             self.window.rootViewController=_nc;
             [self.adimage removeFromSuperview];
+            
          });
     }];
 }
@@ -195,12 +209,14 @@
             [self startRequestWithUsername:username Password:password];
         }else{
         
-//            [self setupLoginView];
             _isLoginSuccess=NO;
+             [self setupLoginView];
         }
+        
     }else{
-//        [self setupLoginView];
+        
         _isLoginSuccess=NO;
+         [self setupLoginView];
     }
 }
 
@@ -213,7 +229,6 @@
 }
 
 
-
 -(void)startRequestWithUsername:(NSString*)username Password:(NSString*)password{
     
     NSString*urlString=[self interfaceFromString:interface_login];
@@ -223,11 +238,16 @@
     [dict setObject:username forKey:@"mobile"];
     [dict setObject:password forKey:@"password"];
     [dict setObject:openUDID forKey:@"machineCode"];
-    [dict setObject:[delegate getPhoneType] forKey:@"machineType"];
+    if ([delegate getPhoneType]) {
+         [dict setObject:[delegate getPhoneType] forKey:@"machineType"];
+    }else{
+    
+        [dict setObject:@"unknowIphone" forKey:@"machineType"];
+    }
+   
     [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary*dict=(NSDictionary*)responseObject;
         if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
-            [self HXLoginWithUsername:username Password:password];
             NSUserDefaults*users=[NSUserDefaults standardUserDefaults];
             [users setObject:username forKey:@"username"];
             [users setObject:password forKey:username];
@@ -235,21 +255,22 @@
             _isLogin=YES;
             [delegate requestInformation];
             [XGPush setAccount:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"pullTag"]];
+            delegate.isSignState=[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"signState"];
             _isLoginSuccess=YES;
-            
+            //注册推送
              [self setupPushWithDictory];
-            
             delegate.userPost=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"userPost"] integerValue];
             delegate.id=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"id"] integerValue];
+            if (delegate.pullToken) {
+               [delegate sendData:delegate.pullToken];
+            }
+            [delegate setHomeView];
             
-            [delegate sendData:delegate.pullToken];
         } else if ([[dict objectForKey:@"rspCode"] integerValue]==500) {
-            
-           
-        }
         
+            }
         
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
 }
@@ -259,11 +280,8 @@
 
     NSUserDefaults*user=[NSUserDefaults standardUserDefaults];
     guideViewController*gvc=[[guideViewController alloc]init];
-    
     self.window.rootViewController=gvc;
-    
     [user setObject:@"1" forKey:@"first"];
-    
     [user synchronize];
 
 }
@@ -272,25 +290,28 @@
 -(void)sendData:(NSString*)pull{
     
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-    if (delegate.pullTokenFinish==YES&&delegate.isSend==NO) {
+    if (delegate.pullTokenFinish==YES&&delegate.isSend==NO&&pull) {
     NSString* openUDID = [OpenUDID value];
     NSString*urlString=[NSString stringWithFormat:@"%@%@",changeURL,@"/openapi/user/checkMutilClientLogin.json"];
     AppDelegate*delagate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-    NSDictionary*dict=@{@"machineCode":openUDID,@"pullToken":pull,@"machineType":[delagate getPhoneType]};
-    [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
-    
-        NSDictionary*sict=(NSDictionary*)responseObject;
-        NSLog(@"%@",[dict objectForKey:@"msg"]);
-           _isSend=YES;
+        NSString*phoneType;
+        if ([delegate getPhoneType]) {
+            phoneType=[delegate getPhoneType];
+        }else{
             
-    
-        } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+            phoneType=@"unKnowIpone";
+        }
+        
+    NSDictionary*dict=@{@"machineCode":openUDID,@"pullToken":pull,@"machineType":phoneType};
+    [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
+        
+        _isSend=YES;
+        
+            } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
     
         }];
     }
 }
-
-
 
 -(NSString*)getPhoneType{
 
@@ -298,23 +319,14 @@
 
 }
 
-
-
-
 -(void) setLogout
 {
     [XGPush unRegisterDevice];
-    
     _isSend=NO;
-    
     _pullTokenFinish=NO;
-    
     _isLogin=NO;
-    
-     [XGPush startApp:2200123145 appKey:@"IT2RW4D1E84M"];
-    
+    [XGPush startApp:2200123145 appKey:@"IT2RW4D1E84M"];
     LoginViewController*lvc=[[LoginViewController alloc]init];
-    
     UINavigationController*nc=[[UINavigationController alloc]initWithRootViewController:lvc];
     nc.navigationBar.barStyle=1;
     nc.navigationBar.barTintColor=COLOR(40, 163, 234, 1);
@@ -368,7 +380,6 @@
             }
             
         }else{
-            
             _mapManager.delegate=self;
             _mapManager.desiredAccuracy=kCLLocationAccuracyBest;
             //定位频率,每隔多少米定位一次
@@ -376,11 +387,8 @@
             _mapManager.distanceFilter=distance;
             //启动跟踪定位
             [_mapManager startUpdatingLocation];
-            
         }
-        
     }
-    
 }
 
 
@@ -388,8 +396,6 @@
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
     CLLocation *location=[locations firstObject];//取出第一个位置
     CLLocationCoordinate2D coordinate=location.coordinate;//位置坐标
-    //    NSLog(@"经度：%f,纬度：%f,海拔：%f,航向：%f,行走速度：%f",coordinate.longitude,coordinate.latitude,location.altitude,location.course,location.speed);
-    //    //如果不需要实时定位，使用完即使关闭定位服务
     [self getAddressByLatitude:coordinate.latitude longitude:coordinate.longitude];
     [_mapManager stopUpdatingLocation];
 }
@@ -403,16 +409,18 @@
         CLPlacemark *placemark=[placemarks firstObject];
         AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
         delegate.city=[placemark.addressDictionary objectForKey:@"City"];
-        NSString*str=[placemark.addressDictionary objectForKey:@"FormattedAddressLines"][0];
-        NSArray*tempArray=[str componentsSeparatedByString:[placemark.addressDictionary objectForKey:@"SubLocality"]];
-        delegate.detailAdress=tempArray[1];
-        if (!_sendMessage) {
-            if (_cityChangeBlock) {
-                _cityChangeBlock(delegate.city);
-                _sendMessage=YES;
+        if ([placemark.addressDictionary objectForKey:@"FormattedAddressLines"][0]) {
+            NSString*str=[placemark.addressDictionary objectForKey:@"FormattedAddressLines"][0];
+            
+            NSArray*tempArray=[str componentsSeparatedByString:[placemark.addressDictionary objectForKey:@"SubLocality"]];
+            delegate.detailAdress=tempArray[1];
+            if (!_sendMessage&&delegate.detailAdress) {
+                if (_cityChangeBlock) {
+                    _cityChangeBlock(delegate.city);
+                    _sendMessage=YES;
+                }
             }
         }
-       
         //SubLocality  区
     }];
 }
@@ -425,6 +433,7 @@
 }
 
 -(void)resignNoticeation{
+    
     
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
     
@@ -446,23 +455,23 @@
 //按钮点击事件回调
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void (^)())completionHandler{
     
-    NSString*str=[userInfo objectForKey:PUSHKEY];
-    NSArray*array=[str componentsSeparatedByString:@"\"type\":\""];
-    NSString*type=[array[1] componentsSeparatedByString:@"\"}"][0];
-    if ([type isEqualToString:@"masterOrderAccept"]==YES) {
-        NSArray*sepArray=[str componentsSeparatedByString:@"\"entityId\":"];
-        NSString*ID=[sepArray[1] componentsSeparatedByString:@","][0];
-//        [self.window.rootViewController]
-        //接受消息的处理
-        
-        
-    }
-    
-        if([identifier isEqualToString:@"ACCEPT_IDENTIFIER"]){
-            
-//        NSLog(@"ACCEPT_IDENTIFIER is clicked");
-    }
-    
+//    NSString*str=[userInfo objectForKey:PUSHKEY];
+//    NSArray*array=[str componentsSeparatedByString:@"\"type\":\""];
+//    NSString*type=[array[1] componentsSeparatedByString:@"\"}"][0];
+//    if ([type isEqualToString:@"masterOrderAccept"]==YES) {
+//        NSArray*sepArray=[str componentsSeparatedByString:@"\"entityId\":"];
+//        NSString*ID=[sepArray[1] componentsSeparatedByString:@","][0];
+////        [self.window.rootViewController]
+//        //接受消息的处理
+//        
+//        
+//    }
+//    
+//        if([identifier isEqualToString:@"ACCEPT_IDENTIFIER"]){
+//            
+////        NSLog(@"ACCEPT_IDENTIFIER is clicked");
+//    }
+//    
     completionHandler();
 }
 
@@ -481,7 +490,6 @@
         NSLog(@"信鸽服务器接受注册失败");
     };
 
-    
      [XGPush registerDevice:deviceToken successCallback:successBlock errorCallback:errorBlock];
     
    self.pullToken =[XGPush getDeviceToken:deviceToken];
@@ -491,6 +499,7 @@
     [self sendData:self.pullToken];
     
   }
+
 
 
 //如果deviceToken获取不到会进入此事件
@@ -573,12 +582,20 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{
     
-    return [WXApi handleOpenURL:url delegate:self];
+    if ([sourceApplication isEqualToString:@"com.tencent.xin"]) {
+        return [WXApi handleOpenURL:url delegate:self];
+    }
+//    return [ShareSDK handleOpenURL:url
+//                 sourceApplication:sourceApplication
+//                        annotation:annotation
+//                        wxDelegate:nil];
     return [TencentOAuth HandleOpenURL:url];
     
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url{
+   
+//    return [ShareSDK handleOpenURL:url wxDelegate:nil];
     return [TencentOAuth HandleOpenURL:url];
     return [WXApi handleOpenURL:url delegate:self];
 }
@@ -612,5 +629,6 @@
     [[EaseMob sharedInstance] applicationWillTerminate:application];
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
 
 @end

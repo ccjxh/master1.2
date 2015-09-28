@@ -123,6 +123,9 @@ typedef  enum
     interface_myPublicList,//我的招工信息
     interface_delePublic,//删除发布
     interface_projectSave,//我的发布保存
+    interface_Notice,//通知公告
+    interface_signInformation,//签到信息
+    interface_signIn,//签到
     
     
 }interface;

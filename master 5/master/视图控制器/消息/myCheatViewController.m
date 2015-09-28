@@ -67,22 +67,16 @@
        
          [_backView.chatListTable setContentOffset:CGPointMake(0, _backView.chatListTable.contentSize.height-_backView.chatListTable.frame.size.height+60)];
     }
-    
 }
 
 
 -(void)createUI{
 
-//    self.automaticallyAdjustsScrollViewInsets=NO;
     _backView=[[messageView alloc]init];
     _backView.delegate=self;
-//    [EMCDDeviceManager sharedInstance].delegate = self;
     [[EaseMob sharedInstance].chatManager removeDelegate:self];
     //注册为SDK的ChatManager的delegate
     [[EaseMob sharedInstance].chatManager addDelegate:self delegateQueue:nil];
-    
-//    [[EaseMob sharedInstance].callManager removeDelegate:self];
-
     self.view=_backView;
    
 }
@@ -90,7 +84,6 @@
 
 -(void)sendMessage:(NSString *)messageText{
 
-    
     [messageHelp share].delegate=self;
     [[messageHelp share]sendTextMessageWithMessageText:messageText Buddy:self.buddy];
      EMConversation *netConversations= [[EaseMob sharedInstance].chatManager conversationForChatter:self.buddy.username conversationType:YES];
@@ -99,7 +92,6 @@
     [_backView.chatListTable setContentOffset:CGPointMake(0, _backView.chatListTable.contentSize.height-_backView.chatListTable.frame.size.height)];
     
 }
-
 
 
 -(void)didSendMessage:(EMMessage *)message error:(EMError *)error{

@@ -11,7 +11,6 @@
 #import "myCheatViewController.h"
 #import "GJGCChatFriendViewController.h"
 #import "searchFriendViewController.h"
-
 @interface friendViewController ()
 
 @end
@@ -20,12 +19,12 @@
 {
    
     __block  myFriendView*backView;
+    
 }
 
 -(void)dealloc{
 
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"huanxinLogin" object:nil];
-
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -35,8 +34,6 @@
 
 }
 
-
-
 -(void)viewWillDisappear:(BOOL)animated{
     
     [super viewWillDisappear:animated];
@@ -45,7 +42,6 @@
 
 }
 - (void)viewDidLoad {
-    
     [super viewDidLoad];
     [self createUI];
     [self customNavigation];
@@ -56,31 +52,31 @@
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];  
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateUI) name:@"huanxinLogin" object:nil];
     
-    // Do any additional setup after loading the view.
 }
 
 -(void)updateUI{
 
     [self request];
-
 }
 
 - (void)didReceiveMemoryWarning {
+    
     [super didReceiveMemoryWarning];
+    
     // Dispose of any resources that can be recreated.
 }
 
 -(void)request{
 
-    
     [[EaseMob sharedInstance].chatManager asyncFetchBuddyListWithCompletion:^(NSArray *buddyList, EMError *error) {
         if (!error) {
+            
             NSMutableArray*Array=[[NSMutableArray alloc]initWithArray:buddyList];
-    
             backView.dataArray=Array;
             [backView.tableview reloadData];
             [backView.weakRefreshHeader endRefreshing];
             self.isRefersh=NO;
+            
         }
         
     } onQueue:nil];
@@ -104,7 +100,6 @@
         cvc.buddy=buddy;
         cvc.hidesBottomBarWhenPushed=YES;
         [WeSelf pushWinthAnimation:WeSelf.navigationController Viewcontroller:cvc];
-        
     };
     __weak typeof(self)weakSelf=self;
     backView.tableviewPullDown=^(){
@@ -112,15 +107,14 @@
         [weakSelf pullDown];
         
     };
-    
     backView.tableviewPullUp=^(){
         
         [weakSelf pullUp];
         
     };
+    
     self.view=backView;
     backView.delegateFriend=^(NSIndexPath*indexPath){
-    
         EMBuddy*buddy=WeView.dataArray[indexPath.section-1];
         // 删除好友
         BOOL isSuccess = [[EaseMob sharedInstance].chatManager removeBuddy:buddy.username removeFromRemote:YES error:nil];
@@ -131,7 +125,6 @@
                 
             }];
         }
-       
     };
 }
 
@@ -148,6 +141,7 @@
 //上拉加载
 -(void)pullUp{
 
+    
 
 }
 
@@ -156,6 +150,7 @@
     self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addFriend)];
     
 }
+
 
 //添加好友
 -(void)addFriend{

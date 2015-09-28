@@ -23,7 +23,6 @@
     [super viewDidLoad];
     [self createDataArray];
     [self createSearch];
-      
     self.automaticallyAdjustsScrollViewInsets=NO;
     // Do any additional setup after loading the view from its nib.
 }
@@ -62,9 +61,9 @@
 
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
 
+
     
-
-
+    
 }
 
 

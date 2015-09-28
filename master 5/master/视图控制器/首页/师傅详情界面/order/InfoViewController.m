@@ -77,7 +77,6 @@
         [weSelf report];
     };
     
-    
     //点击照片预览
     inforView.imageDisplay=^(NSInteger index,UIImageView*tempImageview,personDetailViewModel*tempModel){
         NSMutableArray*temp=[[NSMutableArray alloc]init];
@@ -93,30 +92,29 @@
     
     };
     inforView.headImageBlock=^(NSString*urlString,peopleDetailTableViewCell*cell){
-    
         NSMutableArray*tempArray=[[NSMutableArray alloc]initWithObjects:urlString, nil];
         [weSelf displayPhotosWithIndex:0 Tilte:nil describe:nil ShowViewcontroller:weSelf UrlSarray:tempArray ImageView:cell.master_headImage];
-    
     };
     
     //拨打电话
     inforView.tableDisSelected=^(NSIndexPath*index,personDetailViewModel*tempModel){
         
+        __weak typeof(MasterDetailModel*)weakModel=masterDetailModel;
         if (self.dataType.count==3) {
             if (index.section==1&&index.row==1) {
                 NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",tempModel.mobile];
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
                 AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-                NSString*urlString=[self interfaceFromString:interface_phonerecommend];
+                NSString*urlString=[weSelf interfaceFromString:interface_phonerecommend];
                 NSMutableDictionary*dict=[[NSMutableDictionary alloc]init];
-                [dict setObject: [NSString stringWithFormat:@"%lu",delegate.id] forKey:@"fromId"];
-                [dict setObject:[NSString stringWithFormat:@"%u",self.id] forKey:@"targetId"];
-                [dict setObject:masterDetailModel.mobile forKey:@"targetMobile"];
-                if (masterDetailModel.realName) {
+                [dict setObject: [NSString stringWithFormat:@"%u",delegate.id] forKey:@"fromId"];
+                [dict setObject:[NSString stringWithFormat:@"%u",weSelf.id] forKey:@"targetId"];
+                [dict setObject:tempModel.mobile forKey:@"targetMobile"];
+                if (weakModel.realName) {
                     [dict setObject:masterDetailModel.realName forKey:@"targetRealName"];
                 }
                 [dict setObject:@"user" forKey:@"callType"];
-                [dict setObject:[NSString stringWithFormat:@"%lu",delegate.id] forKey:@"workId"];
+                [dict setObject:[NSString stringWithFormat:@"%u",delegate.id] forKey:@"workId"];
                 NSDate*Date=[NSDate date];
                 NSDateFormatter*formatter=[[NSDateFormatter alloc]init];
                 [formatter setDateFormat:@"yyyy/MM/dd HH:mm:ss"];
@@ -210,7 +208,6 @@
 
 
 
-
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
 
     UIButton*button=(id)[contentView viewWithTag:40];
@@ -227,7 +224,6 @@
     return YES;
 
 }
-
 
 
 
@@ -300,8 +296,6 @@
             [self.dataType addObject:@""];
         }
         inforView.model=vm;
-        
-        
         inforView.dataArray=self.dataType;
         [inforView.tableview reloadData];
         [infoTableVC reloadData];

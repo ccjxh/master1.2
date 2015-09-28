@@ -291,6 +291,15 @@
             case interface_projectSave:
             urlString=@"project/save";
             break;
+            case interface_Notice:
+            urlString=@"notice/list";
+            break;
+            case interface_signInformation:
+            urlString=@"log/signLog/personSignInfo";
+            break;
+            case interface_signIn:
+            urlString=@"log/signLog/sign";
+            break;
              default:
             break;
                 }

@@ -37,7 +37,7 @@
 -(void)inserCity:(NSArray*)array Pid:(NSInteger)pid{
     
         [self inTransaction:^(FMDatabase *db, BOOL *rollback) {
-            [db open];
+        [db open];
         [db beginTransaction];
         for (NSInteger i=0; i<array.count; i++) {
         NSString*sql=@"insert into city(name , cityID , flag , pid) values(?,?,?,?)";
@@ -52,7 +52,7 @@
         if (!isSuccess) {
         isSuccess= [db executeUpdate:updateSql,cityModel.name,cityModel.indexLetter,[self getnumberFromString:[NSString stringWithFormat:@"%lu",pid]],[self getnumberFromString:[NSString stringWithFormat:@"%lu",cityModel.id]]];
             }
-            NSLog(@"%@开通城市数据%@",cityModel.name,isSuccess?@"成功":@"失败");
+            
         }
             [db commit];
             [db close];

@@ -11,6 +11,7 @@
 #import "opinionViewController.h"
 #import "PayViewController.h"
 #import "nameViewController.h"
+#import "cityViewController.h"
 @interface findAddNewWorkViewController ()
 
 @end
@@ -250,11 +251,28 @@
                 }
                     break;
                 case 3:{
-                    provinceViewController*pvc=[[provinceViewController alloc]init];
-//                    pvc.array=self.serviceArray;
-                    [WeColorArray replaceObjectAtIndex:3 withObject:@"1"];
-                      WeView.colorArray=WeColorArray;
-                    [Weself pushWinthAnimation:Weself.navigationController Viewcontroller:pvc];
+//                    provinceViewController*pvc=[[provinceViewController alloc]init];
+////                    pvc.array=self.serviceArray;
+//                    [WeColorArray replaceObjectAtIndex:3 withObject:@"1"];
+//                      WeView.colorArray=WeColorArray;
+//                    [Weself pushWinthAnimation:Weself.navigationController Viewcontroller:pvc];
+                    
+                    cityViewController*cvc=[[cityViewController alloc]initWithNibName:@"cityViewController" bundle:nil];
+                    if ([weDict objectForKey:@"workSite.id"]) {
+                        AreaModel*model=[[dataBase share]findWithCity:WeView.firstArrayPlacea[3]];
+                        NSMutableArray*array=[[NSMutableArray alloc]initWithObjects:model, nil];
+                        cvc.selectedArray=array;
+                    }
+                    cvc.TBlock=^(AreaModel*model){
+                    
+                       [WeColorArray replaceObjectAtIndex:3 withObject:@"1"];
+                        [WeView.firstArrayPlacea replaceObjectAtIndex:3 withObject:model.name];
+                        [weDict setObject:[NSString stringWithFormat:@"%lu",model.id] forKey:@"workSite.id"];
+                        [WeView.tableview reloadData];
+                    
+                    };
+                        [Weself pushWinthAnimation:Weself.navigationController Viewcontroller:cvc];
+
                 
                 };
                     break;

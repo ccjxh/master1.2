@@ -10,7 +10,7 @@
 #import <SMS_SDK/SMS_SDK.h>
 #import "OpenUDID.h"
 #import "XGPush.h"
-@interface RegisteredViewController ()
+@interface RegisteredViewController ()<WXApiDelegate>
 {
     BOOL value; //判断验证码是否验证成功
     int timeCountDown; //倒计时60s
@@ -61,7 +61,6 @@
     _secondPasswordTextField.backgroundColor = [UIColor clearColor];
     _secondPasswordTextField.secureTextEntry = YES;
     _secondPasswordTextField.clearButtonMode = UITextFieldViewModeAlways;
-    
     [self CreateFlow];
 }
 
@@ -87,8 +86,6 @@
     }
     if (buttonClick == YES) {
         [SMS_SDK getVerificationCodeBySMSWithPhone:self.telephoneTextField.text zone:@"86" result:^(SMS_SDKError *error) {
-            
-            
             //error为nil表示获取验证码成功
             if(error == nil){
                 self.verificationCodeTextField.delegate = self;
@@ -122,7 +119,6 @@
             [self.view endEditing:YES];
             //提交验证码是否正确
             [SMS_SDK commitVerifyCode:self.verificationCodeTextField.text result:^(enum SMS_ResponseState state) {
-                
                 self.registerButton.userInteractionEnabled = NO;//设置获取验证码按钮不能被点击
                 if( state == SMS_ResponseStateFail) {
 //                    NSLog(@"验证码错误");
@@ -165,6 +161,7 @@
     } else if( !value) {
         
         return;
+        
     } else if(self.passwordTextField.text.length == 0 || self. secondPasswordTextField.text.length == 0) {
         [self flowHide];
         [self.view makeToast:@"请填写密码" duration:2.0f position:@"center"];
@@ -182,8 +179,7 @@
             AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
            
             NSString*urlString=[self interfaceFromString:interface_resetPassword];
-                       NSDictionary*dict=@{@"mobile":_telephoneTextField.text,@"password":_passwordTextField.text,@"password2":_secondPasswordTextField.text,@"machineType":[delegate getPhoneType],@"machineCode":openUDID};
-
+            NSDictionary*dict=@{@"mobile":_telephoneTextField.text,@"password":_passwordTextField.text,@"password2":_secondPasswordTextField.text,@"machineType":[delegate getPhoneType],@"machineCode":openUDID};
             [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSDictionary*dict=(NSDictionary*)responseObject;
                 [self flowHide];
@@ -199,6 +195,7 @@
                 [self flowHide];
                 [self.view makeToast:@"当前网络不给力，请检查网络设置" duration:1.0f position:@"center"];
             }];
+            
         } else {
             NSString*urlString=[self interfaceFromString:interface_register];
             NSDictionary*dict=@{@"mobile":_telephoneTextField.text,@"password":_passwordTextField.text,@"password2":_secondPasswordTextField.text,@"machineType":name,@"machineCode":openUDID};
@@ -208,31 +205,32 @@
                 if ([[dict objectForKey:@"rspCode"] integerValue]==200)
                 {
                 
-                        [self.view makeToast:@"恭喜！注册成功。" duration:1 position:@"center" Finish:^{
-                        AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-                        NSUserDefaults*user=[NSUserDefaults standardUserDefaults];
-                        if ([user objectForKey:@"username"]) {
-                            [user removeObjectForKey:@"username"];
-                            if ([user objectForKey:@"password"]) {
-                                [user removeObjectForKey:@"password"];
-                            }
+                   [self.view makeToast:@"恭喜！注册成功。" duration:1 position:@"center" Finish:^{
+                   AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+                   NSUserDefaults*user=[NSUserDefaults standardUserDefaults];
+                   if ([user objectForKey:@"username"]) {
+                       [user removeObjectForKey:@"username"];
+                       if ([user objectForKey:@"password"]) {
+                           [user removeObjectForKey:@"password"];
+                       }
                             
                         }
-                        [user setObject:_telephoneTextField.text forKey:@"username"];
-                        [user setObject:_passwordTextField.text forKey:@"password"];
-                        [user synchronize];
-                        delegate.id=[[[[dict objectForKey:@"entity"] objectForKey:@"user"]objectForKey:@"id"] integerValue];
-                        [XGPush setAccount:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"pullTag"]];
-                        [delegate setupPushWithDictory];
-                        delegate.isLogin=YES;
-                        delegate.userPost=1;
-                        [delegate requestInformation];
-                        [delegate requestAdImage];
-                        [delegate setHomeView];
+                  [user setObject:_telephoneTextField.text forKey:@"username"];
+                  [user setObject:_passwordTextField.text forKey:@"password"];
+                  [user synchronize];
+                  delegate.id=[[[[dict objectForKey:@"entity"] objectForKey:@"user"]objectForKey:@"id"] integerValue];
+                  [XGPush setAccount:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"pullTag"]];
+                 delegate.isSignState=[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"signState"];
+                  [delegate setupPushWithDictory];
+                  delegate.isLogin=YES;
+                  delegate.userPost=1;
+                  [delegate requestInformation];
+//                  [delegate requestAdImage];
+                  [delegate setHomeView];
                         
                     }];
                     
-                            }
+                        }
                 else if([[dict objectForKey:@"rspCode"] integerValue]==500)
                 {
                     [self flowHide];
@@ -246,4 +244,45 @@
     }
     [self flowHide];
 }
+
+- (IBAction)weChat:(id)sender {
+  
+    
+}
+
+//-(void)sendAuthRequest{
+//
+//        //构造SendAuthReq结构体
+//        SendAuthReq* req =[[SendAuthReq alloc ] init ];
+//        req.scope = @"snsapi_userinfo" ;
+//        req.state = @"0123" ;
+//        //第三方向微信终端发送一个SendAuthReq消息结构
+//        [WXApi sendAuthReq:req viewController:self delegate:self];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getWeChatLoginCode:) name:@"WeChatLoginCode" object:nil];
+
+//}
+//
+//- (void)getWeChatLoginCode:(NSNotification *)notification {
+//    NSString *weChatCode = [[notification userInfo] objectForKey:@"code"];
+//    /*
+//     使用获取的code换取access_token，并执行登录的操作
+//     */
+//    
+//   
+//}
+
+
+-(void) onReq:(BaseReq*)req{
+
+
+    
+
+}
+
+- (IBAction)QQ:(id)sender {
+    
+    //QQ注册
+    
+}
+
 @end

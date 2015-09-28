@@ -1,6 +1,5 @@
 # Uncomment this line to define a global platform for your project
  platform :ios, '7.0'
-pod 'Masonry', '~> 0.6.2'
  pod 'SVPullToRefresh', '~> 0.4.1'
  pod 'FMDB', '~> 2.5'
  pod 'UzysAnimatedGifPullToRefresh', :git => 'https://github.com/uzysjung/UzysAnimatedGifPullToRefresh.git'

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController">
@@ -34,7 +34,7 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <accessibility key="accessibilityConfiguration">
-                        <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
+                        <accessibilityTraits key="traits" notEnabled="YES"/>
                         <bool key="isElement" value="YES"/>
                     </accessibility>
                     <constraints>
@@ -97,13 +97,39 @@
                         <action selector="resign:" destination="-1" eventType="touchUpInside" id="pm8-HA-4iX"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6ML-zF-r0m">
+                    <rect key="frame" x="47" y="491" width="94" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="6yX-Z0-GKz"/>
+                        <constraint firstAttribute="width" constant="35" id="PDt-Mb-plL"/>
+                    </constraints>
+                    <state key="normal" title="Button" image="ic_qq.png"/>
+                    <connections>
+                        <action selector="qqLogin:" destination="-1" eventType="touchUpInside" id="PWV-D4-Qjm"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hh2-1r-Qaf">
+                    <rect key="frame" x="199" y="496" width="30" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="35" id="9vk-O4-CJE"/>
+                        <constraint firstAttribute="height" constant="35" id="shF-4H-TEU"/>
+                    </constraints>
+                    <state key="normal" title="微信"/>
+                    <connections>
+                        <action selector="weChatLogin:" destination="-1" eventType="touchUpInside" id="c0D-Ol-6MU"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
                 <constraint firstItem="dku-VU-FvQ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="0Hz-zT-WBp"/>
                 <constraint firstAttribute="trailing" secondItem="rr6-v7-NtB" secondAttribute="trailing" constant="20" id="5eZ-BD-JR8"/>
+                <constraint firstItem="6ML-zF-r0m" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="50" id="BHf-7R-U5i"/>
+                <constraint firstAttribute="bottom" secondItem="6ML-zF-r0m" secondAttribute="bottom" constant="50" id="CUP-Y1-tfM"/>
                 <constraint firstItem="O0x-2v-VSQ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="40" id="EPE-Ih-883"/>
+                <constraint firstAttribute="trailing" secondItem="Hh2-1r-Qaf" secondAttribute="trailing" constant="50" id="Irh-nT-0bd"/>
                 <constraint firstAttribute="centerX" secondItem="hu9-4e-bpv" secondAttribute="centerX" id="NZd-YC-lIj"/>
                 <constraint firstItem="dSc-qs-n9I" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="40" id="P3x-nN-l1x"/>
+                <constraint firstAttribute="bottom" secondItem="Hh2-1r-Qaf" secondAttribute="bottom" constant="50" id="SYe-yg-jsf"/>
                 <constraint firstAttribute="trailing" secondItem="dSc-qs-n9I" secondAttribute="trailing" constant="40" id="UNr-o3-Dse"/>
                 <constraint firstAttribute="trailing" secondItem="O0x-2v-VSQ" secondAttribute="trailing" constant="40" id="cjc-WA-8Sg"/>
                 <constraint firstItem="rr6-v7-NtB" firstAttribute="top" secondItem="O0x-2v-VSQ" secondAttribute="bottom" constant="19" id="nD0-qQ-CEs"/>
@@ -118,10 +144,6 @@
     </objects>
     <resources>
         <image name="Icon.png" width="57" height="57"/>
+        <image name="ic_qq.png" width="40" height="40"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

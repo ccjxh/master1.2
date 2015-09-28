@@ -20,6 +20,9 @@
 #import "myFirstTableViewCell.h"
 #import "myPageTableViewCell.h"
 #import "myPublicViewController.h"
+#import "myIntegralListViewController.h"
+#import "MyShareViewController.h"
+
 
 @interface MyViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
@@ -95,6 +98,8 @@
     NSArray*thirdArray=@[@"工程案例"];
     NSArray*fourArray=@[@"我的收藏"];
     NSArray*fifArray=@[@"设置"];
+    NSArray*sixarray=@[@"我的积分"];
+    NSArray*sevenArray=@[@"我的分享"];
     if (!_dataArray) {
         _dataArray=[[NSMutableArray alloc]init];
     }
@@ -106,6 +111,8 @@
         [_dataArray addObject:thirdArray];
     }
     [_dataArray addObject:fourArray];
+    [_dataArray addObject:sixarray];
+    [_dataArray addObject:sevenArray];
     [_dataArray addObject:fifArray];
     [self.tableview reloadData];
 }
@@ -279,7 +286,24 @@
             }
         }
             break;
-        case 5:
+            case 5:
+        {
+        
+            myIntegralListViewController*mvc=[[myIntegralListViewController alloc]init];
+            [self pushWinthAnimation:self.navigationController Viewcontroller:mvc];
+        
+        
+        }
+            break;
+            case 6:
+        {
+        
+            MyShareViewController*svc=[[MyShareViewController alloc]init];
+            [self pushWinthAnimation:self.navigationController Viewcontroller:svc];
+        
+        }
+            break;
+        case 7:
         {
             SetViewController *ctl = [[SetViewController alloc] init];
             ctl.hidesBottomBarWhenPushed=YES;

@@ -61,8 +61,8 @@
 #import <TencentOpenAPI/TencentOAuth.h>
 #import <TencentOpenAPI/WeiBoAPI.h>
 #import "TencentOpenAPI/QQApiInterface.h"
-#import "WXApi.h"
-#import "WXApiObject.h"
+//#import "WXApi.h"
+//#import "WXApiObject.h"
 #import "PersonalDetailModel.h"
 #import "starCaseModel.h"
 #import "starCaseTableViewCell.h"
@@ -97,7 +97,22 @@
 #import "EaseMob.h"
 #import "FDAlertView.h"
 #import "RootView.h"
+#import <ShareSDK/ShareSDK.h>
+#import <ShareSDKConnector/ShareSDKConnector.h>
+#import "LSPaoMaView.h"
+//#import "WeiboApi.h"
+#import "TextFlowView.h"
 
+#import "myIntegralInforModel.h"
+
+
+//#import "Masonry.h"
+
+#import <TencentOpenAPI/QQApiInterface.h>
+#import <TencentOpenAPI/TencentOAuth.h>
+#import "WXApi.h"
+#import <TencentOpenAPI/QQApiInterface.h>
+#import <TencentOpenAPI/TencentOAuth.h>
 #define kScreenBounds [UIScreen mainScreen].bounds
 #define kScreenW [UIScreen mainScreen].bounds.size.width
 #define kScreenH [UIScreen mainScreen].bounds.size.height

@@ -96,16 +96,21 @@
                 if (i==0) {
                     skillString=[NSString stringWithFormat:@"认可的技能:%@",[model.acceptSkill[i] objectForKey:@"name"]];
                 }else{
+                    
                     skillString=[NSString stringWithFormat:@"%@、%@",skillString,[model.acceptSkill[i] objectForKey:@"name"]];
+                    
                 }
             }
+            
             CGFloat skillHeight=[self accountStringHeightFromString:skillString Width:SCREEN_WIDTH-85];
             if (skillHeight<20) {
                 skillHeight=25;
             }
             
             if (model.picCase.count%4==0) {
+                
                 return contentHeight+(model.picCase.count/4)*50+70+skillHeight;
+                
             }else{
                 return contentHeight+(model.picCase.count/4+1)*50+70+skillHeight;
             }

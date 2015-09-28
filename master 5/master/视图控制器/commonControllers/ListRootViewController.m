@@ -165,7 +165,6 @@
         {
             
             [dict setObject:[NSString stringWithFormat:@"%ld",(long)tempModel.id] forKey:@"secordLocation"];
-            
         }
     }
     
@@ -211,7 +210,6 @@
     self.navigationItem.titleView=_searchBar;
     [self closeSearch];
     
-    
 }
 
 
@@ -223,7 +221,6 @@
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithCustomView:button];
-    
 }
 
 
@@ -270,6 +267,7 @@
             [dict setObject:[NSString stringWithFormat:@"%ld",(long)tempModel.id] forKey:@"secordLocation"];
         }
     }
+    
     [dict setObject:_searchBar.text forKey:@"keyWord"];
     [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary*dict=(NSDictionary*)responseObject;
@@ -466,7 +464,7 @@
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [_inforTableview reloadData];
             if (label) {
-                label.text=[NSString stringWithFormat:@"共有%lu条数据",[_totalResults intValue]];
+                label.text=[NSString stringWithFormat:@"共有%lu页数据",[_totalResults intValue]];
             }else{
                 
                 [self createFooter];

@@ -30,7 +30,6 @@
 
     return 2;
 
-
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
@@ -57,18 +56,14 @@
         return cell;
     }
 
-
         UICollectionViewCell*Cell=[collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
-    Cell.backgroundColor=[UIColor blackColor];
-
+        Cell.backgroundColor=[UIColor blackColor];
         return Cell;
-
 
 }
 
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-
 
     if (self.cityCellOnclick) {
         self.cityCellOnclick(indexPath);

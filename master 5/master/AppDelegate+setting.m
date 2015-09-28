@@ -29,7 +29,6 @@
     nc2.navigationBar.barTintColor=COLOR(22, 168, 234, 1);
     mvc.title=@"我";
     UITabBarItem*item1=[[UITabBarItem alloc]initWithTitle:@"找师傅" image: [UIImage imageNamed:@"找师傅-未选择"] selectedImage: [self returnImageFromName:@"找师傅"]];
-    
     UITabBarItem*item2=[[UITabBarItem alloc]initWithTitle:@"找活干" image: [UIImage imageNamed:@"找工作-未选择"] selectedImage: [self returnImageFromName:@"找工作"]];
     UITabBarItem*item3=[[UITabBarItem alloc]initWithTitle:@"我的" image: [UIImage imageNamed:@"我的-未选择"] selectedImage: [self returnImageFromName:@"我的"]];
     findWorkViewController*fvc=[[findWorkViewController alloc]init];
@@ -46,7 +45,7 @@
     friendNC.navigationBar.barStyle=1;
     
     UITabBarController*cvc=[[UITabBarController alloc]init];
-    cvc.viewControllers=@[nc,nc4,friendNC,nc2];
+    cvc.viewControllers=@[nc,nc4,nc2];
     cvc.tabBar.selectedImageTintColor=COLOR(0, 166, 237, 1);
     nc.tabBarItem=item1;
     nc1.tabBarItem=item2;
@@ -57,7 +56,10 @@
     if (isHaveMessage) {
         NSString*str=[dict objectForKey:PUSHKEY];
         NSArray*array=[str componentsSeparatedByString:@"\"type\":\""];
-        NSString*type=[array[1] componentsSeparatedByString:@"\"}"][0];
+        NSString*type;
+        if (array.count>1) {
+            type=[array[1] componentsSeparatedByString:@"\"}"][0];
+        }
         if ([type isEqualToString:@"masterOrderContact"]==YES||[type isEqualToString:@"masterOrderAccept"]==YES||[type isEqualToString:@"masterOrderReject"]==YES||[type isEqualToString:@"masterOrderFinish"]==YES||[type isEqualToString:@"masterOrderStop"]==YES||[type isEqualToString:@"masterOrderStop"]==YES) {
             cvc.selectedIndex=1;
             NSArray*sepArray=[str componentsSeparatedByString:@"\"entityId\":"];
@@ -90,8 +92,6 @@
         }
     }
 }
-
-
 
 -(UIImage*)returnImageFromName:(NSString*)name{
     
