@@ -817,14 +817,15 @@
             case 0:
                 return 40;
                 break;
-                case 01:
+                case 1:
             {
                 NSMutableArray*array=[[dataBase share]findAllSkill];
+                NSLog(@"%lu",array.count);
                 if (array.count%3==0) {
                     return array.count/3*40+45;
                 }
                 else{
-                    return (array.count+1)/3*40+45;
+                    return ((array.count)/3+1)*40+45;
                 }
             
             }

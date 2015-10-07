@@ -97,14 +97,18 @@
 #import "EaseMob.h"
 #import "FDAlertView.h"
 #import "RootView.h"
-#import <ShareSDK/ShareSDK.h>
-#import <ShareSDKConnector/ShareSDKConnector.h>
+#import "OpenUDID.h"
+#import "loginManager.h"
+//#import <ShareSDK/ShareSDK.h>
+//#import <ShareSDKConnector/ShareSDKConnector.h>
 #import "LSPaoMaView.h"
 //#import "WeiboApi.h"
 #import "TextFlowView.h"
 
 #import "myIntegralInforModel.h"
-
+#import <ShareSDK/ShareSDK.h>
+#import <ShareSDKConnector/ShareSDKConnector.h>
+#import "WXApi.h"
 
 //#import "Masonry.h"
 
@@ -119,6 +123,11 @@
 #define headImageName @"Icon.png"
 #define kScrollW   _scrollView.frame.size.width
 #define kScrollH   _scrollView.frame.size.height
+#define kGRAYCOLOR RGBACOLOR(237, 238, 240, 1)
+#define kDARKGRAYCOLOR RGBACOLOR(109, 109, 109, 1)
+#define kBLUECOLOR RGBACOLOR(44, 97, 175, 1)
+#define kBORDERCOLOR RGBACOLOR(223, 223, 223, 1)
+
 
 #endif
 
@@ -137,35 +146,35 @@
 
 #import <Foundation/Foundation.h>
 
-#import "GJGCBaseViewController.h"
+//#import "GJGCBaseViewController.h"
 
-#import "GJCFUitils.h"
+//#import "GJCFUitils.h"
 
-#import "GJGCImageResizeHelper.h"
-
-#import "GJCUAsyncImageView.h"
-
-#import "GJCUProgressView.h"
-
-#import  "GJGCChatInputPanelStyle.h"
-
-#import "GJGCCommonFontColorStyle.h"
-
-#import "GJGCCommonHeadView.h"
-
-#import "GJCFAudioManager.h"
-
-#import "GJCFCachePathManager.h"
-
-#import "GJCFCoreTextContentView.h"
-
-#import "GJGCChatInputPanelStyle.h"
-
-#import "GJCFCoreTextAttributedStringStyle.h"
-
-#import "GJCFCoreTextImageAttributedStringStyle.h"
-
-#import "GJCFCoreTextParagraphStyle.h"
+//#import "GJGCImageResizeHelper.h"
+//
+//#import "GJCUAsyncImageView.h"
+//
+//#import "GJCUProgressView.h"
+//
+//#import  "GJGCChatInputPanelStyle.h"
+//
+//#import "GJGCCommonFontColorStyle.h"
+//
+//#import "GJGCCommonHeadView.h"
+//
+//#import "GJCFAudioManager.h"
+//
+//#import "GJCFCachePathManager.h"
+//
+//#import "GJCFCoreTextContentView.h"
+//
+//#import "GJGCChatInputPanelStyle.h"
+//
+//#import "GJCFCoreTextAttributedStringStyle.h"
+//
+//#import "GJCFCoreTextImageAttributedStringStyle.h"
+//
+//#import "GJCFCoreTextParagraphStyle.h"
 
 #endif
 

@@ -7,6 +7,7 @@
 //
 
 #import "MyShareViewController.h"
+#import "myShareView.h"
 
 @interface MyShareViewController ()
 
@@ -17,6 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title=@"我的分享";
+    self.view=[[myShareView alloc]initWithFrame:self.view.bounds];
     // Do any additional setup after loading the view.
 }
 

@@ -9,7 +9,7 @@
 #import "friendViewController.h"
 #import "myFriendView.h"
 #import "myCheatViewController.h"
-#import "GJGCChatFriendViewController.h"
+//#import "GJGCChatFriendViewController.h"
 #import "searchFriendViewController.h"
 @interface friendViewController ()
 

@@ -172,7 +172,9 @@
      NSString*urlString=[self interfaceFromString:interface_login];
     [super POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
         NSDictionary*dict=(NSDictionary*)responseObject;
-    
+        if ([[dict objectForKey:@"msg"] integerValue]==200) {
+            delegate.isSignState=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"signState"] integerValue];
+        }
         block();
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
         

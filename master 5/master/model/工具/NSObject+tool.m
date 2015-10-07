@@ -46,7 +46,10 @@
     for (NSInteger i=0; i<skillArray.count; i++) {
         skillModel*model=skillArray[i];
         NSInteger width=(SCREEN_WIDTH-110-30)/3;
-        UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-orginX-30-model.name.length*12-5, 5+i/3*40,model.name.length*12+5, 25)];
+        UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-orginX-30-model.name.length*12-5, 5+i/3*25,model.name.length*12+5, 25)];
+//        if (i/3!=0) {
+//            label.frame=CGRectMake(SCREEN_WIDTH-orginX-30-model.name.length*12-5, i/3,model.name.length*12+5, 25);
+//        }
         orginX+=model.name.length*12+10;
         if (i!=0&&i%3==0) {
             orginX=0;
@@ -84,11 +87,11 @@
     {
         if (skillArray.count%3==0) {
             
-            return skillArray.count/3*30+5;
+            return skillArray.count/3*30+10;
         }
         else
         {
-            return (skillArray.count/3+1)*30+5;
+            return (skillArray.count/3+1)*30+10;
         }
     }
 }

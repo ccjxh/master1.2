@@ -300,6 +300,15 @@
             case interface_signIn:
             urlString=@"log/signLog/sign";
             break;
+            case interface_hotRang:
+            urlString=@"user/hotRankList";
+            break;
+            case interface_shareApp:
+            urlString=@"share/app/thirdParty";
+            break;
+            case interface_myIntegral:
+            urlString=@"integral/list";
+            break;
              default:
             break;
                 }

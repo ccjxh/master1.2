@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B2D107D7B959C2FAC0AC7875"
+               BlueprintIdentifier = "E9039252E0E012334836E3DC"
                BuildableName = "libPods-masterTests-UzysAnimatedGifPullToRefresh.a"
                BlueprintName = "Pods-masterTests-UzysAnimatedGifPullToRefresh"
                ReferencedContainer = "container:Pods.xcodeproj">

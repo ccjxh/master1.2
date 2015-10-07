@@ -64,6 +64,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self receiveNotice];
+    self.title=@"基本信息";
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     PersonalDetailModel*model=[[dataBase share]findPersonInformation:delegate.id];
        //注册通知中心

@@ -34,9 +34,9 @@
 }
 
 -(void)update{
-    SDCycleScrollView*sdvc=(id)[self.view viewWithTag:100];
-    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-    sdvc.imageURLStringsGroup=delegate.pictureArray;
+//    SDCycleScrollView*sdvc=(id)[self.view viewWithTag:100];
+//    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+//    sdvc.imageURLStringsGroup=delegate.pictureArray;
 }
 
 
@@ -57,7 +57,6 @@
     [self createUI];
     [self receiveNotice];
     [self customNavigation];
-   
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     [delegate setupMap];
     delegate.cityChangeBlock=^(NSString*name){

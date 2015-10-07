@@ -9,17 +9,17 @@
 #import "RootView.h"
 #import "keyboardBar.h"
 #import "keyboardMoreView.h"
-#import "GJGCChatInputPanel.h"
+//#import "GJGCChatInputPanel.h"
 
 @protocol MessageDelegate<NSObject>;
 @required
 -(void)sendMessage:(NSString*)messageText;
 @end
-@interface messageView : RootView<UITableViewDataSource,UITableViewDelegate,GJGCChatInputPanelDelegate>
+@interface messageView : RootView
 @property(nonatomic)UITableView*chatListTable;
 @property(nonatomic)id<MessageDelegate>delegate;
 @property(nonatomic)EMConversation*convenit;
-@property (nonatomic,strong)GJGCChatInputPanel *inputPanel;
+//@property (nonatomic,strong)GJGCChatInputPanel *inputPanel;
 
 
 @end

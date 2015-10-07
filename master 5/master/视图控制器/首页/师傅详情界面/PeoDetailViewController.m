@@ -594,12 +594,68 @@
 #pragma mark-QQShare
 -(void)setupQQShare{
     
-    NSString*urlString=recommModel.url;
-    NSString*imageUrl=nil;
-    QQApiNewsObject *newsObj = [QQApiNewsObject
-                                objectWithURL:[NSURL URLWithString:urlString] title:recommModel.title description:recommModel.content previewImageURL:[NSURL URLWithString:imageUrl]];
-    SendMessageToQQReq *req = [SendMessageToQQReq reqWithContent:newsObj];
-    QQApiSendResultCode sent = [QQApiInterface sendReq:req];
+//    NSString*urlString=recommModel.url;
+//    NSString*imageUrl=nil;
+//    QQApiNewsObject *newsObj = [QQApiNewsObject
+//                                objectWithURL:[NSURL URLWithString:urlString] title:recommModel.title description:recommModel.content previewImageURL:[NSURL URLWithString:imageUrl]];
+//    SendMessageToQQReq *req = [SendMessageToQQReq reqWithContent:newsObj];
+//    QQApiSendResultCode sent = [QQApiInterface sendReq:req];
+//    
+//    
+//    
+//    NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
+//    [shareParams SSDKSetupShareParamsByText:@"分享内容 @value(url)"
+//                                     images:@[[UIImage imageNamed:@"shareImg"]]
+//                                        url:[NSURL URLWithString:@"http://mob.com"]
+//                                      title:@"分享标题"
+//                                       type:SSDKContentTypeImage];
+//    
+    //进行分享
+    //创建分享参数
+    NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
+    [shareParams SSDKSetupQQParamsByText:recommModel.content title:recommModel.title url:[NSURL URLWithString:recommModel.url] thumbImage:nil image:nil type:SSDKContentTypeAuto forPlatformSubType:SSDKPlatformSubTypeQQFriend];
+    
+    //进行分享
+    [ShareSDK share:SSDKPlatformSubTypeQQFriend
+         parameters:shareParams
+     onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
+         
+         switch (state) {
+             case SSDKResponseStateSuccess:
+             {
+                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享成功"
+                                                                     message:nil
+                                                                    delegate:nil
+                                                           cancelButtonTitle:@"确定"
+                                                           otherButtonTitles:nil];
+                 [alertView show];
+                 break;
+             }
+             case SSDKResponseStateFail:
+             {
+                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享失败"
+                                                                     message:[NSString stringWithFormat:@"%@", error]
+                                                                    delegate:nil
+                                                           cancelButtonTitle:@"确定"
+                                                           otherButtonTitles:nil];
+                 [alertView show];
+                 break;
+             }
+             case SSDKResponseStateCancel:
+             {
+                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享已取消"
+                                                                     message:nil
+                                                                    delegate:nil
+                                                           cancelButtonTitle:@"确定"
+                                                           otherButtonTitles:nil];
+                 [alertView show];
+                 break;
+             }
+             default:
+                 break;
+         }
+         
+     }];
 }
 
 

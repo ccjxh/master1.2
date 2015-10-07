@@ -26,8 +26,8 @@
 @property(nonatomic)BOOL isSend;//是否已经发送了请求
 @property(nonatomic)CLLocationManager*mapManager;
 @property(nonatomic)CLGeocoder*geocoder;
-@property(nonatomic)BOOL isSignState;//是否签到
-
+@property(nonatomic)NSInteger isSignState;//是否签到
+@property(nonatomic)NSMutableDictionary*signInfo;
 @property(nonatomic,copy)void(^cityChangeBlock)(NSString*cityName);
 @property(nonatomic)BOOL sendMessage;
 -(void)requestInformation;

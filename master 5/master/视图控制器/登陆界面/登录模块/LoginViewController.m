@@ -83,12 +83,12 @@
             [users synchronize];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 //延迟跳转
-                    [self.view makeToast:@"恭喜!登录成功。" duration:2.0f position:@"center"];
+                [self.view makeToast:@"恭喜!登录成功。" duration:2.0f position:@"center"];
                 [XGPush setAccount:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"pullTag"]];                
                     delegate.userPost=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"userPost"] integerValue];
                     delegate.id=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"id"] integerValue];
                 [delegate setupPushWithDictory];
-                delegate.isSignState=[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"signState"];
+                delegate.isSignState=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"signState"] integerValue];
                 [MBProgressHUD hideHUDForView:weSelf.view animated:YES];
                     [delegate setHomeView];
                 
@@ -254,13 +254,9 @@
 //qq登陆
 - (IBAction)qqLogin:(id)sender {
     
-    [ShareSDK getUserInfo:SSDKPlatformTypeQQ onStateChanged:^(SSDKResponseState state, SSDKUser *user, NSError *error) {
-       
-        if (user) {
-            NSLog(@"%@",[user nickname]);
-        }
-        
-    }];
+
+    
+    
 }
 
 

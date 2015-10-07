@@ -1298,11 +1298,19 @@
         for (NSInteger i=0; i<_skillArray.count; i++) {
             skillModel*model=_skillArray[i];
             NSInteger width=(SCREEN_WIDTH-110-30)/3;
-            UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-orginX-30-model.name.length*12-5, 5+i/3*40,model.name.length*12+5, 25)];
-            orginX+=model.name.length*12+10;
             if (i!=0&&i%3==0) {
                 orginX=0;
             }
+            UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-orginX-30-model.name.length*12-5, 5+i/3*30,model.name.length*12+5, 25)];
+            if (i/3!=0) {
+                label.frame=CGRectMake(SCREEN_WIDTH-orginX-30-model.name.length*12-5, 5+i/3*30,model.name.length*12+5, 25);
+            }
+            
+            if (label.frame.origin.x<100) {
+                CGFloat tempWidth=SCREEN_WIDTH-orginX-30-5;
+                label.frame=CGRectMake(100, label.frame.origin.y,tempWidth-100-5, label.frame.size.height);
+            }
+            orginX+=model.name.length*12+10;
             width=label.frame.origin.x+label.frame.size.width+5;
             label.text=model.name;
             label.tag=12;

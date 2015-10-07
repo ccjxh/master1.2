@@ -36,7 +36,6 @@
 #import "AppDelegate+methods.h"
 #import "AppDelegate+request.h"
 #import "AppDelegate+setting.h"
-//#import "QQApi.h"
 #import <TencentOpenAPI/QQApiInterface.h>
 #import <TencentOpenAPI/TencentOAuth.h>
 
@@ -58,7 +57,7 @@
     self.window.rootViewController=temp;
     [self setupRecommend];  //评分相关设置
     [self setupTestLin];    //云测相关设置
-    [ShareSDK registerApp:@"a8e3c1e1faa7" activePlatforms:@[@(SSDKPlatformTypeQQ),@(SSDKPlatformTypeWechat)] onImport:^(SSDKPlatformType platformType) {
+    [ShareSDK registerApp:@"a8e3c1e1faa7" activePlatforms:@[@(SSDKPlatformSubTypeQZone),@(SSDKPlatformSubTypeQQFriend),@(SSDKPlatformSubTypeWechatSession),@(SSDKPlatformSubTypeWechatTimeline),@(SSDKPlatformTypeQQ)] onImport:^(SSDKPlatformType platformType) {
         switch (platformType)
         {
             case SSDKPlatformTypeWechat:
@@ -67,7 +66,11 @@
             case SSDKPlatformTypeQQ:
                 [ShareSDKConnector connectQQ:[QQApiInterface class] tencentOAuthClass:[TencentOAuth class]];
                 break;
-                default:
+            case SSDKPlatformSubTypeQQFriend:
+            {
+                [ShareSDKConnector connectQQ:[QQApiInterface class] tencentOAuthClass:[TencentOAuth class]];
+            }
+            default:
                 break;
         }
         
@@ -78,20 +81,26 @@
                 [appInfo SSDKSetupQQByAppId:@"1104650241" appKey:@"UtJK8xm1lTzepi46" authType:SSDKAuthTypeBoth];
             }
                 break;
+                case SSDKPlatformSubTypeQQFriend:
+            {
+            [appInfo SSDKSetupQQByAppId:@"1104650241" appKey:@"UtJK8xm1lTzepi46" authType:SSDKAuthTypeBoth];
+            
+            }
+                break;
             case SSDKPlatformTypeWechat:{
                 
                 [appInfo SSDKSetupWeChatByAppId:@"wxaa561e93e30b45ca" appSecret:@"c6a34cd399535499f8f77fb15cbe62d5"];
-                
             }
                 break;
+                          
             default:
                 break;
         }
 
     }];
     
-//    [[EaseMob sharedInstance] registerSDKWithAppKey:@"baoself#baoselftest" apnsCertName:@"com.zhuobao.master"];    //环信初始化
-//    [[EaseMob sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
+    [[EaseMob sharedInstance] registerSDKWithAppKey:@"baoself#baoselftest" apnsCertName:@"com.zhuobao.master"];    //环信初始化
+    [[EaseMob sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
     
     [XGPush startApp:2200123145 appKey:@"IT2RW4D1E84M"];  //信鸽推送初始化
      [SMS_SDK registerApp:@"93852832ce02" withSecret:@"a28d5c5bfbb3ddee35bf3a9585895472"]; //短信验证初始化
@@ -105,7 +114,6 @@
     [[dataBase share]CreateAllTables]; //创建数据库
     [self getOpenCity];   //缓存已开通城市
     [self requestSkills];//缓存技能列表并缓存
-    
     NSUserDefaults*user=[NSUserDefaults standardUserDefaults];
     if ([[user objectForKey:@"first"] integerValue]==1) {
         _pushDictory=[launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
@@ -151,21 +159,16 @@
     niceView.tag=10;
     //添加到场景
     [self.window addSubview:niceView];
-    
     //放到最顶层;
     [self.window bringSubviewToFront:niceView];
-    
     //开始设置动画;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.5];
     [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.window cache:YES];
     [UIView setAnimationDelegate:self];
     //這裡還可以設置回調函數;
-    
     [UIView setAnimationDidStopSelector:@selector(startupAnimationDone)];
-   
     niceView.alpha = 0.99;
-    
     [UIView commitAnimations];
     
 }
@@ -231,48 +234,57 @@
 
 -(void)startRequestWithUsername:(NSString*)username Password:(NSString*)password{
     
-    NSString*urlString=[self interfaceFromString:interface_login];
-    NSString* openUDID = [OpenUDID value];
-    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-    NSMutableDictionary*dict=[[NSMutableDictionary alloc]init];
-    [dict setObject:username forKey:@"mobile"];
-    [dict setObject:password forKey:@"password"];
-    [dict setObject:openUDID forKey:@"machineCode"];
-    if ([delegate getPhoneType]) {
-         [dict setObject:[delegate getPhoneType] forKey:@"machineType"];
-    }else{
-    
-        [dict setObject:@"unknowIphone" forKey:@"machineType"];
-    }
-   
-    [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary*dict=(NSDictionary*)responseObject;
-        if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
-            NSUserDefaults*users=[NSUserDefaults standardUserDefaults];
-            [users setObject:username forKey:@"username"];
-            [users setObject:password forKey:username];
-            [users synchronize];
-            _isLogin=YES;
-            [delegate requestInformation];
-            [XGPush setAccount:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"pullTag"]];
-            delegate.isSignState=[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"signState"];
-            _isLoginSuccess=YES;
-            //注册推送
-             [self setupPushWithDictory];
-            delegate.userPost=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"userPost"] integerValue];
-            delegate.id=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"id"] integerValue];
-            if (delegate.pullToken) {
-               [delegate sendData:delegate.pullToken];
-            }
-            [delegate setHomeView];
-            
-        } else if ([[dict objectForKey:@"rspCode"] integerValue]==500) {
+    [[loginManager share]loginWithUsername:username Password:password LoginComplite:^(id object) {
         
-            }
+         _isLogin=YES;
+         _isLoginSuccess=YES;
+         [self setupPushWithDictory];
         
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-    }];
+}];
+//    NSString*urlString=[self interfaceFromString:interface_login];
+//    NSString* openUDID = [OpenUDID value];
+//    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+//    NSMutableDictionary*dict=[[NSMutableDictionary alloc]init];
+//    [dict setObject:username forKey:@"mobile"];
+//    [dict setObject:password forKey:@"password"];
+//    [dict setObject:openUDID forKey:@"machineCode"];
+//    if ([delegate getPhoneType]) {
+//         [dict setObject:[delegate getPhoneType] forKey:@"machineType"];
+//    }else{
+//    
+//        [dict setObject:@"unknowIphone" forKey:@"machineType"];
+//    }
+//   
+//    [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        NSDictionary*dict=(NSDictionary*)responseObject;
+//        if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
+//            NSUserDefaults*users=[NSUserDefaults standardUserDefaults];
+//            [users setObject:username forKey:@"username"];
+//            [users setObject:password forKey:username];
+//            [users synchronize];
+//           
+//            [delegate requestInformation];
+//            [XGPush setAccount:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"pullTag"]];
+//            delegate.isSignState=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"signState"] integerValue] ;
+//            
+//            
+//            _isLoginSuccess=YES;
+//            //注册推送
+//             [self setupPushWithDictory];
+//            delegate.userPost=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"userPost"] integerValue];
+//            delegate.id=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"id"] integerValue];
+//            if (delegate.pullToken) {
+//               [delegate sendData:delegate.pullToken];
+//            }
+//            [delegate setHomeView];
+//            
+//        } else if ([[dict objectForKey:@"rspCode"] integerValue]==500) {
+//        
+//            }
+//        
+//        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        
+//    }];
 }
 
 
@@ -396,34 +408,45 @@
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
     CLLocation *location=[locations firstObject];//取出第一个位置
     CLLocationCoordinate2D coordinate=location.coordinate;//位置坐标
-    [self getAddressByLatitude:coordinate.latitude longitude:coordinate.longitude];
+//    [self getAddressByLatitude:coordinate.latitude longitude:coordinate.longitude];
+    
+//    CLLocation *location=[[CLLocation alloc]initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
+    [self.geocoder reverseGeocodeLocation:location completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
+        
+        if (error||placemarks.count==0) {
+            
+            //定位失败
+            
+                     }else//编码成功
+                         {
+                                 //显示最前面的地标信息
+                   CLPlacemark *firstPlacemark=[placemarks firstObject];
+                    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+                    delegate.city=[firstPlacemark.addressDictionary objectForKey:@"City"];
+//                             NSLog(@"%@",firstPlacemark.addressDictionary );
+//                     delegate.detailAdress=
+                             
+                             
+                   //经纬度
+                   CLLocationDegrees latitude=firstPlacemark.location.coordinate.latitude;
+                   CLLocationDegrees longitude=firstPlacemark.location.coordinate.longitude;
+//                   self.latitudeField.text=[NSString stringWithFormat:@"%.2f",latitude];
+//                   self.longitudeField.text=[NSString stringWithFormat:@"%.2f",longitude];
+                        delegate.detailAdress=[firstPlacemark.addressDictionary objectForKey:@"SubLocality"];
+                       if (!_sendMessage&&delegate.detailAdress) {
+                           if (_cityChangeBlock) {
+                               _cityChangeBlock(delegate.city);
+                               _sendMessage=YES;
+                           }
+                       }
+
+//                       }
+                   }
+        
+    }];
     [_mapManager stopUpdatingLocation];
 }
 
-#pragma mark 根据坐标取得地名
--(void)getAddressByLatitude:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude{
-    //反地理编码
-    
-    CLLocation *location=[[CLLocation alloc]initWithLatitude:latitude longitude:longitude];
-    [_geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
-        CLPlacemark *placemark=[placemarks firstObject];
-        AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-        delegate.city=[placemark.addressDictionary objectForKey:@"City"];
-        if ([placemark.addressDictionary objectForKey:@"FormattedAddressLines"][0]) {
-            NSString*str=[placemark.addressDictionary objectForKey:@"FormattedAddressLines"][0];
-            
-            NSArray*tempArray=[str componentsSeparatedByString:[placemark.addressDictionary objectForKey:@"SubLocality"]];
-            delegate.detailAdress=tempArray[1];
-            if (!_sendMessage&&delegate.detailAdress) {
-                if (_cityChangeBlock) {
-                    _cityChangeBlock(delegate.city);
-                    _sendMessage=YES;
-                }
-            }
-        }
-        //SubLocality  区
-    }];
-}
 
 
 //缓存个人信息
@@ -455,23 +478,6 @@
 //按钮点击事件回调
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void (^)())completionHandler{
     
-//    NSString*str=[userInfo objectForKey:PUSHKEY];
-//    NSArray*array=[str componentsSeparatedByString:@"\"type\":\""];
-//    NSString*type=[array[1] componentsSeparatedByString:@"\"}"][0];
-//    if ([type isEqualToString:@"masterOrderAccept"]==YES) {
-//        NSArray*sepArray=[str componentsSeparatedByString:@"\"entityId\":"];
-//        NSString*ID=[sepArray[1] componentsSeparatedByString:@","][0];
-////        [self.window.rootViewController]
-//        //接受消息的处理
-//        
-//        
-//    }
-//    
-//        if([identifier isEqualToString:@"ACCEPT_IDENTIFIER"]){
-//            
-////        NSLog(@"ACCEPT_IDENTIFIER is clicked");
-//    }
-//    
     completionHandler();
 }
 

@@ -126,6 +126,9 @@ typedef  enum
     interface_Notice,//通知公告
     interface_signInformation,//签到信息
     interface_signIn,//签到
+    interface_hotRang,//热度排行榜
+    interface_shareApp,//分享app
+    interface_myIntegral,//我的积分
     
     
 }interface;

@@ -12,16 +12,20 @@
  选择界面view
  **/
 
-@interface findMaster : UIView<SDCycleScrollViewDelegate>
+@interface findMaster : UIView<SDCycleScrollViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 @property (weak, nonatomic) IBOutlet SDCycleScrollView *ADView;
 @property (weak, nonatomic) IBOutlet UIButton *workHeadButton;
 @property (weak, nonatomic) IBOutlet UIButton *wokerButton;
+@property(nonatomic)NSMutableArray*dataArray;//热度排行榜数据源
 @property(nonatomic)NSMutableArray* urlArray;
-@property(nonatomic,strong)TextFlowView*tv;
-@property(nonatomic)myIntegralInforModel*model;
+@property(nonatomic,strong)TextFlowView*tv;//通知公告
+@property(nonatomic)myIntegralInforModel*model;//签到信息
+@property (nonatomic) UICollectionView *collection;//热度排行榜视图
 @property(nonatomic,copy)void(^adImageOnclick)(NSInteger index);
 @property(nonatomic,copy)void(^workHeadBlock)();
 @property(nonatomic,copy)void(^workBlock)();
-@property(nonatomic,copy)void(^signin)();
+@property(nonatomic,copy)void(^signin)(); //签到事件
 -(void)reloadData;
+-(void)hideNotice;
+-(void)showNotice;
 @end

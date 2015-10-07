@@ -65,7 +65,7 @@
     
     //导航栏按钮
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(personalAuthorSureBtn)];
- 
+    [self createImageviews];
     [self CreateFlow];
 }
 
@@ -225,6 +225,9 @@
         if (indexPath.row==2) {
          
             UIImageView *image = [requestModel isDisplayPersonalInfoImage : self.model.idNoFile];
+            UIImageView*backImage=[[UIImageView alloc]initWithFrame:CGRectMake(120, 10, 40, 40)];
+            backImage.backgroundColor=[UIColor blackColor];
+            [cell.contentView addSubview:backImage];
             [cell.contentView addSubview : image];
             [self flowHide];
             
@@ -433,5 +436,18 @@
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
         [self flowHide];
     }];
+}
+
+
+-(void)createImageviews{
+
+    NSArray*array=@[@"",@""];
+    for (NSInteger i=0; i<array.count; i++) {
+        UIImageView*imageview=[[UIImageView alloc]initWithFrame:CGRectMake(20+i*((SCREEN_WIDTH-40)/2), CGRectGetMaxY(self.personalAuthorTableView.frame)+10, 100, 100)];
+        imageview.backgroundColor=[UIColor blackColor];
+        [self.view addSubview:imageview];
+    }
+
+
 }
 @end

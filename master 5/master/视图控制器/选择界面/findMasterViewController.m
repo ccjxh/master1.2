@@ -41,9 +41,9 @@
 }
 
 -(void)update{
-    SDCycleScrollView*sdvc=(id)[self.view viewWithTag:100];
-    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-    sdvc.imageURLStringsGroup=delegate.pictureArray;
+//    SDCycleScrollView*sdvc=(id)[self.view viewWithTag:100];
+//    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+//    sdvc.imageURLStringsGroup=delegate.pictureArray;
 }
 
 
@@ -66,7 +66,10 @@
     [self checkNewVersion];  //版本检测更新
     [self receiveNotice];   //收到推送时刷新UI
     [self customNavigation];
-     [self requestNotice];   //请求通知公告
+    [self performSelector:@selector(requestNotice) withObject:nil afterDelay:1.0f];
+//     [self requestNotice];   //请求通知公告
+    [self requestSignInformation];//请求个人签到信息
+    [self requestHotRank];//热度排行榜请求
     
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     [delegate setupMap];
@@ -265,6 +268,7 @@
 -(void)createUI{
     
     findView=[[[NSBundle mainBundle]loadNibNamed:@"findMaster" owner:nil options:nil]lastObject];
+    [findView hideNotice];
     findView.workBlock=^{
         
         headViewController*hvc=[[headViewController alloc]init];
@@ -305,16 +309,18 @@
         NSDictionary*dict=(NSDictionary*)responseObject;
         [self.view makeToast:[dict objectForKey:@"msg"] duration:1 position:@"center" Finish:^{
             //签到成功处理
+            if ([[dict objectForKey:@"msg"]integerValue]==200) {
+            AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
             
-            
-            
+            [delegate.signInfo setObject:@"1" forKey:@"signState"];
+            [findView reloadData];
+            }            
         }];
         
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
        
-        
+        [self.view makeToast:@"当前网络不好,请稍候重试" duration:1 position:@"center"];
     }];
-
 
 };
 
@@ -378,12 +384,17 @@
 #pragma mark-请求通知公告
 -(void)requestNotice{
 
+    
     NSString*urlString=[self interfaceFromString:interface_Notice];
     [[httpManager share]GET:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
         NSDictionary*dict=(NSDictionary*)responseObject;
         if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
             NSDictionary*infordict=[dict objectForKey:@"entity"];
-        [findView.tv setText:[[infordict objectForKey:@"notice"] objectForKey:@"content"]];
+            if ([[infordict objectForKey:@"notice"] objectForKey:@"content"]) {
+                [findView showNotice];
+                [findView.tv setText:[[infordict objectForKey:@"notice"] objectForKey:@"content"]];
+            }
+       
         }
         
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
@@ -402,10 +413,36 @@
         [_model setValuesForKeysWithDictionary:[[dict objectForKey:@"entity"] objectForKey:@"signLog"]];
         findView.model=_model;
         [findView reloadData];
+        
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
         
     }];
 
+}
+
+
+#pragma mark-热度排行榜请求
+-(void)requestHotRank{
+
+    NSString*urlString=[self interfaceFromString:interface_hotRang];
+    AreaModel*model=[[dataBase share]findWithCity:_currentCityName];
+    NSDictionary*dict;
+    if (model) {
+        dict=@{@"firstLocation":[NSString stringWithFormat:@"%lu",model.id]};
+    }
+    [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
+       [self.view makeToast:[dict objectForKey:@"msg"] duration:1.5f position:@"center" Finish:^{
+           NSDictionary*dict=(NSDictionary*)responseObject;
+           if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
+               
+               
+           }
+           
+       }];
+        
+    } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+        
+    }];
 }
 
 

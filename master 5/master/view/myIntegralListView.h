@@ -7,11 +7,12 @@
 //
 
 #import "RootView.h"
+#import "SLExpandableTableView.h"
 /*我的积分列表界面**/
-@interface myIntegralListView : RootView<UITableViewDataSource,UITableViewDelegate>
+@interface myIntegralListView : RootView <SLExpandableTableViewDatasource, SLExpandableTableViewDelegate>
 @property(nonatomic,strong)NSMutableArray*dataArray;
 @property(nonatomic,strong)NSMutableDictionary*showDict;//是否展示的字典
-@property(nonatomic,strong)UITableView*tableview;
+@property(nonatomic,strong)SLExpandableTableView*tableview;
 @property(nonatomic,copy)void(^changeDictValue)(NSInteger section);
 -(id)init;
 -(void)reloadData;

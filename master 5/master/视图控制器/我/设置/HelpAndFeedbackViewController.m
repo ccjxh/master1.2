@@ -20,6 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSString*urlString=[NSString stringWithFormat:@"%@%@",changeURL,@"/admin/help/queryAllHelpList"];
+  
        NSURLRequest *request =[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     NSLog(@"%@",urlString);
     

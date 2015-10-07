@@ -290,6 +290,7 @@
         {
         
             myIntegralListViewController*mvc=[[myIntegralListViewController alloc]init];
+            mvc.hidesBottomBarWhenPushed=YES;
             [self pushWinthAnimation:self.navigationController Viewcontroller:mvc];
         
         
@@ -299,6 +300,7 @@
         {
         
             MyShareViewController*svc=[[MyShareViewController alloc]init];
+            svc.hidesBottomBarWhenPushed=YES;
             [self pushWinthAnimation:self.navigationController Viewcontroller:svc];
         
         }

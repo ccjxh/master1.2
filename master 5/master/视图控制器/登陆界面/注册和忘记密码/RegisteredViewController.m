@@ -220,7 +220,7 @@
                   [user synchronize];
                   delegate.id=[[[[dict objectForKey:@"entity"] objectForKey:@"user"]objectForKey:@"id"] integerValue];
                   [XGPush setAccount:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"pullTag"]];
-                 delegate.isSignState=[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"signState"];
+                 delegate.isSignState=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"signState"] integerValue];
                   [delegate setupPushWithDictory];
                   delegate.isLogin=YES;
                   delegate.userPost=1;
