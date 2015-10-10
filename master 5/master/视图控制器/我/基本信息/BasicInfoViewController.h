@@ -9,6 +9,5 @@
 #import "RootViewController.h"
 typedef void (^informationBlock)(NSString*name,NSString*icon);
 @interface BasicInfoViewController : RootViewController<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate, UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate>
-
 @property(nonatomic,copy)informationBlock block;
 @end

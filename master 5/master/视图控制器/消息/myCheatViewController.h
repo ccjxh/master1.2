@@ -9,6 +9,6 @@
 #import "RootViewController.h"
 /*聊天**/
 @interface myCheatViewController : RootViewController
-@property(nonatomic)EMBuddy*buddy;//当前对话的buddy
+//@property(nonatomic)EMBuddy*buddy;//当前对话的buddy
 @property(nonatomic)NSInteger currentPage;
 @end

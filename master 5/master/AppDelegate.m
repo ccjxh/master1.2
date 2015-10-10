@@ -21,14 +21,12 @@
 #import <sys/utsname.h>
 #import <SMS_SDK/SMS_SDK.h>
 #import "CustomDialogView.h"
-#import "sys/sysctl.h"
 #import "guideViewController.h"
 #include <sys/signal.h>
 #include <libkern/OSAtomic.h>
 #include <execinfo.h>
 #import "findWorkViewController.h"
 #import "findMasterViewController.h"
-#import   <TestinAgent/TestinAgent.h>
 #import "myPublicViewController.h"
 #import "myTabViewController.h"
 #import "Appirater.h"
@@ -38,7 +36,7 @@
 #import "AppDelegate+setting.h"
 #import <TencentOpenAPI/QQApiInterface.h>
 #import <TencentOpenAPI/TencentOAuth.h>
-
+#import <Bugly/CrashReporter.h>
 @interface AppDelegate ()<TencentSessionDelegate,WXApiDelegate,UIAlertViewDelegate>
 @property (nonatomic) CLLocationManager *locMgr;
 @property(nonatomic)BOOL havePushMessage;//是否有推送消息
@@ -52,8 +50,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+     [[CrashReporter sharedInstance] installWithAppId:@"900006644"];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIViewController*temp=[[UIViewController alloc]init];
+    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+    delegate.userInforDic=[[NSMutableDictionary alloc]init];
     self.window.rootViewController=temp;
     [self setupRecommend];  //评分相关设置
     [self setupTestLin];    //云测相关设置
@@ -98,9 +99,6 @@
         }
 
     }];
-    
-    [[EaseMob sharedInstance] registerSDKWithAppKey:@"baoself#baoselftest" apnsCertName:@"com.zhuobao.master"];    //环信初始化
-    [[EaseMob sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
     
     [XGPush startApp:2200123145 appKey:@"IT2RW4D1E84M"];  //信鸽推送初始化
      [SMS_SDK registerApp:@"93852832ce02" withSecret:@"a28d5c5bfbb3ddee35bf3a9585895472"]; //短信验证初始化
@@ -613,13 +611,13 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     
-    [[EaseMob sharedInstance] applicationDidEnterBackground:application];
+//    [[EaseMob sharedInstance] applicationDidEnterBackground:application];
    
     
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    [[EaseMob sharedInstance] applicationWillEnterForeground:application];
+//    [[EaseMob sharedInstance] applicationWillEnterForeground:application];
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
@@ -631,7 +629,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     
-    [[EaseMob sharedInstance] applicationWillTerminate:application];
+//    [[EaseMob sharedInstance] applicationWillTerminate:application];
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 

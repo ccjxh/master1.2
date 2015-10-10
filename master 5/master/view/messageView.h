@@ -18,7 +18,7 @@
 @interface messageView : RootView
 @property(nonatomic)UITableView*chatListTable;
 @property(nonatomic)id<MessageDelegate>delegate;
-@property(nonatomic)EMConversation*convenit;
+//@property(nonatomic)EMConversation*convenit;
 //@property (nonatomic,strong)GJGCChatInputPanel *inputPanel;
 
 

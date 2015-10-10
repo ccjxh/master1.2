@@ -32,7 +32,7 @@
 //云测相关设置
 -(void)setupTestLin{
     
-    [TestinAgent init:@"c5ea5096fd7481f747bbad61c3005e8d" channel:nil config:[TestinConfig defaultConfig]];
+    
     
 }
 

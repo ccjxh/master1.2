@@ -479,7 +479,7 @@
 //版本检测跟新
 -(void)checkNewVersion{
 
-    [[checkManager share]checkNewVersionWithAppleID:@"1031874136"];
+    [[checkManager share]checkVersion];
     
 }
 

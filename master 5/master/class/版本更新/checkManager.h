@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 @interface checkManager : NSObject<FDAlertViewDelegate>
 +(checkManager*)share;
--(void)checkNewVersionWithAppleID:(NSString*)ID;
+-(void)checkVersion;
 
 @end

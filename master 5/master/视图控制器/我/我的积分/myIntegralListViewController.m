@@ -98,6 +98,7 @@
                 [_dataArray addObject:model];
                 
             }
+            
             _listView.dataArray=_dataArray;
             _dict=[[NSMutableDictionary alloc]init];
             for ( NSInteger i=0; i<_dataArray.count; i++) {

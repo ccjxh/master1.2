@@ -56,7 +56,7 @@
     visitLabel.font=[UIFont systemFontOfSize:24];
     visitLabel.textColor=COLOR(212, 160, 69, 1);
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-    visitLabel.text=[NSString stringWithFormat:@"邀请码:%@",[delegate.userInforDic objectForKey:@""]];
+    visitLabel.text=[NSString stringWithFormat:@"邀请码:%@",[delegate.userInforDic objectForKey:@"inviteCode"]];
     visitLabel.textAlignment=NSTextAlignmentCenter;
     [self addSubview:visitLabel];
     [self addSubview:describeLabel];
@@ -185,7 +185,6 @@
 
     NSString*urlString=[self interfaceFromString:interface_getIntral];
     NSDictionary*dict=@{@"appKey":@"com.baoself.master",@"shareType":[NSString stringWithFormat:@"%lu",_currentTag]};
-    
     if (_currentTag==2||_currentTag==4) {
         [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
             

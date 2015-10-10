@@ -20,6 +20,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *backImahe;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentWidth;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageWidth;
-@property(nonatomic)EMMessage*model;
+//@property(nonatomic)EMMessage*model;
 -(void)reloadData;
 @end

@@ -68,7 +68,7 @@
             urlString=@"user/detail";
             break;
             case interface_uploadHeadImage:
-            urlString=@"common/attachment/uploadFile";
+            urlString=@"information/uploadIcon";
             break;
             case interface_commitProblem:
             urlString=@"feedback/addFeedback";
@@ -317,6 +317,9 @@
             break;
             case interface_shareToQzone:
             urlString=@"share/masterShare";
+            break;
+            case interface_shareWorkInfor:
+            urlString=@"share/projectShare";
             break;
              default:
             break;

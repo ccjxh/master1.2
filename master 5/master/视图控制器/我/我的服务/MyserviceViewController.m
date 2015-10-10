@@ -18,7 +18,6 @@
 #import "ChangeDateViewController.h"
 #import "certainViewController.h"
 #import "cityViewController.h"
-#import "myserviceDataSouce.h"
 #import "provinceViewController.h"
 #import "proviceSelectedViewController.h"
 #import "timetableviewCell.h"
@@ -132,12 +131,7 @@
 -(void)pop{
     
     [self.navigationController popToViewController:self.navigationController.viewControllers[0] animated:YES];
-//    for (UIViewController*vc in self.navigationController.viewControllers) {
-//       
-//        if ([vc isKindOfClass:[myServiceSelectedViewController class]]==YES) {
-//            [self.navigationController popToViewController:vc animated:YES];
-//        }
-//    }
+
 }
 
 
@@ -208,12 +202,17 @@
         self.tableview.tableFooterView=nil;
         return;
     }
+      if (model.skill==0&&model.skillState==0) {
+         _buttonStatus=@"成为宝师傅";
+    }else if (model.skill==0&&model.skillState==1){
+        _buttonStatus=@"申请中";
+    }
+    
     UIView*view=(id)[self.view viewWithTag:600];
     if (view) {
         [view removeFromSuperview];
     }
     if (delegate.userPost==1) {
-        _buttonStatus=@"成为宝师傅";
         view=[[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 60)];
         view.tag=600;
         if (model.skill==0&&_currentDataArray!=_noRecomandDataSource) {
@@ -228,9 +227,7 @@
             view.userInteractionEnabled=YES;
             self.tableview.tableFooterView=view;
         }
-
     }
-    
 }
 
 
@@ -272,14 +269,8 @@
                 if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
                     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
                     [delegate requestInformation];
-                    [self.view makeToast:@"恭喜您成为宝师傅" duration:1 position:@"center" Finish:^{
-                        
-                        if (self.type==0) {
-                            delegate.userPost=2;
-                        }else if (self.type==1){
-                        
-                            delegate.userPost=3;
-                        }
+                    [self.view makeToast:@"已经提交审核" duration:1 position:@"center" Finish:^{
+                        [[delegate.userInforDic objectForKey:@"skillState"] setObject:@"1" forKey:@"skillState"];
                         [self setupType];
                         [self initUI];
                         [self request];
@@ -332,13 +323,6 @@
         _noRecomandDataSource=[[NSMutableArray alloc]initWithObjects:Array, nil];
     }
     if (!_managerDataSource) {
-//        NSArray*array1=@[@""];
-//         NSArray*array2=@[@"服务区域"];
-//         NSArray*array3=@[@"证书",@"",@""];
-//         NSArray*array4=@[@""];
-//        NSArray*array5=@[@"明星工程"];
-//        _managerDataSource=[[NSMutableArray alloc]initWithObjects:array1,array2,array3,array4,array5, nil];
-        
         NSArray*array1=@[@""];
         NSArray*Array2=@[@"专业技能"];
         NSArray*array3=@[@"服务区域"];
@@ -572,18 +556,6 @@
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    //当时没有认证技能时进入服务界面
-//      if (_currentDataArray==_noRecomandDataSource) {
-//        UITableViewCell*cell=[tableView dequeueReusableCellWithIdentifier:@"Cell"];
-//        if (!cell) {
-//            cell=[[UITableViewCell alloc]initWithStyle:1 reuseIdentifier:@"Cell"];
-//        }
-//        cell.textLabel.text=_currentDataArray[indexPath.section][indexPath.row];
-//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//        cell.textLabel.textColor=COLOR(38, 38, 38, 1);
-//        cell.textLabel.font=[UIFont systemFontOfSize:16];
-//        return cell;
-//    }
     //包工头进入服务界面
 //    if (_currentDataArray==_headDataSource) {
         switch (indexPath.section) {
@@ -1072,10 +1044,6 @@
             if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
                 [self flowHide];
                 [self.view makeToast:@"更新成功" duration:1 position:@"center" Finish:^{
-//                    _startTime=date;
-//                    NSIndexPath*index=[NSIndexPath indexPathForItem:0 inSection:0];
-//                    NSArray*refershArray=@[index];
-//                    [self.tableview reloadRowsAtIndexPaths:refershArray withRowAnimation:UITableViewRowAnimationAutomatic];
                     [self request];
                 }];
                 
@@ -1801,24 +1769,6 @@
     return _totleHeight+20;
 
 }
-///**计算技能高度*/
-//-(CGFloat)accountSkill{
-//
-//    if (_skillArray.count==0) {
-//        return 50;
-//    }
-//    else
-//    {
-//        if (_skillArray.count%4==0) {
-//            
-//            return self.skillArray.count/4*40+10;
-//        }
-//        else
-//        {
-//            return (self.skillArray.count/4+1)*40+10;
-//        }
-//    }
-//}
 
 /**计算服务介绍高度*/
 -(CGFloat)accountIntrolduce{

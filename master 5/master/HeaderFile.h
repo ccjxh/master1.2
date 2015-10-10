@@ -94,7 +94,6 @@
 #import "findAddNewWorkModel.h"
 #import "findWorkListModel.h"
 #import "findWorkDetailModel.h"
-#import "EaseMob.h"
 #import "FDAlertView.h"
 #import "RootView.h"
 #import "OpenUDID.h"
@@ -109,6 +108,7 @@
 #import <ShareSDK/ShareSDK.h>
 #import <ShareSDKConnector/ShareSDKConnector.h>
 #import "WXApi.h"
+#import "SelectManager.h"
 
 //#import "Masonry.h"
 

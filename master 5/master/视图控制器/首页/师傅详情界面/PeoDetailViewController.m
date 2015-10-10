@@ -665,11 +665,14 @@
     }else if (buttonIndex==2){
     
         [self shareWeichatCircle];
-    }else{
+        
+    }else if(buttonIndex==3){
         
         [self shareQzone];
     }
+    
 }
+
 
 
 //分享到QQ空间

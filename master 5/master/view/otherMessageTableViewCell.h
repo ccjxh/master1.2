@@ -12,7 +12,7 @@
 
 @interface otherMessageTableViewCell : rootTableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *date;
-@property(nonatomic)EMMessage*model;
+//@property(nonatomic)EMMessage*model;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentHeight;
 @property (weak, nonatomic) IBOutlet UIImageView *backImage;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textviewHeight;

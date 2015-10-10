@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "IEMChatProgressDelegate.h"
+//#import "IEMChatProgressDelegate.h"
 @interface messageHelp : NSObject
-@property(nonatomic,strong)id<IEMChatProgressDelegate>delegate;
+//@property(nonatomic,strong)id<IEMChatProgressDelegate>delegate;
 +(messageHelp*)share;
--(void)sendTextMessageWithMessageText:(NSString*)message Buddy:(EMBuddy*)buddy;
+//-(void)sendTextMessageWithMessageText:(NSString*)message Buddy:(EMBuddy*)buddy;
 @end

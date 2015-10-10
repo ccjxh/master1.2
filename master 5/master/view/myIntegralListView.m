@@ -132,7 +132,7 @@
 
 -(UITableViewCell*)getTableviewcellWithTableview:(UITableView*)tableview IndexPath:(NSIndexPath*)indexpath{
 
-    myIntrgalListModel*model=_dataArray[indexpath.section];
+    myIntrgalListModel*model=_dataArray[indexpath.row];
     UITableViewCell*cell=[tableview dequeueReusableCellWithIdentifier:@"cell"];
     if (!cell) {
         cell=[[UITableViewCell alloc]initWithStyle:0 reuseIdentifier:@"cell"];

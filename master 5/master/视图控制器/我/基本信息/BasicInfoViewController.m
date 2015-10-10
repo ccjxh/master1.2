@@ -30,10 +30,6 @@
 
 @implementation BasicInfoViewController
 
-
-
-
-
 -(void)receiveNotice{
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(update) name:@"updateUI" object:nil];
@@ -46,20 +42,14 @@
     
 }
 
-
-
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"update" object:nil];
 }
 
-
-
 -(void)viewWillAppear:(BOOL)animated{
 
     [super viewWillAppear:animated];
-
 }
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -69,9 +59,7 @@
     PersonalDetailModel*model=[[dataBase share]findPersonInformation:delegate.id];
        //注册通知中心
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(upDateRegion:) name:@"basic" object:nil];
-    
     isAuthorType = NO;
-    
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     myInfoTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
     myInfoTableView.delegate = self;

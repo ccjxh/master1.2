@@ -81,8 +81,6 @@
         self.numberLabel.textColor = [UIColor grayColor];
         [self.getVerificationCode setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         self.getVerificationCode.userInteractionEnabled = NO; //设置获取验证码不被点击
-    }
-    if (buttonClick == YES) {
         [SMS_SDK getVerificationCodeBySMSWithPhone:self.telephoneTextField.text zone:@"86" result:^(SMS_SDKError *error) {
             //error为nil表示获取验证码成功
             if(error == nil){
@@ -204,8 +202,6 @@
                 
                 if ([[dict objectForKey:@"rspCode"] integerValue]==200)
                 {
-                
-                    
                    [self.view makeToast:@"恭喜！注册成功。" duration:1 position:@"center" Finish:^{
                    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
                        

@@ -28,7 +28,6 @@
 #include <execinfo.h>
 #import "findWorkViewController.h"
 #import "findMasterViewController.h"
-#import   <TestinAgent/TestinAgent.h>
 #import "myPublicViewController.h"
 #import "myTabViewController.h"
 #import "Appirater.h"

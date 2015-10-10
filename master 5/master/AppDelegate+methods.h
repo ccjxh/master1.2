@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 #import "Appirater.h"
-#import   <TestinAgent/TestinAgent.h>
 #import "XGPush.h"
 
 @interface AppDelegate (methods)

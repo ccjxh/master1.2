@@ -132,6 +132,7 @@ typedef  enum
     interface_getIntral,//获取积分
     interface_version,//版本查询
     interface_shareToQzone,//分享到QQ空间
+    interface_shareWorkInfor,//分享招工信息
     
 }interface;
 @interface NSObject (URL)

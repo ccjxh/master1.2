@@ -152,7 +152,7 @@
         }
         else
         {
-            [self setUserHeaderIamge];
+//            [self setUserHeaderIamge];
         }
     }
 }
