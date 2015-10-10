@@ -209,7 +209,6 @@
                 nameViewController*nvc=[[nameViewController alloc]initWithNibName:@"nameViewController" bundle:nil];
                 nvc.origin=model.realName;
                     nvc.contentChange=^(NSString*name){
-                    
                         personalDetailModel.realName=name;
                         [myInfoTableView reloadData];
                     };

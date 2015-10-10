@@ -22,6 +22,7 @@
     BOOL isIdNo;  //判断身份证号码是否填写
     BOOL isNoImage;   //判断证件照是否上传
     BOOL isAuthorType;  //认证类型
+    NSInteger _currentTag;//当前选择的照片
 }
 @end
 
@@ -65,7 +66,6 @@
     
     //导航栏按钮
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(personalAuthorSureBtn)];
-    [self createImageviews];
     [self CreateFlow];
 }
 
@@ -162,7 +162,7 @@
 {
     if (indexPath.row == 2)
     {
-        return 100;
+        return 120;
     }
     return 44;
 }
@@ -223,18 +223,50 @@
             isNoImage = YES;
         }
         if (indexPath.row==2) {
-         
-            UIImageView *image = [requestModel isDisplayPersonalInfoImage : self.model.idNoFile];
-            UIImageView*backImage=[[UIImageView alloc]initWithFrame:CGRectMake(120, 10, 40, 40)];
-            backImage.backgroundColor=[UIColor blackColor];
-            [cell.contentView addSubview:backImage];
-            [cell.contentView addSubview : image];
+            NSArray*array=@[@"身份证正面照",@"身份证反面照"];
+            for (NSInteger i=0; i<array.count; i++) {
+                UIImageView*photoImage=[[UIImageView alloc]initWithFrame:CGRectMake(13+i*100, 40, 70, 70)];
+                photoImage.userInteractionEnabled=YES;
+                photoImage.tag=40+i;
+                photoImage.image=[UIImage imageNamed:array[i]];
+                if (i==0&&self.model.idNoFile) {
+                    [photoImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",changeURL,self.model.idNoFile]] placeholderImage:[UIImage imageNamed:array[i]]];
+                                                }
+                if (i==1&&self.model.idNoBackFile) {
+                    [photoImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",changeURL,self.model.idNoBackFile]] placeholderImage:[UIImage imageNamed:array[i]]];
+                }
+                photoImage.contentMode =  UIViewContentModeScaleAspectFit;
+//                photoImage.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+//                photoImage.clipsToBounds=YES;
+                UITapGestureRecognizer*tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(uploadPhotos:)];
+                tap.numberOfTapsRequired=1;
+                tap.numberOfTouchesRequired=1;
+                [photoImage addGestureRecognizer:tap];
+                [cell.contentView addSubview:photoImage];
+            }
+            
             [self flowHide];
             
         }
        
     }
     return cell;
+}
+
+
+-(void)uploadPhotos:(UITapGestureRecognizer*)tap{
+
+    _currentTag=[tap view].tag;
+    if ([tap view].tag==40) {
+        //正面照片
+        [self setUserHeaderIamge];
+        
+    }else{
+        //反面照片
+    
+        [self setUserHeaderIamge];
+    }
+
 }
 
 #pragma mark - 判断请求是否成功
@@ -354,34 +386,46 @@
                 
                 NSString*urlString=[self interfaceFromString:interface_uploadHeadImage];
                 NSDictionary *dict;
-                if (self.model.idNoId == nil)
-                {
-                    dict = @{@"file":@"3",@"moduleType":@"com.bsf.common.domain.user.User",@"category":@"idNo",@"workId":self.model.id};
+                NSString*type;
+                if (_currentTag==40) {
+                    type=@"idNo";
+                    if (self.model.idNoId==nil) {
+                        dict=@{@"file":@"3",@"moduleType":@"com.bsf.common.domain.user.User",@"category":@"idNo",@"workId":self.model.id};
+                    }else{
+                        dict=@{@"file":@"3",@"moduleType":@"com.bsf.common.domain.user.User",@"category":@"idNo",@"workId":self.model.id,@"removeFileId":self.model.idNoId};
+                    }
+                    
+                }else{
+                    type=@"idNoBack";
+                    if (self.model.idNoBackFileId==nil) {
+                    dict=@{@"file":@"3",@"moduleType":@"com.bsf.common.domain.user.User",@"category":@"idNoBack",@"workId":self.model.id,};
+                    }else{
+                    dict=@{@"file":@"3",@"moduleType":@"com.bsf.common.domain.user.User",@"category":@"idNoBack",@"workId":self.model.id,@"removeFileId":self.model.idNoBackFileId};
+                    
+                    }
                 }
-                else
-                {
-                     dict = @{@"file":@"3",@"moduleType":@"com.bsf.common.domain.user.User",@"category":@"idNo",@"workId":self.model.id,@"removeFileId":self.model.idNoId};
-                }
-                [self flowShow];
+                                
+                    [self flowShow];
                 [[httpManager share]POST:urlString parameters:dict constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
                     NSData *data = UIImageJPEGRepresentation(selectImage, 0.5);
                     [formData appendPartWithFileData:data name:@"file" fileName:[@"3" stringByAppendingString:@".jpg"] mimeType:@"image/jpg"];
                     
                 } success:^(AFHTTPRequestOperation *operation, id responseObject) {
 //                    NSLog(@"++++++%@",responseObject);
+                    NSDictionary*dict=(NSDictionary*)responseObject;
+            
                     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
                     [delegate requestInformation];
                     isNoImage = YES;
-                    
                     NSDictionary*postDict=@{@"picture":image};
                     NSNotification*notiction=[[NSNotification alloc]initWithName:@"headRefersh" object:nil userInfo:postDict];
                     [[NSNotificationCenter defaultCenter]postNotification:notiction];
-                    
                     //                    headimag=image;
                     NSDictionary *entityDic = responseObject[@"entity"];
                     NSDictionary *attachmentDic = entityDic[@"attachment"];
                     self.model.idNoFile = attachmentDic[@"resource"];
                     [self.personalAuthorTableView reloadData];
+                    [self.view makeToast:[dict objectForKey:@"msg"] duration:1 position:@"center"];
                     [self flowHide];
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     NSLog(@" 结果 ===== %@",error);
@@ -439,15 +483,5 @@
 }
 
 
--(void)createImageviews{
 
-    NSArray*array=@[@"",@""];
-    for (NSInteger i=0; i<array.count; i++) {
-        UIImageView*imageview=[[UIImageView alloc]initWithFrame:CGRectMake(20+i*((SCREEN_WIDTH-40)/2), CGRectGetMaxY(self.personalAuthorTableView.frame)+10, 100, 100)];
-        imageview.backgroundColor=[UIColor blackColor];
-        [self.view addSubview:imageview];
-    }
-
-
-}
 @end

@@ -129,7 +129,9 @@ typedef  enum
     interface_hotRang,//热度排行榜
     interface_shareApp,//分享app
     interface_myIntegral,//我的积分
-    
+    interface_getIntral,//获取积分
+    interface_version,//版本查询
+    interface_shareToQzone,//分享到QQ空间
     
 }interface;
 @interface NSObject (URL)

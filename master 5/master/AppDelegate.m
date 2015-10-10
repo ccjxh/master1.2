@@ -448,7 +448,6 @@
 }
 
 
-
 //缓存个人信息
 -(void)requestInformation{
     

@@ -44,6 +44,9 @@
     [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary*dict=(NSDictionary*)responseObject;
         if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
+            [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"inviteCode"] forKey:@"inviteCode"];
+            [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] forKey:@"integrity"];
+            [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"]objectForKey:@"certification"] forKey:@"certification"];
             NSUserDefaults*users=[NSUserDefaults standardUserDefaults];
             [users setObject:username forKey:@"username"];
             [users setObject:password forKey:username];
@@ -51,8 +54,7 @@
             [delegate requestInformation];
             loginComPlite;
             [XGPush setAccount:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"pullTag"]];
-//            delegate.isSignState=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"signState"] integerValue] ;
-            delegate.signInfo=[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"signInfo"];
+            delegate.signInfo=[[NSMutableDictionary alloc]initWithDictionary:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"signInfo"]];
             //注册推送
 //            [self setupPushWithDictory];
             delegate.userPost=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"userPost"] integerValue];
@@ -60,6 +62,7 @@
             if (delegate.pullToken) {
                 [delegate sendData:delegate.pullToken];
             }
+            
             [delegate setHomeView];
             
         } else if ([[dict objectForKey:@"rspCode"] integerValue]==500) {

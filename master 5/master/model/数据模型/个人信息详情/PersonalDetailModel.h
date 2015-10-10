@@ -18,7 +18,9 @@
 @property (nonatomic,copy) NSString *mobile; //电话号码
 @property (nonatomic,copy) NSString *idNo;  //身份证号码
 @property (nonatomic,copy) NSString *iconId;  //头像id
-@property (nonatomic,copy) NSString *idNoId;  //身份证id
+@property (nonatomic,copy) NSString *idNoId;  //身份证正面图片id
+@property(nonatomic,copy)NSString*idNoBackFileId;//身份证背面图片网址
+@property(nonatomic,copy)NSString*idNoBackFile;//身份证背面站片id
 @property (nonatomic,strong) NSDictionary *certification;
 @property (nonatomic,copy) NSString *icon; //图片地址
 @property (nonatomic,copy) NSString *idNoFile;

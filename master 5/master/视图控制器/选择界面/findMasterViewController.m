@@ -13,6 +13,7 @@
 #import "webDetailViewController.h"
 #import "findMaster.h"
 #import "checkManager.h"
+#import "PeoDetailViewController.h"
 
 
 @interface findMasterViewController ()<UIScrollViewDelegate,SDCycleScrollViewDelegate,UIAlertViewDelegate,FDAlertViewDelegate>
@@ -23,12 +24,13 @@
 @implementation findMasterViewController
 
 {
-    findMaster*masterView;
+//    findMaster*masterView;
     UITextField*_tx;
     UIView*contentView;
     findMaster*findView;
     __block NSString*trackViewUrl;
     myIntegralInforModel*_model;//积分数据模型
+    NSMutableArray*_hotArray;//热度排行榜数据源
     
 }
 
@@ -59,6 +61,9 @@
     
     [super viewDidLoad];
     _currentCityName=@"深圳市";
+    if (!_hotArray) {
+        _hotArray=[[NSMutableArray alloc]init];
+    }
     [self requestPay];   //缓存支付
     [self request];      //城市对应的地区请求
     [self initUI];
@@ -70,7 +75,6 @@
 //     [self requestNotice];   //请求通知公告
     [self requestSignInformation];//请求个人签到信息
     [self requestHotRank];//热度排行榜请求
-    
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     [delegate setupMap];
     delegate.cityChangeBlock=^(NSString*name){
@@ -97,8 +101,8 @@
 #pragma mark-customNavigation
 -(void)customNavigation{
     
-    UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, 33, 33)];
-    [button setImage:[UIImage imageNamed:@"3.png"] forState:UIControlStateNormal];
+    UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, 22, 19)];
+    [button setImage:[UIImage imageNamed:@"意见反馈.png"] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(feedback) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithCustomView:button];
 }
@@ -175,16 +179,18 @@
     button.tag=10;
     
     [button addTarget:self action:@selector(changecity) forControlEvents:UIControlEventTouchUpInside];
-    UIImageView*imageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 14, 14, 18)];
-    imageview.image=ImageNamed(@"2.png");
-    imageview.tag=11;
-    [button addSubview:imageview];
-    UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(17, 9, 60, 30)];
+    UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(0, 9, 60, 30)];
     label.textColor=[UIColor whiteColor];
     label.font=[UIFont systemFontOfSize:16];
     label.text=_currentCityName;
+    if (_currentCityName.length*16<=60) {
+        label.frame=CGRectMake(0, 9, _currentCityName.length*16, 30);
+    }
+    UIImageView*imageview=[[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(label.frame)+5, 21, 13, 8)];
+    imageview.image=ImageNamed(@"ARROw.png");
+    imageview.tag=11;
+    [button addSubview:imageview];
     [button addSubview:label];
-    
     self.navigationItem.leftBarButtonItem=[[UIBarButtonItem alloc]initWithCustomView:button];
 }
 
@@ -192,11 +198,11 @@
 
 -(void)changecity
 {
+    
     cityViewController*cvc=[[cityViewController alloc]init];
     if (self.orginCity) {
         
         cvc.city=self.orginCity;
-        
     }
     cvc.TBlock=^(AreaModel*CityModel){
         _currentCityName=CityModel.name;
@@ -204,7 +210,6 @@
     };
     
     [self pushWinthAnimation:self.navigationController Viewcontroller:cvc];
-    
 }
 
 
@@ -295,6 +300,18 @@
     
     };
     
+    
+    __weak typeof(findMaster*)weakFindview=findView;
+    findView.push=^(NSIndexPath*indexpath){
+        MasterDetailModel*model=weakFindview.hotArray[indexpath.row];
+        PeoDetailViewController*pvc=[[PeoDetailViewController alloc]init];
+        pvc.id=[model.id integerValue];
+        pvc.name=model.realName;
+        pvc.mobile=model.mobile;
+        [weakSelf pushWinthAnimation:weakSelf.navigationController Viewcontroller:pvc];
+
+    };
+    
     self.view.backgroundColor=COLOR(232, 233, 232, 1);
     [self.view addSubview:findView];
     
@@ -309,10 +326,14 @@
         NSDictionary*dict=(NSDictionary*)responseObject;
         [self.view makeToast:[dict objectForKey:@"msg"] duration:1 position:@"center" Finish:^{
             //签到成功处理
-            if ([[dict objectForKey:@"msg"]integerValue]==200) {
+            if ([[dict objectForKey:@"rspCode"]integerValue]==200) {
             AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-            
             [delegate.signInfo setObject:@"1" forKey:@"signState"];
+            NSInteger renewDay=[[delegate.signInfo objectForKey:@"renewDay"] integerValue];
+            NSInteger todayIntegral=[[delegate.signInfo objectForKey:@"nextDayIntegral"] integerValue];
+            NSInteger totalIntegral=[[delegate.signInfo objectForKey:@"totalIntegral"] integerValue];
+            [delegate.signInfo setObject:[NSString stringWithFormat:@"%d",++renewDay] forKey:@"renewDay"];
+            [delegate.signInfo setObject:[NSString stringWithFormat:@"%d",todayIntegral+totalIntegral] forKey:@"totalIntegral"];
             [findView reloadData];
             }            
         }];
@@ -434,10 +455,19 @@
        [self.view makeToast:[dict objectForKey:@"msg"] duration:1.5f position:@"center" Finish:^{
            NSDictionary*dict=(NSDictionary*)responseObject;
            if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
-               
+               NSArray*array=[dict objectForKey:@"entities"];
+               for (NSInteger i=0; i<array.count; i++) {
+                   MasterDetailModel*model=[[MasterDetailModel alloc]init];
+                   NSDictionary*inforDic=array[i];
+                   [model setValuesForKeysWithDictionary:[inforDic objectForKey:@"user"]];
+                   [_hotArray addObject:model];
+    
+               }
                
            }
            
+           findView.hotArray=_hotArray;
+           [findView.collection reloadData];
        }];
         
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {

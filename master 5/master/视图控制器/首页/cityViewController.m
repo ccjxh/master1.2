@@ -87,7 +87,6 @@
         _dataArray=[[NSMutableArray alloc]init];
     }
     [_dataArray removeAllObjects];
-    
     if (!_currentArray) {
         _currentArray=[[NSMutableArray alloc]init];
     }
@@ -97,13 +96,6 @@
         AreaModel*model=tempArray[i];
         model.isselect=NO;
         if (self.selectedArray.count!=0) {
-//        for (NSInteger j=1; j<[self.selectedArray[0] count]; j++) {
-//           NSArray*tempArray=self.selectedArray[0];
-//
-//            if (model.id==compareModel.id) {
-//                model.isselect=YES;
-//               }
-//          }
            AreaModel*compareModel=self.selectedArray[0];
             if (model.id==compareModel.id) {
                 model.isselect=YES;
@@ -386,7 +378,6 @@
         if (self.type==0) {
         if (indexPath.section==0) {
             AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-            
         if (delegate.city) {
             AreaModel*model1=[[dataBase share]findWithCity:delegate.city];
             self.TBlock(model1);
@@ -403,6 +394,7 @@
         if (self.type==0) {
             self.TBlock(model);
             [self popWithnimation:self.navigationController];
+            
             }
         }
     }

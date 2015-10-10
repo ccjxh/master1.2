@@ -64,7 +64,7 @@
     //    self.navigationItem.title = @"师傅详情";
 //    [self createUI];
    
-       if (self.type==0) {
+    if (self.type==0) {
     orderBtn = [UIButton buttonWithType:UIButtonTypeSystem];
     orderBtn.frame = CGRectMake(10, SCREEN_HEIGHT-45, SCREEN_WIDTH-20, 40);
     [orderBtn setTitle:@"我要预订" forState:UIControlStateNormal];
@@ -96,20 +96,13 @@
 
 -(void)requestshare{
 
-    NSString*urlString=[self interfaceFromString:interface_shareID];
-    NSString*temp=[NSString stringWithFormat:@"%@?id=%lu",urlString,self.id];
-     [[httpManager share]GET:temp parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
-        NSDictionary*dict=(NSDictionary*)responseObject;
-        if ([[dict objectForKey:@"rspCode"] intValue]==200) {
-            NSDictionary*inforDic=[[dict objectForKey:@"entity"] objectForKey:@"userShareDTO"];
-            recommModel=[[masterModel alloc]init];
-            [recommModel setValuesForKeysWithDictionary:inforDic];
-            recommModel.url=[NSString stringWithFormat:@"%@%@?id=%lu",changeURL,recommModel.url,self.id];
-            }
-
-     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
-    }];
-
+    
+    recommModel=[[masterModel alloc]init];
+    recommModel.url=[NSString stringWithFormat:@"%@/admin/share/masterDetail?id=%lu",changeURL,self.id];
+    recommModel.title=@"向您推荐一位宝师傅";
+    recommModel.content=[NSString stringWithFormat:@"%@",self.name];
+    
+    
 }
 
 -(void) orderBtn
@@ -594,32 +587,11 @@
 #pragma mark-QQShare
 -(void)setupQQShare{
     
-//    NSString*urlString=recommModel.url;
-//    NSString*imageUrl=nil;
-//    QQApiNewsObject *newsObj = [QQApiNewsObject
-//                                objectWithURL:[NSURL URLWithString:urlString] title:recommModel.title description:recommModel.content previewImageURL:[NSURL URLWithString:imageUrl]];
-//    SendMessageToQQReq *req = [SendMessageToQQReq reqWithContent:newsObj];
-//    QQApiSendResultCode sent = [QQApiInterface sendReq:req];
-//    
-//    
-//    
-//    NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
-//    [shareParams SSDKSetupShareParamsByText:@"分享内容 @value(url)"
-//                                     images:@[[UIImage imageNamed:@"shareImg"]]
-//                                        url:[NSURL URLWithString:@"http://mob.com"]
-//                                      title:@"分享标题"
-//                                       type:SSDKContentTypeImage];
-//    
-    //进行分享
-    //创建分享参数
     NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
-    [shareParams SSDKSetupQQParamsByText:recommModel.content title:recommModel.title url:[NSURL URLWithString:recommModel.url] thumbImage:nil image:nil type:SSDKContentTypeAuto forPlatformSubType:SSDKPlatformSubTypeQQFriend];
-    
-    //进行分享
+    [shareParams SSDKSetupQQParamsByText:recommModel.content title:recommModel.title url:[NSURL URLWithString:recommModel.url]   thumbImage:[UIImage imageNamed:@"Icon.png"] image:nil type:SSDKContentTypeWebPage forPlatformSubType:SSDKPlatformSubTypeQQFriend];
     [ShareSDK share:SSDKPlatformSubTypeQQFriend
          parameters:shareParams
      onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
-         
          switch (state) {
              case SSDKResponseStateSuccess:
              {
@@ -629,6 +601,10 @@
                                                            cancelButtonTitle:@"确定"
                                                            otherButtonTitles:nil];
                  [alertView show];
+                 NSString*urlString=[self interfaceFromString:interface_shareToQzone];
+                 NSDictionary*dict=@{@"id":[NSString stringWithFormat:@"%u",self.id],@"shareType":@"1"};
+                 [self updateOpinionWithDict:dict UrlString:urlString];
+                 
                  break;
              }
              case SSDKResponseStateFail:
@@ -671,7 +647,7 @@
 
 -(void)selectShare{
     
-    UIActionSheet*actionsheet=[[UIActionSheet alloc]initWithTitle:@"请选择分享的地方" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"分享到QQ" otherButtonTitles:@"分享到微信",@"分享到朋友圈", nil];
+    UIActionSheet*actionsheet=[[UIActionSheet alloc]initWithTitle:@"请选择分享的地方" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"分享到QQ" otherButtonTitles:@"分享到微信",@"分享到朋友圈",@"QQ空间", nil];
     actionsheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
     [actionsheet showInView:self.view];
     
@@ -689,50 +665,161 @@
     }else if (buttonIndex==2){
     
         [self shareWeichatCircle];
+    }else{
+        
+        [self shareQzone];
     }
 }
 
 
+//分享到QQ空间
+-(void)shareQzone{
+
+     NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
+    [shareParams SSDKSetupQQParamsByText:recommModel.content title:recommModel.title url:[NSURL URLWithString:recommModel.url]   thumbImage:[UIImage imageNamed:@"Icon.png"] image:nil type:SSDKContentTypeWebPage forPlatformSubType:SSDKPlatformSubTypeQZone];
+    [ShareSDK share:SSDKPlatformSubTypeQZone
+         parameters:shareParams
+     onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
+         switch (state) {
+             case SSDKResponseStateSuccess:
+             {
+                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享成功"
+                                                                     message:nil
+                                                                    delegate:nil
+                                                           cancelButtonTitle:@"确定"
+                                                           otherButtonTitles:nil];
+                 [alertView show];
+                 NSString*urlString=[self interfaceFromString:interface_shareToQzone];
+                 NSDictionary*dict=@{@"id":[NSString stringWithFormat:@"%lu",self.id],@"shareType":@"2"};
+                 [self updateOpinionWithDict:dict UrlString:urlString];
+                 
+                 break;
+             }
+             case SSDKResponseStateFail:
+             {
+                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享失败"
+                                                                     message:[NSString stringWithFormat:@"%@", error]
+                                                                    delegate:nil
+                                                           cancelButtonTitle:@"确定"
+                                                           otherButtonTitles:nil];
+                 [alertView show];
+                 break;
+             }
+             case SSDKResponseStateCancel:
+             {
+                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享已取消"
+                                                                     message:nil
+                                                                    delegate:nil
+                                                           cancelButtonTitle:@"确定"
+                                                           otherButtonTitles:nil];
+                 [alertView show];
+                 break;
+             }
+             default:
+                 break;
+         }
+         
+     }];
+
+}
+
 //微信分享
 -(void)WeiChatShare{
     
-    WXMediaMessage *message = [WXMediaMessage message];
-    message.title = recommModel.title;
-    message.description = recommModel.content;
-    NSString*imageUrl=[NSString stringWithFormat:@"%@%@",changeURL,self.model.icon];
-    message.thumbData=data;
-    WXImageObject*image=[WXImageObject object];
-    image.imageUrl=imageUrl;
-    WXWebpageObject *ext = [WXWebpageObject object];
-  NSString*urlString=[NSString stringWithFormat:@"%@%@",changeURL,@"s"];
-    ext.webpageUrl = recommModel.url;
-    message.mediaObject = ext;
-    SendMessageToWXReq* req = [[SendMessageToWXReq alloc] init];
-    req.bText = NO;
-    req.message = message;
-    req.scene = 0;//0是好友  1是朋友圈  2是收藏
-    [WXApi sendReq:req];
-//    NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
-//    [shareParams SSDKSetupWeChatParamsByText:recommModel.content title:recommModel.title url:[NSURL URLWithString:recommModel.url] thumbImage:nil image:nil musicFileURL:nil extInfo:nil fileData:nil emoticonData:nil type:SSDKContentTypeWebPage forPlatformSubType:SSDKPlatformTypeCopy];
-//    [ShareSDK share:SSDKPlatformSubTypeWechatSession parameters:shareParams onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
-//        
-//    }];
-//
     
+    NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
+    [shareParams SSDKSetupWeChatParamsByText:recommModel.content title:recommModel.title url:[NSURL URLWithString:recommModel.url] thumbImage:[UIImage imageNamed:@"Icon.png"] image:nil musicFileURL:nil extInfo:nil fileData:nil emoticonData:nil type:SSDKContentTypeWebPage forPlatformSubType:SSDKPlatformSubTypeWechatSession];
+    [ShareSDK share:SSDKPlatformSubTypeWechatSession
+         parameters:shareParams
+     onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
+         switch (state) {
+             case SSDKResponseStateSuccess:
+             {
+                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享成功"
+                                                                     message:nil
+                                                                    delegate:nil
+                                                           cancelButtonTitle:@"确定"
+                                                           otherButtonTitles:nil];
+                 [alertView show];
+                 NSString*urlString=[self interfaceFromString:interface_shareToQzone];
+                 NSDictionary*dict=@{@"id":[NSString stringWithFormat:@"%lu",self.id],@"shareType":@"3"};
+                 [self updateOpinionWithDict:dict UrlString:urlString];
+                 
+                 break;
+             }
+             case SSDKResponseStateFail:
+             {
+                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享失败"
+                                                                     message:[NSString stringWithFormat:@"%@", error]
+                                                                    delegate:nil
+                                                           cancelButtonTitle:@"确定"
+                                                           otherButtonTitles:nil];
+                 [alertView show];
+                 break;
+             }
+             case SSDKResponseStateCancel:
+             {
+                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享已取消"
+                                                                     message:nil
+                                                                    delegate:nil
+                                                           cancelButtonTitle:@"确定"
+                                                           otherButtonTitles:nil];
+                 [alertView show];
+                 break;
+             }
+             default:
+                 break;
+         }
+         
+     }];
 }
 
 -(void)shareWeichatCircle{
-    WXMediaMessage *message = [WXMediaMessage message];
-    message.title = recommModel.title;
-    message.description = recommModel.content;
-    WXWebpageObject *ext = [WXWebpageObject object];
-    ext.webpageUrl = recommModel.url;
-    message.mediaObject = ext;
-    SendMessageToWXReq* req = [[SendMessageToWXReq alloc] init];
-    req.bText = NO;
-    req.message = message;
-    req.scene = 1;//0是好友  1是朋友圈  2是收藏
-    [WXApi sendReq:req];
+    NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
+    [shareParams SSDKSetupWeChatParamsByText:recommModel.content title:recommModel.title url:[NSURL URLWithString:recommModel.url] thumbImage:[UIImage imageNamed:@"Icon.png"] image:nil musicFileURL:nil extInfo:nil fileData:nil emoticonData:nil type:SSDKContentTypeWebPage forPlatformSubType:SSDKPlatformSubTypeWechatTimeline];
+    [ShareSDK share:SSDKPlatformSubTypeWechatTimeline
+         parameters:shareParams
+     onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
+         switch (state) {
+             case SSDKResponseStateSuccess:
+             {
+                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享成功"
+                                                                     message:nil
+                                                                    delegate:nil
+                                                           cancelButtonTitle:@"确定"
+                                                           otherButtonTitles:nil];
+                 [alertView show];
+                 NSString*urlString=[self interfaceFromString:interface_shareToQzone];
+                 NSDictionary*dict=@{@"id":[NSString stringWithFormat:@"%lu",self.id],@"shareType":@"4"};
+                 [self updateOpinionWithDict:dict UrlString:urlString];
+                 
+                 break;
+             }
+             case SSDKResponseStateFail:
+             {
+                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享失败"
+                                                                     message:[NSString stringWithFormat:@"%@", error]
+                                                                    delegate:nil
+                                                           cancelButtonTitle:@"确定"
+                                                           otherButtonTitles:nil];
+                 [alertView show];
+                 break;
+             }
+             case SSDKResponseStateCancel:
+             {
+                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享已取消"
+                                                                     message:nil
+                                                                    delegate:nil
+                                                           cancelButtonTitle:@"确定"
+                                                           otherButtonTitles:nil];
+                 [alertView show];
+                 break;
+             }
+             default:
+                 break;
+         }
+         
+     }];
 }
 
 
@@ -785,5 +872,6 @@
     }
     
 }
+
 
 @end

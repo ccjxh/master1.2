@@ -21,10 +21,12 @@
 @property(nonatomic,strong)TextFlowView*tv;//通知公告
 @property(nonatomic)myIntegralInforModel*model;//签到信息
 @property (nonatomic) UICollectionView *collection;//热度排行榜视图
+@property(nonatomic)NSMutableArray*hotArray;
 @property(nonatomic,copy)void(^adImageOnclick)(NSInteger index);
 @property(nonatomic,copy)void(^workHeadBlock)();
 @property(nonatomic,copy)void(^workBlock)();
 @property(nonatomic,copy)void(^signin)(); //签到事件
+@property(nonatomic,copy)void(^push)(NSIndexPath*indexPath);
 -(void)reloadData;
 -(void)hideNotice;
 -(void)showNotice;

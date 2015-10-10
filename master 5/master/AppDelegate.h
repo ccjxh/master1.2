@@ -30,6 +30,8 @@
 @property(nonatomic)NSMutableDictionary*signInfo;
 @property(nonatomic,copy)void(^cityChangeBlock)(NSString*cityName);
 @property(nonatomic)BOOL sendMessage;
+@property(nonatomic)NSInteger integrity;//信息完整度
+@property(nonatomic)NSMutableDictionary*userInforDic;//个人信息字典
 -(void)requestInformation;
 -(void)setupHome;
 -(void)setHomeView;

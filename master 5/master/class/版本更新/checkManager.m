@@ -65,4 +65,24 @@
 }
 
 
+-(void)checkVersion{
+
+    NSString*urlString=[self interfaceFromString:interface_version];
+    NSDictionary*dict=@{@"appKey":@"com.baoself.master"};
+    [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
+        NSDictionary*dict=(NSDictionary*)responseObject;
+        if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
+            //新版本更新机制
+            
+            
+            
+        }
+        
+        
+    } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+        
+    }];
+
+}
+
 @end

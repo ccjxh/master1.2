@@ -47,4 +47,7 @@
 //获得textview的高度
 - (float) heightForTextView: (UITextView *)textView WithText: (NSString *) strText;
 
+
+-(void)updateOpinionWithDict:(NSDictionary*)dict UrlString:(NSString*)urlString;
+
 @end

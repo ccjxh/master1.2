@@ -33,6 +33,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title=@"登陆";
     // Do any additional setup after loading the view from its nib.
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.view.backgroundColor = [UIColor whiteColor];
@@ -75,22 +76,26 @@
         NSDictionary*dict=(NSDictionary*)responseObject;
         [self flowHide];
         if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
+            
+            [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"inviteCode"] forKey:@"inviteCode"];
+            [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] forKey:@"integrity"];
+            [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"]objectForKey:@"certification"] forKey:@"certification"];
              [self HXLoginWithUsername:username Password:password];
             [delegate requestInformation];
             NSUserDefaults*users=[NSUserDefaults standardUserDefaults];
             [users setObject:username forKey:@"username"];
             [users setObject:password forKey:username];
             [users synchronize];
+             delegate.signInfo=[[NSMutableDictionary alloc]initWithDictionary:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"signInfo"]];
+            delegate.userPost=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"userPost"] integerValue];
+            delegate.id=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"id"] integerValue];
+            [delegate setupPushWithDictory];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 //延迟跳转
-                [self.view makeToast:@"恭喜!登录成功。" duration:2.0f position:@"center"];
-                [XGPush setAccount:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"pullTag"]];                
-                    delegate.userPost=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"userPost"] integerValue];
-                    delegate.id=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"id"] integerValue];
-                [delegate setupPushWithDictory];
-                delegate.isSignState=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"signState"] integerValue];
-                [MBProgressHUD hideHUDForView:weSelf.view animated:YES];
-                    [delegate setHomeView];
+             [self.view makeToast:@"恭喜!登录成功。" duration:2.0f position:@"center"];
+             [XGPush setAccount:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"pullTag"]];                
+            [MBProgressHUD hideHUDForView:weSelf.view animated:YES];
+            [delegate setHomeView];
                 
             });
             

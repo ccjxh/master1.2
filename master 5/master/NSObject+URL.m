@@ -309,6 +309,15 @@
             case interface_myIntegral:
             urlString=@"integral/list";
             break;
+            case interface_getIntral:
+            urlString=@"integral/firstShareIntegral";
+            break;
+            case interface_version:
+            urlString=@"licence/latestVersion";
+            break;
+            case interface_shareToQzone:
+            urlString=@"share/masterShare";
+            break;
              default:
             break;
                 }

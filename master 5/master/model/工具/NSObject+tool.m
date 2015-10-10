@@ -188,4 +188,16 @@
 }
 
 
+
+-(void)updateOpinionWithDict:(NSDictionary *)dict UrlString:(NSString *)urlString{
+
+    [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
+        
+    } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+        
+    }];
+
+}
+
+
 @end

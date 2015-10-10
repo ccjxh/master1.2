@@ -12,5 +12,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *headImahe;
 @property (weak, nonatomic) IBOutlet UILabel *name;
 @property (weak, nonatomic) IBOutlet UILabel *detail;
+@property (weak, nonatomic) IBOutlet UILabel *integrity;
 
 @end

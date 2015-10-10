@@ -23,7 +23,6 @@
 #import "myIntegralListViewController.h"
 #import "MyShareViewController.h"
 
-
 @interface MyViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property(nonatomic)NSMutableArray*dataArray;
@@ -144,7 +143,9 @@
         cell.headImahe.clipsToBounds=YES;
         cell.name.text=model.realName;
         cell.headImahe.layer.cornerRadius=10;
-        cell.detail.text=[NSString stringWithFormat:@"电话%@",model.mobile];
+        cell.integrity.text=[NSString stringWithFormat:@"%lu%%",delegate.integrity];
+        cell.integrity.textColor=COLOR(220, 115, 0, 1);
+        cell.detail.text=model.mobile;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         return cell;
     }

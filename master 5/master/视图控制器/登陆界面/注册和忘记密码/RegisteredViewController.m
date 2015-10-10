@@ -28,9 +28,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"注册界面被建立");
-    
-    // Do any additional setup after loading the view from its nib.
+       // Do any additional setup after loading the view from its nib.
     value = NO;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.view.backgroundColor = [UIColor colorWithRed:79/255.0 green:187/255.0 blue:226/255.0 alpha:1.0];
@@ -159,7 +157,8 @@
         [self.view makeToast:@"请填写正确的手机号码" duration:2.0f position:@"center"];
         [self flowHide];
     } else if( !value) {
-        
+        [self flowHide];
+        [self.view makeToast:@"请填写验证码" duration:1.5f position:@"center"];
         return;
         
     } else if(self.passwordTextField.text.length == 0 || self. secondPasswordTextField.text.length == 0) {
@@ -202,11 +201,17 @@
             [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSDictionary*dict=(NSDictionary*)responseObject;
                 [self flowHide];
+                
                 if ([[dict objectForKey:@"rspCode"] integerValue]==200)
                 {
                 
+                    
                    [self.view makeToast:@"恭喜！注册成功。" duration:1 position:@"center" Finish:^{
                    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+                       
+                   [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"inviteCode"] forKey:@"inviteCode"];
+                   [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] forKey:@"integrity"];
+                   [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"]objectForKey:@"certification"] forKey:@"certification"];
                    NSUserDefaults*user=[NSUserDefaults standardUserDefaults];
                    if ([user objectForKey:@"username"]) {
                        [user removeObjectForKey:@"username"];
@@ -214,13 +219,13 @@
                            [user removeObjectForKey:@"password"];
                        }
                             
-                        }
+                    }
                   [user setObject:_telephoneTextField.text forKey:@"username"];
                   [user setObject:_passwordTextField.text forKey:@"password"];
                   [user synchronize];
                   delegate.id=[[[[dict objectForKey:@"entity"] objectForKey:@"user"]objectForKey:@"id"] integerValue];
                   [XGPush setAccount:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"pullTag"]];
-                 delegate.isSignState=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"signState"] integerValue];
+                  delegate.signInfo=[[NSMutableDictionary alloc]initWithDictionary:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"signInfo"]];
                   [delegate setupPushWithDictory];
                   delegate.isLogin=YES;
                   delegate.userPost=1;
@@ -249,27 +254,6 @@
   
     
 }
-
-//-(void)sendAuthRequest{
-//
-//        //构造SendAuthReq结构体
-//        SendAuthReq* req =[[SendAuthReq alloc ] init ];
-//        req.scope = @"snsapi_userinfo" ;
-//        req.state = @"0123" ;
-//        //第三方向微信终端发送一个SendAuthReq消息结构
-//        [WXApi sendAuthReq:req viewController:self delegate:self];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getWeChatLoginCode:) name:@"WeChatLoginCode" object:nil];
-
-//}
-//
-//- (void)getWeChatLoginCode:(NSNotification *)notification {
-//    NSString *weChatCode = [[notification userInfo] objectForKey:@"code"];
-//    /*
-//     使用获取的code换取access_token，并执行登录的操作
-//     */
-//    
-//   
-//}
 
 
 -(void) onReq:(BaseReq*)req{

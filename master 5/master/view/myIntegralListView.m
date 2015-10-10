@@ -32,14 +32,14 @@
 
 -(void)createUI{
 
-    _tableview=[[SLExpandableTableView alloc]initWithFrame:self.bounds style:UITableViewStylePlain];
+    _tableview=[[UITableView alloc]initWithFrame:self.bounds style:UITableViewStylePlain];
     _tableview.delegate=self;
     _tableview.dataSource=self;
     _tableview.backgroundColor=COLOR(237, 238, 240, 1);
     _tableview.separatorStyle=0;
     [self addSubview:_tableview];
-    [_tableview registerClass:[IntegralDetailTableViewHeaderCell class] forCellReuseIdentifier:@"SuperCell"];
-    [_tableview registerClass:[UITableViewCell class] forCellReuseIdentifier:@"SubCell"];
+//    [_tableview registerClass:[IntegralDetailTableViewHeaderCell class] forCellReuseIdentifier:@"SuperCell"];
+//    [_tableview registerClass:[UITableViewCell class] forCellReuseIdentifier:@"SubCell"];
 
 //    [_tableview mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.top.equalTo(_tableview).with.offset=64;
@@ -51,51 +51,42 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
 
-    if (_dataArray) {
-        
-        return _dataArray.count;
-    }
-    return 0;
+    return 2;
 
 }
 
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 
-//    if ([[_showDict objectForKey:[NSString stringWithFormat:@"%lu",section]] integerValue]==0) {
-//        
-//        return 1;
-//    }else{
-//    
-//        return 2;
-//    
-//    }
-    return 2;
+    if (section==0) {
+        
+        return 1;
+    }else{
+    
+        return _dataArray.count;
+    
+    }
 
 }
 
 
-//-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-//
-//
-//    return 40;
-//
-//}
-//
-//
-//-(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-//
-//    UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 20)];
-//    myIntrgalListModel*model=_dataArray[section];
-//    [button setTitle:model.type forState:UIControlStateNormal];
-//    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//    button.titleLabel.font=[UIFont systemFontOfSize:16];
-//    button.tag=section;
-//    button.titleLabel.textAlignment=NSTextAlignmentLeft;
-//    [button addTarget:self action:@selector(show:) forControlEvents:UIControlEventTouchUpInside];
-//    return button;
-//
-//}
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+
+    return 30;
+
+}
+
+
+-(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+
+    NSArray*Array=@[@"当前总积分",@"积分明细"];
+    UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(13, 0, SCREEN_WIDTH-26, 30)];
+    label.textColor=COLOR(164, 165, 165, 1);
+    label.text=Array[section];
+    label.font=[UIFont systemFontOfSize:16];
+    return label;
+    
+}
 
 
 -(void)show:(UIButton*)button{
@@ -108,18 +99,77 @@
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
 
-    myIntrgalListModel*model=_dataArray[indexPath.section];
-    static NSString *cellIdentifier = @"SubCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-    cell.backgroundColor = COLOR(237, 238, 240, 1);
-//    IntegralLogEntity *entity = _dataSource[indexPath.section];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@:%@",model.type,model.readme];
-    cell.textLabel.font = [UIFont systemFontOfSize:13];
-    cell.textLabel.numberOfLines = 0;
-    cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    cell.textLabel.textColor = COLOR(109, 109, 109, 1);
-    return cell;
+//    myIntrgalListModel*model=_dataArray[indexPath.section];
+//    static NSString *cellIdentifier = @"SubCell";
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+//    cell.backgroundColor = COLOR(237, 238, 240, 1);
+////    IntegralLogEntity *entity = _dataSource[indexPath.section];
+//    cell.textLabel.text = [NSString stringWithFormat:@"%@:%@",model.type,model.readme];
+//    cell.selectionStyle=0;
+//    cell.textLabel.font = [UIFont systemFontOfSize:13];
+//    cell.textLabel.numberOfLines = 0;
+//    cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//    cell.textLabel.textColor = COLOR(109, 109, 109, 1);
+//    return cell;
+    if (indexPath.section==0) {
+        
+        UITableViewCell*cell=[[UITableViewCell alloc]initWithStyle:0 reuseIdentifier:@"Cell"];
+        UILabel*lable=[[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-113, cell.contentView.frame.size.height/2-10, 100, 20)];
+        AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+        lable.text=[NSString stringWithFormat:@"%lu",[[delegate.signInfo objectForKey:@"totalIntegral"] integerValue]];
+        lable.textColor=COLOR(249, 190, 84, 1);
+        lable.textAlignment=NSTextAlignmentRight;
+        lable.font=[UIFont systemFontOfSize:20];
+        [cell.contentView addSubview:lable];
+        return cell;
+    }
+    
+    
+    return [self getTableviewcellWithTableview:tableView IndexPath:indexPath];
 
+}
+
+
+-(UITableViewCell*)getTableviewcellWithTableview:(UITableView*)tableview IndexPath:(NSIndexPath*)indexpath{
+
+    myIntrgalListModel*model=_dataArray[indexpath.section];
+    UITableViewCell*cell=[tableview dequeueReusableCellWithIdentifier:@"cell"];
+    if (!cell) {
+        cell=[[UITableViewCell alloc]initWithStyle:0 reuseIdentifier:@"cell"];
+    }
+    UIView*view=(id)[cell.contentView viewWithTag:20];
+    if (view) {
+        [view removeFromSuperview];
+    }
+    view=[[UIView alloc]initWithFrame:cell.contentView.bounds];
+    view.tag=20;
+    UILabel*typeLabel=[[UILabel alloc]initWithFrame:CGRectMake(13, 7.5, 120, 15)];
+    typeLabel.textColor=COLOR(104, 104, 104, 1);
+    typeLabel.font=[UIFont systemFontOfSize:15];
+    typeLabel.text=model.type;
+    [view addSubview:typeLabel];
+    UILabel*timeLabel=[[UILabel alloc]initWithFrame:CGRectMake(13, 27.5, 180, 15)];
+    timeLabel.textColor=COLOR(104, 104, 104, 1);
+    timeLabel.font=[UIFont systemFontOfSize:15];
+    timeLabel.text=model.createTime;
+    [view addSubview:timeLabel];
+    UILabel*countLabel=[[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-133, (cell.contentView.frame.size.height-16)/2, 120, 16)];
+    countLabel.font=[UIFont systemFontOfSize:20];
+    countLabel.textAlignment=NSTextAlignmentRight;
+    if (model.value>0) {
+        countLabel.text=[NSString stringWithFormat:@"+%lu",model.value];
+    }else{
+        
+        countLabel.text=[NSString stringWithFormat:@"-%lu",model.value];
+    }
+    countLabel.textColor=model.value>0?COLOR(249, 190, 87, 1):COLOR(109, 217, 251, 1);
+    [view addSubview:countLabel];
+    UIView*lineView=[[UIView alloc]initWithFrame:CGRectMake(10, cell.contentView.frame.size.height-1, SCREEN_WIDTH-15, 1)];
+    lineView.backgroundColor=COLOR(205, 205, 205, 1);
+    [view addSubview:lineView];
+    [cell.contentView addSubview:view];
+    cell.selectionStyle=0;
+    return cell;
 }
 
 -(void)reloadData{
@@ -149,9 +199,16 @@
     if (!cell) {
         cell = [[IntegralDetailTableViewHeaderCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
-    
+
     cell.date=model.createTime;
-    cell.count=[NSString stringWithFormat:@"%lu积分",model.value];
+    NSString*count;
+    if (model.value>0) {
+        count=[NSString stringWithFormat:@"+%lu积分",+model.value];
+    }else{
+    
+        count=[NSString stringWithFormat:@"+%lu积分",-model.value];
+    }
+    cell.count=count;
     cell.expandable = YES;
     cell.selectionStyle=0;
     return cell;

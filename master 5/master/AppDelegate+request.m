@@ -48,7 +48,10 @@
 
     NSString *urlString = [self interfaceFromString:interface_personalDetail];
     [[httpManager share]GET:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
+        
         NSDictionary *dict = (NSDictionary*)responseObject;
+        AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+        delegate.integrity=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] integerValue];
         NSDictionary *entityDic = [dict objectForKey:@"entity"];
         NSDictionary *userDic = [entityDic objectForKey:@"user"];
         PersonalDetailModel*model=[[PersonalDetailModel alloc]init];

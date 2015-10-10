@@ -16,6 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     if( ([[[UIDevice currentDevice] systemVersion] doubleValue]>=7.0)) {
 //        self.edgesForExtendedLayout = UIRectEdgeNone;
     }
