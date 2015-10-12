@@ -26,6 +26,7 @@
     
      self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithTitle:@"确定" style:0 target:self action:@selector(confirm)];
     [self CreateFlow];
+    [self createIncreaseview];
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -65,8 +66,19 @@
         }
     }
     
-    
     [self flowShow];
+    for(int i=0; i< [self.name.text length];i++){
+        int a = [self.name.text characterAtIndex:i];
+        if( a > 0x4e00 && a < 0x9fff)
+        {
+            
+        }else{
+        [self flowHide];
+        [self.view makeToast:@"请输入汉字" duration:1 position:@"center"];
+        return ;
+            
+        }
+    }
     NSString*urlString=[self interfaceFromString:interface_updateRealName];
     NSDictionary*dict=@{@"realName":self.name.text};
     [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
@@ -81,8 +93,20 @@
                 if (self.contentChange) {
                     self.contentChange(self.name.text);
                 }
-                [self popWithnimation:self.navigationController];
+               
+                if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] ) {
+                    delegate.integrity=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] integerValue];
+                    
+                    if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"]) {
+                        delegate.integral= [[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue];
+                        [self showIncreaImage];
+
+                    }
+                }
                 
+                
+                [self performSelector:@selector(delayMethod) withObject:nil afterDelay:1.5f];
+              
             }];
         }else{
         
@@ -98,29 +122,17 @@
 }
 
 
+-(void)delayMethod{
+
+  [self popWithnimation:self.navigationController];
+
+}
+
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
     NSString *temp = [textField.text stringByReplacingCharactersInRange:range withString:string];
     
-    
-//        for(int i=0; i< [temp length];i++){
-//            int a = [temp characterAtIndex:i];
-//            if( a > 0x4e00 && a < 0x9fff)
-//            {
-//                
-//            }else{
-//            [textField resignFirstResponder];
-//            [self.view makeToast:@"请输入汉字" duration:1 position:@"center"];
-//            return NO;
-//                
-//            }
-//        
-//    }
-    
     if (temp.length>16) {
-        
-        
         return NO;
-        
     }
     return YES;
 }

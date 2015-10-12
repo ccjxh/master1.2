@@ -50,8 +50,16 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(update) name:@"updateUI" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(dealRefer:) name:@"headRefersh" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateIntral) name:@"integrityUpdate" object:nil];
+    
 }
 
+
+-(void)updateIntral{
+    
+    [_tableview reloadData];
+
+}
 
 -(void)dealRefer:(NSNotification*)nc{
     
@@ -71,6 +79,7 @@
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"update" object:nil];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"headRefersh" object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"integrityUpdate" object:nil];
 }
 
 - (void)viewDidLoad {
@@ -133,7 +142,9 @@
     if (indexPath.section==0) {
         myFirstTableViewCell*cell=[tableView dequeueReusableCellWithIdentifier:@"cell"];
         if (!cell) {
+            
             cell=[[[NSBundle mainBundle]loadNibNamed:@"myFirstTableViewCell" owner:nil options:nil]lastObject];
+            
         }
         NSString*urlString=[NSString stringWithFormat:@"%@%@",changeURL,model.icon];
         [cell.headImahe sd_setImageWithURL:[NSURL URLWithString:urlString] placeholderImage:[UIImage imageNamed:headImageName]];
@@ -143,7 +154,7 @@
         cell.headImahe.clipsToBounds=YES;
         cell.name.text=model.realName;
         cell.headImahe.layer.cornerRadius=10;
-        cell.integrity.text=[NSString stringWithFormat:@"%lu%%",delegate.integrity];
+        cell.integrity.text=[NSString stringWithFormat:@"%lu%%",(long)delegate.integrity];
         cell.integrity.textColor=COLOR(220, 115, 0, 1);
         cell.detail.text=model.mobile;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

@@ -148,9 +148,9 @@
                     
                     if (Delegate.userPost!=1) {
                         
-                        CollectViewController *cVC = [[CollectViewController alloc] init];
-                        cVC.hidesBottomBarWhenPushed=YES;
-                        [self pushWinthAnimation:navigationController Viewcontroller:cVC];
+                        myIntegralListViewController*mvc=[[myIntegralListViewController alloc]init];
+                        mvc.hidesBottomBarWhenPushed=YES;
+                        [self pushWinthAnimation:navigationController Viewcontroller:mvc];
                         
                     }else{
                         MyShareViewController*svc=[[MyShareViewController alloc]init];

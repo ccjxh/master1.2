@@ -13,17 +13,20 @@
 +(void) isRequestSuccess : (NSString*)url : (NSDictionary*)dict :(UITableView*) tableView
 {
     [[httpManager share] POST:url parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
-        
+        AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
         NSDictionary*dict=(NSDictionary*)responseObject;
         if ([[dict objectForKey:@"rspCode"] integerValue]==200){
-//            return YES;
-//            NSLog(@"保存成功");
+          //integral
+            if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] ) {
+                delegate.integrity=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] integerValue];
+                if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"]) {
+                    delegate.integral= [[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue];
+                }
+            }
+
         } else {
-//            return NO;
-//            NSLog(@"保存失败");
+
         }
-//        [tableView reloadData];
-        
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
         
     }];
@@ -116,12 +119,21 @@
 
 +(void) requestRegionInfo : (NSNumber *) regionId
 {
+    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     NSString *urlString = [self interfaceFromString:interface_updateRegion];
     NSDictionary *dict = @{@"regionId":regionId};
     [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
         NSDictionary *objDic = (NSDictionary *)responseObject;
         if ([[objDic objectForKey:@"rspCode"]integerValue] == 200)
         {
+            
+            if ([[[objDic objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] ) {
+                delegate.integrity=[[[[objDic objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] integerValue];
+                
+                if ([[[objDic objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"]) {
+                    delegate.integral= [[[[objDic objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue];
+                }
+            }
             NSLog(@"国籍更新成功!");
         }
         

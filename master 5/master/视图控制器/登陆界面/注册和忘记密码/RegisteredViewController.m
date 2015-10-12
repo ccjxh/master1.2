@@ -222,6 +222,7 @@
                   delegate.id=[[[[dict objectForKey:@"entity"] objectForKey:@"user"]objectForKey:@"id"] integerValue];
                   [XGPush setAccount:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"pullTag"]];
                   delegate.signInfo=[[NSMutableDictionary alloc]initWithDictionary:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"signInfo"]];
+                 delegate.integral=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue] ;
                   [delegate setupPushWithDictory];
                   delegate.isLogin=YES;
                   delegate.userPost=1;

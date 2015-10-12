@@ -86,6 +86,7 @@
             [users setObject:username forKey:@"username"];
             [users setObject:password forKey:username];
             [users synchronize];
+            delegate.integral=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue];
              delegate.signInfo=[[NSMutableDictionary alloc]initWithDictionary:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"signInfo"]];
             delegate.userPost=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"userPost"] integerValue];
             delegate.id=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"id"] integerValue];
@@ -137,11 +138,11 @@
     self.name.font=[UIFont fontWithName:@"zapfino" size:30];
     self.loginButton.layer.cornerRadius=3;
     self.loginButton.backgroundColor=COLOR(22, 168, 234, 1);
-    UIImageView*accountImage=[[UIImageView alloc]initWithFrame:CGRectMake(0, 11, 15, 20)];
-    accountImage.image=[UIImage imageNamed:@"手机图标"];
+    UIImageView*accountImage=[[UIImageView alloc]initWithFrame:CGRectMake(0, 11, 14, 16)];
+    accountImage.image=[UIImage imageNamed:@"Shape 32@2x"];
     [self.backView addSubview:accountImage];
-    UIImageView*passWordImage=[[UIImageView alloc]initWithFrame:CGRectMake(0, 51, 15, 20)];
-    passWordImage.image=[UIImage imageNamed:@"密码图标"];
+    UIImageView*passWordImage=[[UIImageView alloc]initWithFrame:CGRectMake(0, 51, 14, 20)];
+    passWordImage.image=[UIImage imageNamed:@"LOCK@2x"];
     [self.backView addSubview:passWordImage];
     [self.backView addSubview:_passWord];
 }

@@ -27,7 +27,10 @@
 @property(nonatomic,copy)void(^workBlock)();
 @property(nonatomic,copy)void(^signin)(); //签到事件
 @property(nonatomic,copy)void(^push)(NSIndexPath*indexPath);
+@property(nonatomic,copy)void(^refershHotRank)();
 -(void)reloadData;
 -(void)hideNotice;
 -(void)showNotice;
+-(void)showNoDataPiceure;
+-(void)hideNoDataPicture;
 @end

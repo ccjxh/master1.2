@@ -39,13 +39,19 @@
 -(void)receiveNotice{
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(update) name:@"updateUI" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refershUI) name:@"intrgalUpdate" object:nil];
     
 }
 
+-(void)refershUI{
+
+    [findView reloadData];
+
+}
+
 -(void)update{
-//    SDCycleScrollView*sdvc=(id)[self.view viewWithTag:100];
-//    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-//    sdvc.imageURLStringsGroup=delegate.pictureArray;
+
+
 }
 
 
@@ -53,6 +59,7 @@
 -(void)dealloc{
     
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"update" object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"intrgalUpdate" object:nil];
 }
 
 
@@ -177,7 +184,6 @@
     
     UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, 60, self.navigationController.navigationBar.frame.size.height)];
     button.tag=10;
-    
     [button addTarget:self action:@selector(changecity) forControlEvents:UIControlEventTouchUpInside];
     UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(0, 9, 60, 30)];
     label.textColor=[UIColor whiteColor];
@@ -187,7 +193,7 @@
         label.frame=CGRectMake(0, 9, _currentCityName.length*16, 30);
     }
     UIImageView*imageview=[[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(label.frame)+5, 21, 13, 8)];
-    imageview.image=ImageNamed(@"ARROw.png");
+    imageview.image=ImageNamed(@"ARROW");
     imageview.tag=11;
     [button addSubview:imageview];
     [button addSubview:label];
@@ -204,9 +210,12 @@
         
         cvc.city=self.orginCity;
     }
+    __weak typeof(self)weakSelf=self;
     cvc.TBlock=^(AreaModel*CityModel){
         _currentCityName=CityModel.name;
         [self initUI];
+        [weakSelf requestHotRank];
+        
     };
     
     [self pushWinthAnimation:self.navigationController Viewcontroller:cvc];
@@ -299,8 +308,6 @@
         [weakSelf sigin];
     
     };
-    
-    
     __weak typeof(findMaster*)weakFindview=findView;
     findView.push=^(NSIndexPath*indexpath){
         MasterDetailModel*model=weakFindview.hotArray[indexpath.row];
@@ -309,9 +316,12 @@
         pvc.name=model.realName;
         pvc.mobile=model.mobile;
         [weakSelf pushWinthAnimation:weakSelf.navigationController Viewcontroller:pvc];
-
     };
+    findView.refershHotRank=^(){
     
+        [weakSelf requestHotRank];
+    
+    };
     self.view.backgroundColor=COLOR(232, 233, 232, 1);
     [self.view addSubview:findView];
     
@@ -332,10 +342,11 @@
             NSInteger renewDay=[[delegate.signInfo objectForKey:@"renewDay"] integerValue];
             NSInteger todayIntegral=[[delegate.signInfo objectForKey:@"nextDayIntegral"] integerValue];
             NSInteger totalIntegral=[[delegate.signInfo objectForKey:@"totalIntegral"] integerValue];
-            [delegate.signInfo setObject:[NSString stringWithFormat:@"%d",++renewDay] forKey:@"renewDay"];
-            [delegate.signInfo setObject:[NSString stringWithFormat:@"%d",todayIntegral+totalIntegral] forKey:@"totalIntegral"];
+            [delegate.signInfo setObject:[NSString stringWithFormat:@"%ld",++renewDay] forKey:@"renewDay"];
+            [delegate.signInfo setObject:[NSString stringWithFormat:@"%ld",todayIntegral+totalIntegral] forKey:@"totalIntegral"];
+            delegate.integral =todayIntegral+totalIntegral;
             [findView reloadData];
-            }            
+            }
         }];
         
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
@@ -405,7 +416,6 @@
 #pragma mark-请求通知公告
 -(void)requestNotice{
 
-    
     NSString*urlString=[self interfaceFromString:interface_Notice];
     [[httpManager share]GET:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
         NSDictionary*dict=(NSDictionary*)responseObject;
@@ -445,13 +455,17 @@
 #pragma mark-热度排行榜请求
 -(void)requestHotRank{
 
+    [self flowShow];
+    [findView hideNoDataPicture];
     NSString*urlString=[self interfaceFromString:interface_hotRang];
     AreaModel*model=[[dataBase share]findWithCity:_currentCityName];
+    [_hotArray removeAllObjects];
     NSDictionary*dict;
     if (model) {
         dict=@{@"firstLocation":[NSString stringWithFormat:@"%lu",model.id]};
     }
     [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
+        [self flowHide];
        [self.view makeToast:[dict objectForKey:@"msg"] duration:1.5f position:@"center" Finish:^{
            NSDictionary*dict=(NSDictionary*)responseObject;
            if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
@@ -467,10 +481,17 @@
            }
            
            findView.hotArray=_hotArray;
+           if (_hotArray.count==0) {
+               
+               [findView showNoDataPiceure];
+               
+           }
            [findView.collection reloadData];
        }];
         
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+       
+        [self flowHide];
         
     }];
 }
@@ -488,6 +509,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 
 @end

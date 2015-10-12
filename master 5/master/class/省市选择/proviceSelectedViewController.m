@@ -9,6 +9,8 @@
 #import "proviceSelectedViewController.h"
 #import "selectedCityinforView.h"
 #import "firstAreaViewController.h"
+#import "openCityManagerViewController.h"
+
 @interface proviceSelectedViewController ()
 
 @end
@@ -84,8 +86,9 @@
     if (indexPath.section==1) {
         
         //管理
-        selectedCityinforView*svc=[[selectedCityinforView alloc]init];
-        
+        openCityManagerViewController*ovc=[[openCityManagerViewController alloc]initWithNibName:@"openCityManagerViewController" bundle:nil];
+        ovc.dataArray=self.selectArray;
+        [self pushWinthAnimation:self.navigationController Viewcontroller:ovc];
 
     }
 

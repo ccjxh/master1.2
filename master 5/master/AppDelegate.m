@@ -48,13 +48,28 @@
  */
 @implementation AppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+-(void)setIntegral:(NSInteger)integral{
     
+    _integral=integral;
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"intrgalUpdate" object:nil];
+    
+}
+
+
+-(void)setIntegrity:(NSInteger)integrity{
+
+    _integrity=integrity;
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"integrityUpdate" object:nil];
+
+}
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
      [[CrashReporter sharedInstance] installWithAppId:@"900006644"];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIViewController*temp=[[UIViewController alloc]init];
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     delegate.userInforDic=[[NSMutableDictionary alloc]init];
+   
     self.window.rootViewController=temp;
     [self setupRecommend];  //评分相关设置
     [self setupTestLin];    //云测相关设置
@@ -100,6 +115,7 @@
 
     }];
     
+    
     [XGPush startApp:2200123145 appKey:@"IT2RW4D1E84M"];  //信鸽推送初始化
      [SMS_SDK registerApp:@"93852832ce02" withSecret:@"a28d5c5bfbb3ddee35bf3a9585895472"]; //短信验证初始化
     if (!_pictureArray) {
@@ -126,6 +142,8 @@
         [self setupguide];
 
     }
+    
+    
         
     return YES;
 }
@@ -632,6 +650,8 @@
 //    [[EaseMob sharedInstance] applicationWillTerminate:application];
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+
 
 
 @end

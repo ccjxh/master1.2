@@ -23,6 +23,7 @@
     UIScrollView*_backView;
     BOOL _isShowNotice;//是否显示通知
     UIButton*_signButton;//签到button
+    UIButton*_refershButton;
 
 }
 -(id)initWithCoder:(NSCoder *)aDecoder{
@@ -136,7 +137,6 @@
 
 -(void)reloadData{
 
-    
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     if ([[delegate.signInfo objectForKey:@"signState"] integerValue]==0) {
         [_signButton setTitle:[NSString stringWithFormat:@"今日签到+%lu",self.model.nextDayIntegral] forState:UIControlStateNormal];
@@ -147,7 +147,7 @@
     }
 
     _timeLabel.text=[NSString stringWithFormat:@"您已经连续登陆了%lu天",[[delegate.signInfo objectForKey:@"renewDay"] integerValue]];
-    _scoreLabel.text=[NSString stringWithFormat:@"%lu",[[delegate.signInfo objectForKey:@"totalIntegral"] integerValue]];
+    _scoreLabel.text=[NSString stringWithFormat:@"%lu",delegate.integral];
     if (_isShowNotice==NO) {
         _noticeView.frame=CGRectMake(_noticeView.frame.origin.x, _noticeView.frame.origin.y, _noticeView.frame.size.width, 0);
     }else{
@@ -246,10 +246,39 @@
     [ _collection setCollectionViewLayout:layout animated:YES];
     UINib *nib=[UINib nibWithNibName:@"hotRankCollectionViewCell" bundle:[NSBundle mainBundle]];
     [_collection registerNib:nib forCellWithReuseIdentifier:@"cell"];
+    _refershButton=[[UIButton alloc]initWithFrame:CGRectMake(_collection.bounds.size.width/2-30, _collection.bounds.size.height/2-30 , 60, 60)];
+    _refershButton.backgroundColor=[UIColor blackColor];
+    [_refershButton addTarget:self action:@selector(refershData) forControlEvents:UIControlEventTouchUpInside];
+    _refershButton.hidden=YES;
+    [_collection addSubview:_refershButton];
     [_collection reloadData];
-    
+    [_collection bringSubviewToFront:_refershButton];
+
 }
 
+
+
+-(void)refershData{
+
+    if (self.refershHotRank) {
+        self.refershHotRank();
+    }
+
+}
+
+
+-(void)showNoDataPiceure{
+
+    _refershButton.hidden=NO;
+
+}
+
+
+-(void)hideNoDataPicture{
+
+    _refershButton.hidden=YES;
+
+}
 
 -(void)push:(UIButton*)button{
 

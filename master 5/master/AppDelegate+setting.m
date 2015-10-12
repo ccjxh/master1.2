@@ -12,6 +12,8 @@
 
 -(void)setHomePageWithMessage:(BOOL)isHaveMessage Dict:(NSDictionary*)dict{
     
+    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+     [delegate.signInfo addObserver:self forKeyPath:@"integral" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld  context:NULL];  //积分回调
     findMasterViewController*hvc=[[findMasterViewController alloc]init];
     hvc.title=@"找师傅";
     UINavigationController*nc=[[UINavigationController alloc]initWithRootViewController:hvc];

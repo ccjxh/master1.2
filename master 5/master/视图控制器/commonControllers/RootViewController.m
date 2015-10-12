@@ -205,6 +205,25 @@
 }
 
 
+-(void)createIncreaseview{
+
+    _increaseView=[[UIView alloc]initWithFrame:CGRectMake((SCREEN_WIDTH-100)/2, (SCREEN_HEIGHT-64-100)/2, 100, 100)];
+    _increaseView.backgroundColor=[UIColor blackColor];
+
+}
+
+
+-(void)showIncreaImage{
+    [self.view addSubview:_increaseView];
+    [self performSelector:@selector(delayMethod) withObject:nil afterDelay:1.5f];
+
+}
+
+-(void)delayMethod{
+
+    _increaseView.hidden=YES;
+
+}
 
 
 @end

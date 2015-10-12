@@ -26,9 +26,10 @@ typedef void (^loadMoreBlock)();
 @property(nonatomic,weak)SDRefreshHeaderView *weakRefreshHeader;//下拉刷新透视图
 @property(nonatomic,copy)refershBlock RefershBlock;//上拉刷新处理
 @property(nonatomic)BOOL isNetWorkRefer;//是否进行网络请求
-@property(nonatomic)NSString*token;//请求身份令牌
+@property(nonatomic,copy)NSString*token;//请求身份令牌
 @property(nonatomic)UIView*noDataView;//没有数据
 @property(nonatomic)UIView*netIll;//网络不好
+@property(nonatomic)UIView*increaseView;//积分增加view
 -(void)CreateFlow;
 -(void)flowShow;
 -(void)flowHide;
@@ -40,4 +41,6 @@ typedef void (^loadMoreBlock)();
 -(void)refersh;
 -(void)noData;
 -(void)net;
+-(void)createIncreaseview;
+-(void)showIncreaImage;
 @end

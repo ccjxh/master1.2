@@ -177,6 +177,7 @@
           [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"inviteCode"] forKey:@"inviteCode"];
           [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] forKey:@"integrity"];
           [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"]objectForKey:@"certification"] forKey:@"certification"];
+          delegate.integral=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue];
         }
         block();
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
@@ -214,7 +215,6 @@
     [cookieDic setObject:@"/" forKey:NSHTTPCookiePath];
     [cookieDic setObject:@"0" forKey:NSHTTPCookieVersion];
     //    DDLogVerbose(@"拼装cookie %@",cookieDic);
-    
     //cookie同步webview
     NSHTTPCookie * userCookie = [NSHTTPCookie cookieWithProperties:cookieDic];
     [[NSHTTPCookieStorage sharedHTTPCookieStorage]setCookie:userCookie];

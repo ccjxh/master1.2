@@ -44,6 +44,7 @@
 
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"update" object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"basic" object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -72,31 +73,25 @@
     [myInfoTableView registerNib:[UINib nibWithNibName:@"MyInfoTableViewCell" bundle:nil] forCellReuseIdentifier:@"myInfoTableView"];
     
     self.view.backgroundColor = [UIColor colorWithRed:245/255.0 green:245/255.0 blue:245/255.0 alpha:1.0];
-    
+    [self createIncreaseview];
     
 }
 
 -(void) upDateRegion:(NSNotification *)nof
 {
     NSDictionary *dict =  nof.object;
-    
-    
     [requestModel requestRegionInfo:[dict objectForKey:@"regionId"]];
     NSArray *arr = [[dict objectForKey:@"region"] componentsSeparatedByString:@"-"];
     NSMutableDictionary *pDict = [NSMutableDictionary dictionary];
     [pDict setObject:arr[0] forKey:@"name"];
     NSMutableDictionary *cDict = [NSMutableDictionary dictionary];
     [cDict setObject:arr[1] forKey:@"name"];
-    
-    
-    
+
 //    NSMutableDictionary *rDict = [NSMutableDictionary dictionary];
 //    [rDict setObject:arr[2] forKey:@"name"];
     
     personalDetailModel.nativeProvince = pDict;
     personalDetailModel.nativeCity = cDict;
-    
-    
     
     [myInfoTableView reloadData];
 }
@@ -234,7 +229,6 @@
                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                 [defaults setObject:@"1" forKey:@"type"];
                 [defaults synchronize];
-                
                 [self pushWinthAnimation:self.navigationController Viewcontroller:ctl];
             }else if (indexPath.row==3){
             
@@ -245,10 +239,9 @@
                     cvc.oldDate=model.birthday;
                     
                 }
-                    cvc.blockDateValue=^(NSString*date){
+                cvc.blockDateValue=^(NSString*date){
                         [self flowShow];
                         NSString*urlString=[self interfaceFromString:interface_updateBirthday];
-                 
                   NSArray*temp=[date componentsSeparatedByString:@"-"];
                   NSString*birthday=[NSString stringWithFormat:@"%@/%@/%@",temp[0],temp[1],temp[2]];
                    NSDictionary*dict=@{@"birthday":birthday};
@@ -257,6 +250,15 @@
                       [self flowHide];
                       if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
                           
+                          if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] ) {
+                              delegate.integrity=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] integerValue];
+                              
+                              if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"]) {
+                                  delegate.integral= [[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue];
+                                  [self showIncreaImage];
+                                  
+                              }
+                          }
                           [self.view makeToast:@"更新成功" duration:1 position:@"center" Finish:^{
                              
                               personalDetailModel.birthday=date;
@@ -467,9 +469,21 @@
                            NSDictionary *entityDic = responseObject[@"entity"];
                             NSDictionary *attachmentDic = entityDic[@"attachment"];
                             personalDetailModel.icon = attachmentDic[@"resource"];
+                            AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+//                            delegate.integral=;
+                      if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] ) {
+                          delegate.integrity=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] integerValue];
+                          
+                          if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"]) {
+                              delegate.integral= [[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue];
+                              [self showIncreaImage];
+                              
+                                }
+                            }
+                            
+                            
                             if (self.block) {
                                 self.block(@"",personalDetailModel.icon);                    }
-                            
                             [myInfoTableView reloadData];
  
                         }];
@@ -477,7 +491,6 @@
                     
                         [self.view makeToast:[dict objectForKey:@"msg"] duration:1 position:@"center"];
                     }
-                    
                     
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 //                     NSLog(@" 结果 ===== %@",error);

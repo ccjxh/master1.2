@@ -37,6 +37,7 @@
     
     self.navigationItem.title = @"性别";
     
+    
 }
 
 @end

@@ -124,7 +124,7 @@
                                                            otherButtonTitles:nil];
                  [alertView show];
                  NSString *urlString=[self interfaceFromString:interface_shareApp];
-                 NSDictionary*dict=@{@"appKey":@"com.baoself.master",@"shareType":[NSString stringWithFormat:@"%lu",_currentTag]};
+             NSDictionary*dict=@{@"appKey":@"com.baoself.master",@"shareType":[NSString stringWithFormat:@"%lu",_currentTag]};
                  __weak typeof(self)weakSelf=self;
                  if (_currentTag==2||_currentTag==4) {
                     
@@ -187,6 +187,11 @@
     NSDictionary*dict=@{@"appKey":@"com.baoself.master",@"shareType":[NSString stringWithFormat:@"%lu",_currentTag]};
     if (_currentTag==2||_currentTag==4) {
         [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
+            NSDictionary*dict=(NSDictionary*)responseObject;
+                if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"]) {
+                AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+                delegate.integral=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue];
+            }
             
         } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
             
