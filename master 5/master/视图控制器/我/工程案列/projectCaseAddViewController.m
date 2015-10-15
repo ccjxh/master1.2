@@ -385,7 +385,7 @@
         //        NSLog(@"image info : %@",info);
         NSString *type = [info objectForKey:UIImagePickerControllerMediaType];
         if ([type isEqualToString:@"public.image"]) {
-            UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+            UIImage *image = [info objectForKey:@"UIImagePickerControllerEditedImage"];
             CGSize imagesize = image.size;
             UIImage *imageNew = [self imageWithImage:image scaledToSize:imagesize];
             [self.picArray insertObject:image atIndex:1];

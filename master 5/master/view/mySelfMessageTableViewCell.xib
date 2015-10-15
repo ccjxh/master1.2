@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -12,11 +12,12 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="81"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="80.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="GTf-kR-K3D">
                         <rect key="frame" x="8" y="37" width="30" height="30"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="30" id="HcE-Hf-33c"/>
                             <constraint firstAttribute="height" constant="30" id="sdr-fn-Haz"/>
@@ -24,6 +25,7 @@
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ejn-SV-jNI">
                         <rect key="frame" x="8" y="13" width="304" height="15"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="15" id="FWP-zD-08P"/>
                         </constraints>
@@ -33,6 +35,7 @@
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bubbleSomeone.png" translatesAutoresizingMaskIntoConstraints="NO" id="W1E-iz-Nuh">
                         <rect key="frame" x="46" y="36" width="100" height="35"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="35" id="l5q-gW-dMi"/>
                             <constraint firstAttribute="width" constant="100" id="yeH-Ce-vll"/>
@@ -40,6 +43,7 @@
                     </imageView>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QoD-Jp-LWp">
                         <rect key="frame" x="56" y="33" width="90" height="25"/>
+                        <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="90" id="Hs5-ZI-BVY"/>
@@ -50,6 +54,7 @@
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
                 </subviews>
+                <animations/>
                 <constraints>
                     <constraint firstItem="QoD-Jp-LWp" firstAttribute="top" secondItem="ejn-SV-jNI" secondAttribute="bottom" constant="5" id="72a-qa-Crv"/>
                     <constraint firstItem="W1E-iz-Nuh" firstAttribute="top" secondItem="ejn-SV-jNI" secondAttribute="bottom" constant="8" id="99L-Lk-5Oq"/>
@@ -62,6 +67,7 @@
                     <constraint firstItem="GTf-kR-K3D" firstAttribute="top" secondItem="ejn-SV-jNI" secondAttribute="bottom" constant="9" id="xL3-TL-jHH"/>
                 </constraints>
             </tableViewCellContentView>
+            <animations/>
             <connections>
                 <outlet property="backHeight" destination="l5q-gW-dMi" id="Rhg-l0-Caf"/>
                 <outlet property="backImahe" destination="W1E-iz-Nuh" id="N8Z-9q-egn"/>

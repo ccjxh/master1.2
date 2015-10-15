@@ -94,7 +94,6 @@
                 
             }
         }
-        
     };
     
     _tencentOAuth = [[TencentOAuth alloc] initWithAppId:@"1104650241" andDelegate:self];
@@ -102,13 +101,14 @@
     [self CreateFlow];
     [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;
     
+    
 }
 
 
 #pragma mark-customNavigation
 -(void)customNavigation{
     
-    UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, 22, 19)];
+    UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, 19, 19)];
     [button setImage:[UIImage imageNamed:@"意见反馈.png"] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(feedback) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithCustomView:button];
@@ -219,6 +219,7 @@
     };
     
     [self pushWinthAnimation:self.navigationController Viewcontroller:cvc];
+    
 }
 
 
@@ -269,7 +270,7 @@
     }
     
     NSString *temp = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    if (temp.length>6) {
+    if (temp.length>500) {
         
         return NO;
     }
@@ -312,6 +313,7 @@
     findView.push=^(NSIndexPath*indexpath){
         MasterDetailModel*model=weakFindview.hotArray[indexpath.row];
         PeoDetailViewController*pvc=[[PeoDetailViewController alloc]init];
+        pvc.hidesBottomBarWhenPushed=YES;
         pvc.id=[model.id integerValue];
         pvc.name=model.realName;
         pvc.mobile=model.mobile;
@@ -339,11 +341,12 @@
             if ([[dict objectForKey:@"rspCode"]integerValue]==200) {
             AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
             [delegate.signInfo setObject:@"1" forKey:@"signState"];
-            NSInteger renewDay=[[delegate.signInfo objectForKey:@"renewDay"] integerValue];
             NSInteger todayIntegral=[[delegate.signInfo objectForKey:@"nextDayIntegral"] integerValue];
+                NSDictionary*parent=@{@"value":[NSString stringWithFormat:@"%lu",todayIntegral]};
+                NSNotification*noction=[[NSNotification alloc]initWithName:@"showIncreaImage" object:nil userInfo:parent];
+                [[NSNotificationCenter defaultCenter]postNotification:noction];
             NSInteger totalIntegral=[[delegate.signInfo objectForKey:@"totalIntegral"] integerValue];
-            [delegate.signInfo setObject:[NSString stringWithFormat:@"%ld",++renewDay] forKey:@"renewDay"];
-            [delegate.signInfo setObject:[NSString stringWithFormat:@"%ld",todayIntegral+totalIntegral] forKey:@"totalIntegral"];
+            [delegate.signInfo setObject:[NSString stringWithFormat:@"%d",[[delegate.signInfo objectForKey:@"renewDay"] integerValue]+1] forKey:@"renewDay"];
             delegate.integral =todayIntegral+totalIntegral;
             [findView reloadData];
             }

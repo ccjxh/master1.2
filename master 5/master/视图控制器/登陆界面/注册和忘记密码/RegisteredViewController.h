@@ -16,6 +16,12 @@
 @property (weak, nonatomic) IBOutlet UIButton *registerButton;
 @property (weak, nonatomic) IBOutlet UIButton *getVerificationCode;
 @property (weak, nonatomic) IBOutlet UILabel *numberLabel;
+@property (weak, nonatomic) IBOutlet UIView *mobileButton;
+@property (weak, nonatomic) IBOutlet UIView *countButton;
+@property (weak, nonatomic) IBOutlet UIView *passwordButton;
+@property (weak, nonatomic) IBOutlet UIView *rePasswordButton;
+@property (weak, nonatomic) IBOutlet UIView *recommButton;
+@property (weak, nonatomic) IBOutlet UITextField *recommendTextfile;
 
 @property (nonatomic,assign) int states; //判断是注册还是忘记密码按钮
 

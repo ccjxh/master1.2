@@ -21,7 +21,10 @@
 #import "provinceViewController.h"
 #import "proviceSelectedViewController.h"
 #import "timetableviewCell.h"
-
+#import "customOrderTableViewCell.h"
+#import "nameViewController.h"
+#import "ModifySexViewController.h"
+#import "requestModel.h"
 @interface MyserviceViewController ()<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate,UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 @property(nonatomic)NSMutableArray*noRecomandDataSource;//未认证的数据源
@@ -56,10 +59,10 @@
     UIDatePicker *_DatePickerView;  //
     UIView *_titleView;
     NSString*date;
-    
     UITableView*_payTableview;//支付tableview
     NSMutableArray*_payArray;//支付数据
     NSMutableArray*_recommendSkillArray;//已认证的技能数组
+    UILabel*_reasonLabel;//被拒绝理由展示
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -78,6 +81,24 @@
     
 }
 
+
+-(void)reloadData{
+    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+    if ([[delegate.userInforDic objectForKey:@"certification"] objectForKey:@"skillOpinion"]) {
+        _reasonLabel.text=[NSString stringWithFormat:@"被拒绝的原因是:%@",[[delegate.userInforDic objectForKey:@"certification"] objectForKey:@"skillOpinion"]];
+    }
+    if (_reasonLabel.text==nil) {
+        _reasonLabel.hidden=YES;
+        self.topHeight.constant=64;
+    }else{
+        _reasonLabel.hidden=NO;
+        self.topHeight.constant=84;
+    
+    }
+    
+
+}
+
 -(void)update{
     
     [self request];   //网络请求
@@ -89,8 +110,10 @@
 
 
 -(void)dealloc{
+    
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"update" object:nil];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"city" object:nil];
+    
 }
 
 
@@ -98,6 +121,8 @@
 - (void)viewDidLoad {
     
     self.title=@"我的服务";
+    
+    self.automaticallyAdjustsScrollViewInsets=NO;
     
     [self customNaigationLeftButton];
     
@@ -109,12 +134,36 @@
     
     [self initUI];    //UI搭建
     
+    [self disPalyReason];//展示被拒绝的原因
+    
     [self CreateFlow];   //菊花
     
     [self receiveNotice];
 
 }
 
+
+-(void)disPalyReason{
+
+    _reasonLabel=[[UILabel alloc]initWithFrame:CGRectMake(13, 64, SCREEN_WIDTH-13, 20)];
+    _reasonLabel.textColor=[UIColor blackColor];
+    _reasonLabel.font=[UIFont systemFontOfSize:16];
+    UITapGestureRecognizer*tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(refuse)];
+    tap.numberOfTapsRequired=1;
+    tap.numberOfTouchesRequired=1;
+    [_reasonLabel addGestureRecognizer:tap];
+    [self reloadData];
+    _reasonLabel.userInteractionEnabled=YES;
+    [self.view addSubview:_reasonLabel];
+
+}
+
+
+-(void)refuse{
+
+    UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"拒绝理由" message:_reasonLabel.text delegate:nil cancelButtonTitle:@"取消" otherButtonTitles: nil];
+    [alert show];
+}
 
 
 -(void)customNaigationLeftButton{
@@ -194,7 +243,7 @@
 #pragma mark-构建基本UI
 -(void)initUI{
     
-    self.tableview.separatorStyle=2;
+    self.tableview.separatorStyle=UITableViewCellSeparatorStyleSingleLine;
     self.tableview.backgroundColor=COLOR(228, 228, 228, 1);
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     PersonalDetailModel*model=[[dataBase share]findPersonInformation:delegate.id];
@@ -233,6 +282,25 @@
 
 #pragma mark-提交按钮点击
 -(void)appication{
+    
+    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+    PersonalDetailModel*model=[[dataBase share]findPersonInformation:delegate.id];
+
+    if (model.realName==nil) {
+        [self.view makeToast:@"请填写完姓名在提交" duration:1.5f position:@"center"];
+        return;
+    }
+    
+    if ([[delegate.userInforDic objectForKey:@"age"] integerValue]==0) {
+        [self.view makeToast:@"请选择年龄后在提交" duration:1.5f position:@"center"];
+        return;
+
+    }
+    if (model.gendar==nil) {
+        [self.view makeToast:@"请选择性别后在提交" duration:1.5f position:@"center"];
+        return;
+    }
+    
     if (_startTime==nil) {
         [self.view makeToast:@"从业时间不能为空" duration:1 position:@"center"];
         return;
@@ -252,9 +320,7 @@
         return;
     }
     
-    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-    PersonalDetailModel*model=[[dataBase share]findPersonInformation:delegate.id];
-    NSString*urlString;
+       NSString*urlString;
     NSDictionary*dict;
     if (_currentDataArray==_managerDataSource) {
         urlString=[self interfaceFromString:interface_attestation];
@@ -414,8 +480,6 @@
     NSString*urlString=[self interfaceFromString:interface_myServicerDetail];
     [[httpManager share]GET:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
         NSDictionary*dict=(NSDictionary*)responseObject;
-        
-        
         NSArray*StartTemp=[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"starProjectCase"];
         //明星工程解析
         for (NSInteger i=0; i<StartTemp.count; i++) {
@@ -424,8 +488,6 @@
             [starModel setValuesForKeysWithDictionary:inforDict];
             [_starProject addObject:starModel];
         }
-        
-        
         serviceModel*model=[[serviceModel alloc]init];
         [model setValuesForKeysWithDictionary:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"service"]];
          [_dataArray addObject:model];
@@ -534,14 +596,27 @@
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
   
     
-    return _currentDataArray.count;
+//    return _currentDataArray.count;
+    return 2;
 
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 
+    if (section==0) {
+        return 3;
+    }
+    
+    if (section==1) {
+        return 8;
+    }
+    
+    
     if (_currentDataArray==_headDataSource) {
         if (section==5) {
-            return _recommends.count;
+            
+//            return <#expression#>
+//            return _recommends.count;
+//            return 3;
         }
     }
     if (_currentDataArray==_managerDataSource) {
@@ -558,145 +633,140 @@
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     //包工头进入服务界面
 //    if (_currentDataArray==_headDataSource) {
-        switch (indexPath.section) {
+    
+     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+    if (indexPath.section==0) {
+        
+        customOrderTableViewCell*Cell=[tableView dequeueReusableCellWithIdentifier:@"cell"];
+        Cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+        if (!Cell) {
+            Cell=[[[NSBundle mainBundle]loadNibNamed:@"customOrderTableViewCell" owner:nil options:nil]lastObject];
+        }
+        
+       PersonalDetailModel*model=[[dataBase share]findPersonInformation:delegate.id];
+        switch (indexPath.row) {
             case 0:
             {
-                UITableViewCell*cell=[self getStartTimeWithTableview:tableView];
-                return cell;
+                Cell.function.text=@"姓名";
+                if (model.realName) {
+                    Cell.content.text=model.realName;
+                }else{
+                
+                Cell.content.text=@"待完善";
+                }
+                return Cell;
+
             }
-            break;
-             case 1:
+                break;
+            case 2:
             {
-                UITableViewCell*cell=[self getSkillCellWithTableview:tableView SkillArray:_skillArray];
-                return cell;
+            Cell.function.text=@"年龄";
+                if ([[delegate.userInforDic objectForKey:@"age"] integerValue]==0) {
+                    Cell.content.text=@"待完善";
+                }else{
+                
+                    Cell.content.text=[NSString stringWithFormat:@"%@",[delegate.userInforDic objectForKey:@"age"]];
+                }
+                
+                return Cell;
+                
+                
             }
-            break;
+                break;
+                case 1:
+            {
+            
+                Cell.function.text=@"性别";
+                Cell.content.text=model.gendar;
+                return Cell;
+            }
+                break;
+            default:
+                break;
+        }
+        
+        
+    }else{
+    
+        switch (indexPath.row) {
+            case 0:
+            {
+                customOrderTableViewCell*Cell=[tableView dequeueReusableCellWithIdentifier:@"cell"];
+                if (!Cell) {
+                    Cell=[[[NSBundle mainBundle]loadNibNamed:@"customOrderTableViewCell" owner:nil options:nil]lastObject];
+                }
+                Cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                Cell.function.text=@"岗位";
+                if (delegate.userPost==1) {
+                    Cell.content.text=@"雇主";
+                }else if (delegate.userPost==2){
+                
+                Cell.content.text=@"师傅";
+                }else if (delegate.userPost==3){
+                
+                    Cell.content.text=@"工长";
+                }
+                
+                return Cell;
+                
+            }
+                break;
+                case 1:
+            {
+            
+                return [self getSkillCellWithTableview:tableView SkillArray:_skillArray];
+                
+            }
+                break;
                 case 2:
             {
-                UITableViewCell*cell=[self getServiceCellWithTableview:tableView];
-                return cell;
+                return [self getStartTimeWithTableview:tableView];
+                
             }
                 break;
                 case 3:
             {
-                UITableViewCell*cell=[tableView dequeueReusableCellWithIdentifier:@"Cell"];
-                if (!cell) {
-                    cell=[[UITableViewCell alloc]initWithStyle:1 reuseIdentifier:@"Cell"];
-                }
-                if (indexPath.row==0) {
-                    
-                cell=[self getCertainCellWithTableview:tableView];
-                    return cell;
-                }
-                else if (indexPath.row==1)
-                {
-                    UITableViewCell*cell=[self getserviceIntrolduceCellWithTableview:tableView];
-                    return cell;
-                }
-                else if (indexPath.row==2)
-                {
-                    return [self getexpectWithTableview:tableView];
-                }
+                return [self getServiceCellWithTableview:tableView];
+                
             }
                 break;
                 case 4:
             {
+                return [self getexpectWithTableview:tableView];
                 
-                UITableViewCell*cell=[self getWorkStstusWithTableView:tableView];
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                return cell;
+                
+            }
+                break;
+                case 5:
+            {
+               return  [self getserviceIntrolduceCellWithTableview:tableView];
+                
+                
+            }
+                break;
+                case 6:
+            {
+                return [self getWorkStstusWithTableView:tableView];
+                
+                
+            }
+                break;
+                case 7:
+            {
+                return [self getCertainCellWithTableview:tableView];
+                
+                
             }
                 break;
                 
-                case 5:
-                    {
-                        recommendInforTableViewCell*cell=[tableView dequeueReusableCellWithIdentifier:@"recommendInforTableViewCell"];
-                        if (!cell) {
-                            cell=[[[NSBundle mainBundle]loadNibNamed:@"recommendInforTableViewCell" owner:nil options:nil]lastObject];
-                        }
-                        recommendInforModel*model=_recommends[indexPath.row];
-                        cell.model=model;
-                        [cell reloadData];
-                        return cell;
-                        //                return [self getRecommendCellWithTableview:tableView];
-                    }
-                    break;
-//                }
-           
             default:
                 break;
-                
-            }
-//    }
+        }
     
-//    //项目经理进入我的服务界面
-//    else if (_currentDataArray==_managerDataSource)
-//    {
-//        switch (indexPath.section) {
-//            case 0:
-//            {
-//                
-//                UITableViewCell*cell=[self getStartTimeWithTableview:tableView];
-//                return cell;
-//                
-//            }
-//                break;
-//                
-//            case 1:
-//            {
-//                
-//                UITableViewCell*cell=[self getServiceCellWithTableview:tableView];
-//                    return cell;
-//                
-//            }
-//                break;
-//            case 2:
-//            {
-//                
-//                    if (indexPath.row==0) {
-//                    return [self getCertainCellWithTableview:tableView];
-//                    }else if (indexPath.row==1)
-//                {
-//                  
-//                    return   [self getserviceIntrolduceCellWithTableview:tableView];
-//                    
-//                }
-//                else if (indexPath.row==2)
-//                {
-//                        return [self getexpectWithTableview:tableView];
-//                }
-//                
-//            }
-//                break;
-//            case 3:
-//            {
-//              
-//                return [self getWorkStstusWithTableView:tableView];
-//                
-//            }
-//                break;
-//            case 4:
-//            {
-//               
-//                //明星工程
-//                starTableViewCell*cell=[tableView dequeueReusableCellWithIdentifier:@"cell"];
-//                if (!cell) {
-//                    cell=[[[NSBundle mainBundle]loadNibNamed:@"starTableViewCell" owner:nil options:nil] lastObject];
-//                }
-//                cell.selectionStyle=0;
-//                if (_starProject.count!=0) {
-//                starCaseModel*model=_starProject[indexPath.row];
-//                cell.model=model;
-//                [cell reloadData];
-//                }
-//                return cell;
-//            }
-//                break;
-//            default:
-//            break;
-//        }
-//    }
-    return nil;
+    }
+    
+     return nil;
 }
 
 
@@ -709,10 +779,10 @@
 //        tempString=@"选择您的服务类型";
 //    }
 //    else if (_currentDataArray==_headDataSource){
-        NSArray*array=@[@"",@"  专业技能",@"  服务区域",@"  证书",@"",@""];
-        tempString=array[section];
+        NSArray*array=@[@"    基本资料",@"    服务信息",@"  服务区域",@"  证书",@"",@""];
+       tempString=array[section];
        label.text=tempString;
-    label.font=[UIFont systemFontOfSize:15];
+    label.font=[UIFont boldSystemFontOfSize:16];
         [view addSubview:label];
     
 //        if (section==5) {
@@ -792,18 +862,83 @@
 
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.section==0) {
+        return 44;
+    }else{
+    
+        switch (indexPath.row) {
+            case 0:
+            {
+                return 44;
+            }
+                break;
+                case 1:
+            {
+            
+                return  [self accountSkillWithAllSkill:_skillArray];
+            }
+                break;
+                case 2:
+            {
+            
+                return 44;
+            }
+                break;
+                case 3:
+            {
+            
+                return 44;
+            }
+                break;
+                case 4:
+            {
+                return 44;
+            }
+                break;
+                case 5:
+            {
+            
+                return [self accountIntrolduce];
+            }
+                break;
+                case 6:
+            {
+            
+                return 44;
+            }
+                break;
+                case 7:
+            {
+                return [self accountPicture];
+            }
+                break;
+            default:
+                break;
+        }
+    
+    }
+    
+    
 //    if (_currentDataArray==_headDataSource) {
         if (indexPath.section==1) {
+            
             return [self accountSkillWithAllSkill:_skillArray];
+            
         }
         if (indexPath.section==2) {
+            
             return [self accountservice];
+            
         }
         else if (indexPath.section==3){
             if (indexPath.row==0) {
+                
                 return [self accountPicture];
+                
             }else if (indexPath.row==1){
+                
                 return [self accountIntrolduce];
+                
             }
         }
         else if (indexPath.section==5){
@@ -819,188 +954,418 @@
             }
             if ([self accountStringHeightFromString:skillString Width:(SCREEN_WIDTH-10-70)]!=0) {
                 return [self accountStringHeightFromString:model.content Width:(SCREEN_WIDTH-10-10)]+[self accountStringHeightFromString:skillString Width:(SCREEN_WIDTH-10-70)]+60;
+                
             }
             
             return [self accountStringHeightFromString:model.content Width:(SCREEN_WIDTH-10-10)]+[self accountStringHeightFromString:skillString Width:(SCREEN_WIDTH-10-70)]+80;
+            
         }
-//    }
-//    else if (_currentDataArray==_managerDataSource){
-//        if (indexPath.section) {
-//            switch (indexPath.section) {
-//                case 1:
-//                {
-//                    return [self accountservice];
-//                }
-//                    break;
-//                case 2:{
-//                    if (indexPath.row==0) {
-//                        return [self accountPicture];
-//                    }
-//                    else if (indexPath.row==1){
-//                        return [self accountIntrolduce];
-//                        
-//                    }else if (indexPath.row==2){
-//                        return 50;
-//                    }
-//                }
-//                    break;
-//                case 4:
-//                {
-//                    NSInteger width=(SCREEN_WIDTH-40)/4;
-//                    if (_starProject.count%4==0) {
-//                        return _starProject.count/4*width+20;
-//                    }else{
-//                        return (_starProject.count/4+1)*width+20;
-//                    }
-//                }
-//                default:
-//                    break;
-//            }
-//        }
-//    }
+    
     return 50;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    if (section==0) {
-        return 0;
-    }
-    if (_currentDataArray==_managerDataSource) {
-        if (section==4) {
-            return 50;
-        }
-    }
-    if (_currentDataArray==_headDataSource) {
-        if (section==5) {
-            return 50;
-        }
-    }
+//    if (section==0||section==4||section==5) {
+//        return 0;
+//    }
+//    if (_currentDataArray==_managerDataSource) {
+//        if (section==4) {
+//            return 50;
+//        }
+//    }
+//    if (_currentDataArray==_headDataSource) {
+//        if (section==5) {
+//            return 50;
+//        }
+//    }
+    
+    
     return 30;
     
 }
 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+    PersonalDetailModel*model=[[dataBase share]findPersonInformation:delegate.id];
     _currentIndexPath=indexPath;
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (_currentDataArray==_noRecomandDataSource) {
-        if (indexPath.row==0) {
-            _currentDataArray=_managerDataSource;
-            [self selectedDate];
-            
-        }
-        else if (indexPath.row==1){
-            _currentDataArray=_headDataSource;
-            [self initUI];
-            [_tableview reloadData];
-        }
-    }
-    else if (_currentDataArray==_headDataSource||_currentDataArray==_managerDataSource){
-        
-        switch (indexPath.section) {
+    if (indexPath.section==0) {
+        switch (indexPath.row) {
             case 0:
-            [self selectedDate];
+            {
+                nameViewController*nvc=[[nameViewController alloc]initWithNibName:@"nameViewController" bundle:nil];
+                if (model.realName) {
+                    nvc.origin=model.realName;
+                }
+                nvc.contentChange=^(NSString*name){
+                    model.realName=name;
+                    [[dataBase share] deleAllCityInformation];
+                    [[dataBase share]addInformationWithModel:model];
+                    [_tableview reloadData];
+                };
+                [self pushWinthAnimation:self.navigationController Viewcontroller:nvc];
+            
+            }
                 break;
-            case 1:{
-                skillSelectViewController*svc=[[skillSelectViewController alloc]init];
-                svc.Array=_skillArray;
-                svc.skillArray=^(NSMutableArray*array){
-                    NSString*valuerString;
-                    for (NSInteger i=0; i<array.count; i++) {
-                        skillModel*model=array[i];
-                        if (i==0) {
-                            valuerString=[NSString stringWithFormat:@"%lu",model.id];
-                        }else{
-                            valuerString=[NSString stringWithFormat:@"%@,%lu",valuerString,model.id];
-                        }
-                    }
+                case 2:
+            {
+            
+                ChangeDateViewController*cvc=[[ChangeDateViewController alloc]init];
+                cvc.isfuture=YES;
+                cvc.isPass=YES;
+                if (model.birthday) {
+                    cvc.oldDate=model.birthday;
+                }
+                cvc.blockDateValue=^(NSString*date){
                     [self flowShow];
-                    NSDictionary*dict;
-                    if (valuerString==nil) {
-                        dict=@{@"skill":@"0"};
-                    }else{
-                       dict=@{@"skill":valuerString};
-                    }
-                    NSString*urlString=[self interfaceFromString:interface_updateServicerSkill];
+                    NSString*urlString=[self interfaceFromString:interface_updateBirthday];
+                    NSArray*temp=[date componentsSeparatedByString:@"-"];
+                    NSString*birthday=[NSString stringWithFormat:@"%@/%@/%@",temp[0],temp[1],temp[2]];
+                    NSDictionary*dict=@{@"birthday":birthday};
+                    [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
+                        NSDictionary*dict=(NSDictionary*)responseObject;
+                        [self flowHide];
+                        if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
+                            
+                            if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] ) {
+                                delegate.integrity=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] integerValue];
+                                if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"]) {
+                                    delegate.integral= [[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue];
+                                    NSDictionary*parent=@{@"value":[NSString stringWithFormat:@"%lu",delegate.integral]};
+                                    NSNotification*noction=[[NSNotification alloc]initWithName:@"showIncreaImage" object:nil userInfo:parent];
+                                    [[NSNotificationCenter defaultCenter]postNotification:noction];
+                                }
+                            }
+              NSArray*birthdayArray=[date componentsSeparatedByString:@"-"];
+              NSString*second=birthdayArray[1];
+              NSString*first=birthdayArray[0];
+              NSString*third=birthdayArray[2];
+              NSDateFormatter*formatter=[[NSDateFormatter alloc]init];
+              [formatter setDateFormat:@"yyyy-mm-dd"];
+              NSString*Date=[formatter stringFromDate:[NSDate date]];
+              NSArray*currentTimeArray=[Date componentsSeparatedByString:@"-"];
+              NSString*currentFirst=currentTimeArray[0];
+              NSString*currentSecond=currentTimeArray[1];
+              NSDate *date = [NSDate date];
+              NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+              NSDateComponents *comps = [[NSDateComponents alloc] init] ;
+              NSInteger unitFlags = NSYearCalendarUnit |
+              NSMonthCalendarUnit |
+              NSDayCalendarUnit |
+              NSWeekdayCalendarUnit |
+              NSHourCalendarUnit |
+              NSMinuteCalendarUnit |
+              NSSecondCalendarUnit;
+              comps = [calendar components:unitFlags fromDate:date];
+              int week = [comps weekday];
+              int year=[comps year];
+              int month = [comps month];
+              int day = [comps day];
+              NSString*age;
+              if (day>[third intValue]) {
+                  age=[NSString stringWithFormat:@"%lu岁",year-[first integerValue]-1];
+                  if (year==[first intValue]) {
+                      age=@"0岁";
+                  }
+              }
+                            
+              else  if ([currentSecond integerValue]>[second integerValue]){
+                  age=[NSString stringWithFormat:@"%lu岁",year-[first integerValue]-1];
+                  if (year==[first intValue]) {
+                      age=@"0岁";
+                  }
+              }else{
+                  age=[NSString stringWithFormat:@"%lu岁",year-[first integerValue]];
+                  if (year==[first intValue]) {
+                      age=@"0岁";
+                      
+                  }
+              }
+                        [delegate.userInforDic setObject:age forKey:@"age"];
+                        [_tableview reloadData];
+              [self.view makeToast:@"更新成功" duration:1 position:@"center" Finish:^{
+                            }];
+                        }else{
+                            
+                            [self.view makeToast:[dict objectForKey:@"msg"] duration:1 position:@"center"];
+                        }
+                        
+                    } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+                        [self flowHide];
+                        [self.view makeToast:@"当前网络不好，请稍后重试" duration:1 position:@"center"];
+                    }];
+                };
+                
+                [self pushWinthAnimation:self.navigationController Viewcontroller:cvc];
+            }
+                break;
+                case 1:
+            {
+            
+                ModifySexViewController *ctl = [[ModifySexViewController alloc] init];
+                ctl.gendarValueBlock = ^(long gendarId,long tag){
+                    NSString *urlString = [self interfaceFromString:interface_updateGendar];
+                    NSDictionary *dict = @{@"gendar":[NSString stringWithFormat:@"%lu",gendarId]};
                     [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
                         NSDictionary*dict=(NSDictionary*)responseObject;
                         if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
-                            [self flowHide];
-                            [self.view makeToast:@"技能更新成功" duration:1 position:@"center" Finish:^{
-                                [self request];
-                                
-                            }];
+                            NSString*content;
+                            if (gendarId == 0)
+                            {
+                                content = @"男";
+                            }
+                            else
+                            {
+                                content = @"女";
+                            }
+                            [[dataBase share]updateInformationWithId:delegate.id Attribute:@"gendar" Content:content];
+                            [_tableview reloadData];
                         }
+                        
                     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
-                        [self flowHide];
+                        
                     }];
+                   
                 };
-                [self pushWinthAnimation:self.navigationController Viewcontroller:svc];
+                
+                [self pushWinthAnimation:self.navigationController Viewcontroller:ctl];
             }
                 break;
-            case 2:{
                 
-//                cityViewController*cvc=[[cityViewController alloc]initWithNibName:@"cityViewController" bundle:nil];
-//                cvc.type=1;
-//                cvc.selectedArray=_serviceArray;
-//                [self pushWinthAnimation:self.navigationController Viewcontroller:cvc];
-//                provinceViewController*pvc=[[provinceViewController alloc]init];
-//                pvc.array=_serviceArray;
-//                [self pushWinthAnimation:self.navigationController Viewcontroller:pvc];
+            default:
+                break;
+        }
+    }else{
+    
+        switch (indexPath.row) {
+            case 1:
+            {
+                skillSelectViewController*svc=[[skillSelectViewController alloc]init];
+                                svc.Array=_skillArray;
+                                svc.skillArray=^(NSMutableArray*array){
+                                    NSString*valuerString;
+                                    for (NSInteger i=0; i<array.count; i++) {
+                                        skillModel*model=array[i];
+                                        if (i==0) {
+                                            valuerString=[NSString stringWithFormat:@"%lu",model.id];
+                                        }else{
+                                            valuerString=[NSString stringWithFormat:@"%@,%lu",valuerString,model.id];
+                                        }
+                                    }
+                                    [self flowShow];
+                                    NSDictionary*dict;
+                                    if (valuerString==nil) {
+                                        dict=@{@"skill":@"0"};
+                                    }else{
+                                       dict=@{@"skill":valuerString};
+                                    }
+                                    NSString*urlString=[self interfaceFromString:interface_updateServicerSkill];
+                                    [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
+                                        NSDictionary*dict=(NSDictionary*)responseObject;
+                                        if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
+                                            [self flowHide];
+                                            [self.view makeToast:@"技能更新成功" duration:1 position:@"center" Finish:^{
+                                                [self request];
+                                                
+                                            }];
+                                        }
+                                    } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+                                        [self flowHide];
+                                    }];
+                                };
+                                [self pushWinthAnimation:self.navigationController Viewcontroller:svc];
+
+            }
+                break;
+               case 2:
+            {
+            
+//                _currentDataArray=_managerDataSource;
+                _currentIndexPath=indexPath;
+                [self selectedDate];
+            }
+                break;
+                case 3:
+            {
+//
                 proviceSelectedViewController*pvc=[[proviceSelectedViewController alloc]initWithNibName:@"proviceSelectedViewController" bundle:nil];
                 pvc.selectArray=_serviceArray;
                 [self pushWinthAnimation:self.navigationController Viewcontroller:pvc];
                 
             }
                 break;
-            case 3:{
+                case 4:
+            {
+             [self setPayType];
                 
-                if (indexPath.row==0) {
-//                    _currentIndexPath=indexPath;
-                    certainViewController*pvc=[[certainViewController alloc]init];
-                    NSMutableArray*temp=[[NSMutableArray alloc]init];
-                    for (NSInteger i=0; i<_pictureArray.count; i++) {
-                        if (i==0) {
-                            continue;
-                        }
-                        certificateModel*model=_pictureArray[i];
-                        [temp addObject:model];
-                    }
-                    pvc.dataArray=temp;
-                    [self pushWinthAnimation:self.navigationController Viewcontroller:pvc];
-                    
-                    
-                    //                    [self setUserHeaderIamge];
-                }
-                if (indexPath.row==1) {
-                    opinionViewController*ovc=[[opinionViewController alloc]initWithNibName:@"opinionViewController" bundle:nil];
-                    ovc.type=0;
-                    ovc.limitCount=800;
-                    ovc.origin=_introduce;
-                    ovc.block=^(BOOL isRefersh){
-                        if (isRefersh) {
-                            
-                        
-                        }
-                    };
-                    [self pushWinthAnimation:self.navigationController Viewcontroller:ovc];
-
-                }else if (indexPath.row==2){
-                    
-                    [self setPayType];
-                }
             }
                 break;
-            case 4:{
+                case 5:
+            {
+                opinionViewController*ovc=[[opinionViewController alloc]initWithNibName:@"opinionViewController" bundle:nil];
+                                    ovc.type=0;
+                                    ovc.limitCount=800;
+                                    ovc.origin=_introduce;
+                                    ovc.block=^(BOOL isRefersh){
+                                        if (isRefersh) {
+                
+                
+                                        }
+                                    };
+                                    [self pushWinthAnimation:self.navigationController Viewcontroller:ovc];
+                
+            }
+                break;
+                case 6:
+            {
+            
                 _currentIndexPath=indexPath;
                 [self setupWorkStatus];
+ 
             }
                 break;
-            
+                case 7:
+            {
+                _currentIndexPath=indexPath;
+                   certainViewController*pvc=[[certainViewController alloc]init];
+                   NSMutableArray*temp=[[NSMutableArray alloc]init];
+                   for (NSInteger i=0; i<_pictureArray.count; i++) {
+                       if (i==0) {
+                           continue;
+                       }
+                       certificateModel*model=_pictureArray[i];
+                       [temp addObject:model];
+                   }
+                   pvc.dataArray=temp;
+                   [self pushWinthAnimation:self.navigationController Viewcontroller:pvc];
+                
+            }
+                break;
             default:
                 break;
         }
+    
     }
+    
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    if (_currentDataArray==_noRecomandDataSource) {
+//        if (indexPath.row==0) {
+//            _currentDataArray=_managerDataSource;
+//            [self selectedDate];
+//            
+//        }
+//        else if (indexPath.row==1){
+//            _currentDataArray=_headDataSource;
+//            [self initUI];
+//            [_tableview reloadData];
+//        }
+//    }
+//    else if (_currentDataArray==_headDataSource||_currentDataArray==_managerDataSource){
+//        
+//        switch (indexPath.section) {
+//            case 0:
+//            [self selectedDate];
+//                break;
+//            case 1:{
+//                skillSelectViewController*svc=[[skillSelectViewController alloc]init];
+//                svc.Array=_skillArray;
+//                svc.skillArray=^(NSMutableArray*array){
+//                    NSString*valuerString;
+//                    for (NSInteger i=0; i<array.count; i++) {
+//                        skillModel*model=array[i];
+//                        if (i==0) {
+//                            valuerString=[NSString stringWithFormat:@"%lu",model.id];
+//                        }else{
+//                            valuerString=[NSString stringWithFormat:@"%@,%lu",valuerString,model.id];
+//                        }
+//                    }
+//                    [self flowShow];
+//                    NSDictionary*dict;
+//                    if (valuerString==nil) {
+//                        dict=@{@"skill":@"0"};
+//                    }else{
+//                       dict=@{@"skill":valuerString};
+//                    }
+//                    NSString*urlString=[self interfaceFromString:interface_updateServicerSkill];
+//                    [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
+//                        NSDictionary*dict=(NSDictionary*)responseObject;
+//                        if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
+//                            [self flowHide];
+//                            [self.view makeToast:@"技能更新成功" duration:1 position:@"center" Finish:^{
+//                                [self request];
+//                                
+//                            }];
+//                        }
+//                    } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+//                        [self flowHide];
+//                    }];
+//                };
+//                [self pushWinthAnimation:self.navigationController Viewcontroller:svc];
+//            }
+//                break;
+//            case 2:{
+//                
+////                cityViewController*cvc=[[cityViewController alloc]initWithNibName:@"cityViewController" bundle:nil];
+////                cvc.type=1;
+////                cvc.selectedArray=_serviceArray;
+////                [self pushWinthAnimation:self.navigationController Viewcontroller:cvc];
+////                provinceViewController*pvc=[[provinceViewController alloc]init];
+////                pvc.array=_serviceArray;
+////                [self pushWinthAnimation:self.navigationController Viewcontroller:pvc];
+//                proviceSelectedViewController*pvc=[[proviceSelectedViewController alloc]initWithNibName:@"proviceSelectedViewController" bundle:nil];
+//                pvc.selectArray=_serviceArray;
+//                [self pushWinthAnimation:self.navigationController Viewcontroller:pvc];
+//                
+//            }
+//                break;
+//            case 3:{
+//                
+//                if (indexPath.row==0) {
+////                    _currentIndexPath=indexPath;
+//                    certainViewController*pvc=[[certainViewController alloc]init];
+//                    NSMutableArray*temp=[[NSMutableArray alloc]init];
+//                    for (NSInteger i=0; i<_pictureArray.count; i++) {
+//                        if (i==0) {
+//                            continue;
+//                        }
+//                        certificateModel*model=_pictureArray[i];
+//                        [temp addObject:model];
+//                    }
+//                    pvc.dataArray=temp;
+//                    [self pushWinthAnimation:self.navigationController Viewcontroller:pvc];
+//                    
+//                    
+//                    //                    [self setUserHeaderIamge];
+//                }
+//                if (indexPath.row==1) {
+//                    opinionViewController*ovc=[[opinionViewController alloc]initWithNibName:@"opinionViewController" bundle:nil];
+//                    ovc.type=0;
+//                    ovc.limitCount=800;
+//                    ovc.origin=_introduce;
+//                    ovc.block=^(BOOL isRefersh){
+//                        if (isRefersh) {
+//                            
+//                        
+//                        }
+//                    };
+//                    [self pushWinthAnimation:self.navigationController Viewcontroller:ovc];
+//
+//                }else if (indexPath.row==2){
+//                    
+//                    [self setPayType];
+//                }
+//            }
+//                break;
+//            case 4:{
+//                _currentIndexPath=indexPath;
+//                [self setupWorkStatus];
+//            }
+//                break;
+//            
+//            default:
+//                break;
+//        }
+//    }
 }
 
 
@@ -1023,9 +1388,17 @@
     if (_startTime) {
         cvc.oldDate=_startTime;
     }
-    if (_currentIndexPath.section==0) {
+    if (_currentIndexPath.section==1) {
+        if (_currentIndexPath.row==2) {
+            
         cvc.isPass=YES;
         cvc.isfuture=YES;
+        cvc.isShowMessage=NO;
+            
+        }else{
+        
+            cvc.isShowMessage=YES;
+        }
     }
     cvc.blockDateValue=^(NSString*date){
        
@@ -1034,17 +1407,18 @@
         NSArray*sepArray=[date componentsSeparatedByString:@"-"];
         NSString*temp=[NSString stringWithFormat:@"%@/%@/%@",sepArray[0],sepArray[1],sepArray[2]];
           NSDictionary*dict=@{@"startWork":temp};
-        if (_currentIndexPath.section==4) {
+        if (_currentIndexPath.row==6) {
             urlString=[self interfaceFromString:interface_updateStatus];
             dict=@{@"status":@"1",@"freeDate":temp};
-            
         }
         [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
             NSDictionary*dict=(NSDictionary*)responseObject;
             if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
                 [self flowHide];
                 [self.view makeToast:@"更新成功" duration:1 position:@"center" Finish:^{
+                    
                     [self request];
+                    
                 }];
                 
             }else{
@@ -1180,7 +1554,7 @@
     welcomeLabelRect.size.height = 20;
     NSArray*Array=@[@"空闲",@"繁忙"];
     for (NSInteger i=0; i<2; i++) {
-        UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(20+i*SCREEN_WIDTH/2, 25, 60, 30)];
+        UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(25+i*SCREEN_WIDTH/2, 25, 60, 30)];
         button.backgroundColor=contentView.backgroundColor;
         [button setTitle:Array[i] forState:UIControlStateNormal];
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -1269,9 +1643,9 @@
             if (i!=0&&i%3==0) {
                 orginX=0;
             }
-            UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-orginX-30-model.name.length*12-5, 5+i/3*30,model.name.length*12+5, 25)];
+            UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-orginX-30-model.name.length*12-5, 10+i/3*30,model.name.length*12+5, 25)];
             if (i/3!=0) {
-                label.frame=CGRectMake(SCREEN_WIDTH-orginX-30-model.name.length*12-5, 5+i/3*30,model.name.length*12+5, 25);
+                label.frame=CGRectMake(SCREEN_WIDTH-orginX-30-model.name.length*12-5, 10+i/3*30,model.name.length*12+5, 25);
             }
             
             if (label.frame.origin.x<100) {
@@ -1300,76 +1674,32 @@
 }
 //服务区域
 -(UITableViewCell*)getServiceCellWithTableview:(UITableView*)tableView{
-    UITableViewCell*cell=[tableView dequeueReusableCellWithIdentifier:@"CELl"];
+    customOrderTableViewCell*cell=[tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (!cell) {
-        cell=[[UITableViewCell alloc]initWithStyle:1 reuseIdentifier:@"CELl"];
+        cell=[[[NSBundle mainBundle]loadNibNamed:@"customOrderTableViewCell" owner:nil options:nil] lastObject];
     }
-    UIView*view=(id)[self.view viewWithTag:30];
-    if (view) {
-        [view removeFromSuperview];
-    }
-
-    if (_serviceArray.count==0) {
-        
-        cell.textLabel.text=@"点击添加服务区域";
-        cell.textLabel.font=[UIFont systemFontOfSize:15];
-        cell.textLabel.textColor=[UIColor lightGrayColor];
-        return cell;
-    }
-    
-    cell.textLabel.text=nil;
+    cell.function.text=@"服务区域";
+    NSString*Str;
+        for (NSInteger i=0; i<_serviceArray.count; i++) {
+            NSMutableArray*array=_serviceArray[i];
+            for (NSInteger j=1; j<array.count; j++) {
+                AreaModel*model=array[j];
+                if (i==0||j==1) {
+                    Str=model.name;
+                }else{
+                
+                    Str=[NSString stringWithFormat:@"%@、%@",Str,model.name];
+                }
+            }
+            
+            if (!Str) {
+                Str=@"点击选择服务区域";
+            }
+        }
+    cell.content.text=Str;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    _YPonit=10;
-    view=[[UIView alloc]initWithFrame:cell.bounds];
-    view.tag=30;
-    for (NSInteger i=0; i<_serviceArray.count; i++) {
-        _cityString=nil;
-        _townString=nil;
-        NSMutableArray*array=_serviceArray[i];
-        for (NSInteger j=0; j<array.count; j++) {
-            AreaModel*model=array[j];
-            
-            if (j==0) {
-               
-            _cityString=[NSString stringWithFormat:@"%@:",model.name];
-                
-            }
-            else if (j==1) {
-                
-                _townString=model.name;
-                
-            }
-            else if (j==array.count-1){
-            _townString=[NSString stringWithFormat:@"%@,%@",_townString,model.name];
-                
-            }
-            else{
-                _townString=[NSString stringWithFormat:@"%@,%@",_townString,model.name];
-            }
-            
-        }
-        
-        UILabel* cityLabel=[[UILabel alloc]initWithFrame:CGRectMake(10, _YPonit, 100, 17)];
-        cityLabel.text=_cityString;
-        
-        cityLabel.font=[UIFont systemFontOfSize:16];
-        cityLabel.numberOfLines=0;
-        cityLabel.textColor=[UIColor blackColor];
-        CGFloat height=[self accountStringHeightFromString:_townString Width:SCREEN_WIDTH-140];
-        UILabel*townLabel=[[UILabel alloc]initWithFrame:CGRectMake(110, _YPonit, SCREEN_WIDTH-110-30, height)];
-        _YPonit+=height;
-        townLabel.font=[UIFont systemFontOfSize:16];
-        townLabel.textColor=[UIColor blackColor];
-        townLabel.numberOfLines=0;
-        townLabel.text=_townString;
-        townLabel.textAlignment=NSTextAlignmentRight;
-        [view addSubview:cityLabel];
-        [view addSubview:townLabel];
-        [cell.contentView addSubview:view];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        }
-    
     return cell;
+
 }
 
 
@@ -1387,7 +1717,7 @@
     }
     view=[[UIView alloc]initWithFrame:cell.bounds];
     view.tag=60;
-    UILabel*name=[[UILabel alloc]initWithFrame:CGRectMake(10, 10, 100, 30)];
+    UILabel*name=[[UILabel alloc]initWithFrame:CGRectMake(15, 10, 100, 30)];
     name.text=@"期望薪资";
     name.textColor=[UIColor blackColor];
     name.font=[UIFont systemFontOfSize:16];
@@ -1435,7 +1765,7 @@
     }
     view=[[UIView alloc]initWithFrame:cell.bounds];
     view.tag=17;
-    UILabel*nameLabel=[[UILabel alloc]initWithFrame:CGRectMake(10, 10, 90, 20)];
+    UILabel*nameLabel=[[UILabel alloc]initWithFrame:CGRectMake(15, 10, 90, 20)];
     nameLabel.text=@"服务介绍";
     nameLabel.font=[UIFont systemFontOfSize:16];
     nameLabel.textColor=[UIColor blackColor];
@@ -1493,11 +1823,16 @@
     }
     view=[[UIView alloc]initWithFrame:cell.bounds];
     view.tag=45;
+    UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(15, cell.frame.size.height/2-10, 100, 20)];
+    label.text=@"证书";
+    label.textColor=[UIColor blackColor];
+    label.font=[UIFont systemFontOfSize:16];
+    [view addSubview:label];
+    NSInteger width=(SCREEN_WIDTH-40-100)/4;
     for (NSInteger i=0; i<_pictureArray.count; i++) {
         CGFloat height;
-       NSInteger width=(SCREEN_WIDTH-40)/4;
-        if (i==0) {
-            UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(10+i%4*(width+5), 10+i/4*(width+5), width, width)];
+              if (i==0) {
+            UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-13 -i%4*(width+5)-width, 10+i/4*(width+5), width, width)];
             [button setImage:[UIImage imageNamed:@"增加图片"] forState:UIControlStateNormal];
             [button addTarget: self action:@selector(add) forControlEvents:UIControlEventTouchUpInside];
             [view addSubview:button];
@@ -1513,7 +1848,7 @@
             height=(_pictureArray.count/4+1)*40;
             
         }
-        UIImageView*imageview=[[UIImageView alloc]initWithFrame:CGRectMake(10+i%4*(width+5), 10+i/4*(width+5), width, width)];
+        UIImageView*imageview=[[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-13 -i%4*(width+5)-width, 10+i/4*(width+5), width, width)];
         imageview.tag=20+i;
         [imageview setContentScaleFactor:[[UIScreen mainScreen] scale]];
         imageview.contentMode =  UIViewContentModeScaleAspectFill;
@@ -1691,8 +2026,8 @@
     }
     view=[[UIView alloc]initWithFrame:cell.bounds];
     view.tag=18;
-    UILabel*name=[[UILabel alloc]initWithFrame:CGRectMake(10, 15, 100, 20)];
-    name.text=@"工作状态";
+    UILabel*name=[[UILabel alloc]initWithFrame:CGRectMake(15, 15, 100, 20)];
+    name.text=@"日程";
     name.textColor=[UIColor blackColor];
     name.font=[UIFont systemFontOfSize:16];
     [view addSubview:name];
@@ -1715,7 +2050,7 @@
 -(CGFloat)accountPicture{
     
     CGFloat height;
-     NSInteger width=(SCREEN_WIDTH-40)/4;
+     NSInteger width=(SCREEN_WIDTH-140)/4;
     if (_pictureArray.count==0) {
         return 44;
     }
@@ -1732,7 +2067,7 @@
 -(CGFloat)accountservice{
 
     if (_serviceArray.count==0) {
-        return 50;
+        return 44;
     }
     _totleHeight=0;
     for (NSInteger i=0; i<_serviceArray.count; i++) {

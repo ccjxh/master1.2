@@ -105,6 +105,7 @@
     skillModel*model=_dataArray[indexPath.row];
     cell.type=1;
     cell.Skilmodel=model;
+    cell.isShowImage=YES;
     [cell reloadData];
     return cell;
 }

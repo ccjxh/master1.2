@@ -19,6 +19,8 @@
 @implementation ChangeDateViewController
 
 #pragma mark - 系统方法
+
+
 - (void)dealloc
 {
     _changeBlock = nil;
@@ -44,6 +46,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.automaticallyAdjustsScrollViewInsets=NO;
     // Do any additional setup after loading the view.
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(changeDateBack)];
     [self initData];    //初始化数据
@@ -139,7 +142,6 @@
  */
 - (void)initView{
     self.view.backgroundColor = [UIColor whiteColor];
-    
     _tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     _tableView.delegate = self;
@@ -187,20 +189,29 @@
     [self.view addSubview:_datePicker];
     //约束
     NSMutableArray *constraints = [NSMutableArray array];
-    
     NSArray *tableViewHConrtraint = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_tableView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_tableView)];
     NSArray *datePickHContraint = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_datePicker]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_datePicker)];
-    
-    NSArray *tableViewDatePickerVContranit = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_tableView(>=110)]-[_datePicker(>=80,>=110@1000)]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_tableView, _datePicker)];
+    NSArray *tableViewDatePickerVContranit = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-60-[_tableView(>=110)]-[_datePicker(>=80,>=110@1000)]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_tableView, _datePicker)];
     
     [constraints addObjectsFromArray:tableViewHConrtraint];
     [constraints addObjectsFromArray:datePickHContraint];
     [constraints addObjectsFromArray:tableViewDatePickerVContranit];
-    
     [_tableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [_datePicker setTranslatesAutoresizingMaskIntoConstraints:NO];
-    
     [self.view addConstraints:constraints];
+    
+    UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(13, 64, SCREEN_WIDTH, 30)];
+    label.text=@"工期截止日:";
+    label.textColor=[UIColor blackColor];
+    label.font=[UIFont systemFontOfSize:16];
+    [self.view addSubview:label];
+    if (_isShowMessage) {
+        label.hidden=NO;
+        
+    }else{
+        label.hidden=YES;
+    }
+
     
 }
 

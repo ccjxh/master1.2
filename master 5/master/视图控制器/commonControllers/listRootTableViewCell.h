@@ -36,6 +36,7 @@
 @property(nonatomic)NSInteger type;//0为首页列表  1为推荐的人
 @property(nonatomic)peoplr*model;
 @property(nonatomic)NSInteger dealStatus;//是否处理
+@property(nonatomic)BOOL isShow;
 
 -(void)reloadData;
 @end

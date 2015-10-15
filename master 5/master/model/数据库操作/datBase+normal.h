@@ -82,5 +82,8 @@
 -(BOOL)deleAllPay;
 
 
+-(void)updateInformationWithId:(NSInteger)ID Attribute:(NSString*)attribute Content:(NSString*)content;
+
+
 
 @end

@@ -7,14 +7,18 @@
 //
 
 #import "RegisteredViewController.h"
-#import <SMS_SDK/SMS_SDK.h>
+#import <SMS_SDK/SMSSDK.h>
+#import <SMS_SDK/SMSSDKCountryAndAreaCode.h>
+#import <SMS_SDK/SMSSDK+DeprecatedMethods.h>
+#import <SMS_SDK/SMSSDK+ExtexdMethods.h>
 #import "OpenUDID.h"
 #import "XGPush.h"
-@interface RegisteredViewController ()<WXApiDelegate>
+@interface RegisteredViewController ()<WXApiDelegate,UITextFieldDelegate>
 {
     BOOL value; //判断验证码是否验证成功
     int timeCountDown; //倒计时60s
     NSTimer *countDownTimer; //定义一个定时器
+    __weak IBOutlet UIButton *helpButton;
 }
 @end
 
@@ -31,8 +35,7 @@
        // Do any additional setup after loading the view from its nib.
     value = NO;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.view.backgroundColor = [UIColor colorWithRed:79/255.0 green:187/255.0 blue:226/255.0 alpha:1.0];
-    
+    self.view.backgroundColor = [UIColor whiteColor];
     if (self.states == 1) {
         [self.registerButton removeFromSuperview];
         UIButton *resetPasswordBtn = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -59,8 +62,113 @@
     _secondPasswordTextField.backgroundColor = [UIColor clearColor];
     _secondPasswordTextField.secureTextEntry = YES;
     _secondPasswordTextField.clearButtonMode = UITextFieldViewModeAlways;
-    [self CreateFlow];
+//    [_getVerificationCode setImage:[self imageWithColor:[UIColor orangeColor]] forState:UIControlStateHighlighted];
+    [helpButton setImage:[UIImage imageNamed:@"问号"] forState:UIControlStateNormal];
+    _getVerificationCode.layer.cornerRadius=5;
+    _getVerificationCode.layer.masksToBounds=YES;
+    _getVerificationCode.backgroundColor=COLOR(39, 166, 233, 1);
+    _registerButton.layer.cornerRadius=5;
+    _registerButton.userInteractionEnabled=NO;
+    [helpButton addTarget:self action:@selector(help) forControlEvents:UIControlEventTouchUpInside];
+       [self CreateFlow];
 }
+
+-(void)setLineColor{
+
+}
+
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField{
+    
+    
+    
+    if (_telephoneTextField.text!=nil||_verificationCodeTextField.text!=nil||_passwordTextField.text==nil||_passwordTextField.text!=nil||value==YES) {
+        _registerButton.backgroundColor=_getVerificationCode.backgroundColor;
+        _registerButton.userInteractionEnabled=YES;
+    }else{
+        _registerButton.backgroundColor=[UIColor grayColor];
+        _registerButton.userInteractionEnabled=NO;
+
+    
+    }
+
+    if (textField ==_telephoneTextField) {
+            _mobileButton.backgroundColor=COLOR(39, 166, 233, 1);
+            _countButton.backgroundColor=[UIColor lightGrayColor];
+            _passwordButton.backgroundColor=_countButton.backgroundColor;
+            _rePasswordButton.backgroundColor=_countButton.backgroundColor;
+            _recommButton.backgroundColor=_countButton.backgroundColor;
+        }
+
+    if (textField==_verificationCodeTextField) {
+            _countButton.backgroundColor=_getVerificationCode.backgroundColor;
+            _mobileButton.backgroundColor=[UIColor lightGrayColor];
+            _passwordButton.backgroundColor=_mobileButton.backgroundColor;
+            _rePasswordButton.backgroundColor=_mobileButton.backgroundColor;
+            _recommButton.backgroundColor=_mobileButton.backgroundColor;
+        }
+    if (textField==_passwordTextField) {
+       
+            _passwordButton.backgroundColor=_getVerificationCode.backgroundColor;
+            _mobileButton.backgroundColor=[UIColor lightGrayColor];
+            _countButton.backgroundColor=_mobileButton.backgroundColor;
+            _rePasswordButton.backgroundColor=_mobileButton.backgroundColor;
+            _recommButton.backgroundColor=_mobileButton.backgroundColor;
+              }
+    if (textField ==_secondPasswordTextField) {
+      
+            _rePasswordButton.backgroundColor=_getVerificationCode.backgroundColor;
+            _mobileButton.backgroundColor=[UIColor lightGrayColor];
+            _countButton.backgroundColor=_mobileButton.backgroundColor;
+            _passwordButton.backgroundColor=_mobileButton.backgroundColor;
+            _recommButton.backgroundColor=_mobileButton.backgroundColor;
+         }
+        
+    if (textField ==_recommendTextfile) {
+            _recommButton.backgroundColor=_getVerificationCode.backgroundColor;
+            _mobileButton.backgroundColor=[UIColor lightGrayColor];
+            _countButton.backgroundColor=_mobileButton.backgroundColor;
+            _passwordButton.backgroundColor=_mobileButton.backgroundColor;
+            _rePasswordButton.backgroundColor=_mobileButton.backgroundColor;
+    }
+    
+    
+}
+
+
+-(void)help{
+
+    [self.view makeToast:@"输入推荐码,注册可以获得积分" duration:1.5f position:@"center"];
+
+}
+
+//  button1普通状态下的背景色
+- (void)button1BackGroundNormal:(UIButton *)sender
+{
+    sender.backgroundColor = [UIColor orangeColor];
+}
+
+//  button1高亮状态下的背景色
+- (void)button1BackGroundHighlighted:(UIButton *)sender
+{
+    sender.backgroundColor = [UIColor greenColor];
+}
+
+
+- (UIImage *)imageWithColor:(UIColor *)color {
+    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
+}
+
 
 #pragma mark - 获取验证码按钮点击事件
 - (IBAction)getVerificationCodeClick:(id)sender {
@@ -81,13 +189,29 @@
         self.numberLabel.textColor = [UIColor grayColor];
         [self.getVerificationCode setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         self.getVerificationCode.userInteractionEnabled = NO; //设置获取验证码不被点击
-        [SMS_SDK getVerificationCodeBySMSWithPhone:self.telephoneTextField.text zone:@"86" result:^(SMS_SDKError *error) {
-            //error为nil表示获取验证码成功
-            if(error == nil){
-                self.verificationCodeTextField.delegate = self;
+        [SMSSDK getVerificationCodeByMethod:SMSGetCodeMethodSMS phoneNumber:_telephoneTextField.text
+                                       zone:@"+86"
+                           customIdentifier:nil
+                                     result:^(NSError *error)
+         {
+             
+             if (!error)
+             {
+                 NSLog(@"验证码发送成功");
                 
-            }
-        }];
+             }
+             else
+             {
+                 UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"codesenderrtitle", nil)
+                                                                 message:[NSString stringWithFormat:@"错误描述：%@",[error.userInfo objectForKey:@"getVerificationCode"]]
+                                                                delegate:self
+                                                       cancelButtonTitle:NSLocalizedString(@"sure", nil)
+                                                       otherButtonTitles:nil, nil];
+                 [alert show];
+             }
+             
+         }];
+
     }
 }
 #pragma mark - 定时器实现的方法
@@ -113,25 +237,26 @@
         if (self.verificationCodeTextField.text.length == 4)
         {
             [self.view endEditing:YES];
-            //提交验证码是否正确
-            [SMS_SDK commitVerifyCode:self.verificationCodeTextField.text result:^(enum SMS_ResponseState state) {
-                self.registerButton.userInteractionEnabled = NO;//设置获取验证码按钮不能被点击
-                if( state == SMS_ResponseStateFail) {
-//                    NSLog(@"验证码错误");
-                    [self.view makeToast:@"验证码输入错误！" duration:2.0f position:@"center"];
-                    [self.registerButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-                } else {
-//                    NSLog(@"验证码成功");
-                    [self.view makeToast:@"验证码输入成功！" duration:2.0f position:@"center"];
+            [SMSSDK commitVerificationCode:self.verificationCodeTextField.text phoneNumber:_telephoneTextField.text zone:@"+86" result:^(NSError *error) {
+                
+                if (!error) {
                     [self.getVerificationCode setTitle:@"获取验证码" forState:UIControlStateNormal];
-                    [self.getVerificationCode setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-                    [self.registerButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
                     self.registerButton.userInteractionEnabled = YES;
                     [countDownTimer invalidate]; //取消定时器
-                    value = YES;
+                    [self.view makeToast:@"验证成功" duration:1.0f position:@"center"];
+                    value=YES;
+                }
+                else
+                {
+                    [self.view makeToast:@"验证码输入错误" duration:1.0f position:@"center"];
+                    [self.getVerificationCode setTitle:@"获取验证码" forState:UIControlStateNormal];
+                    self.registerButton.userInteractionEnabled = YES;
+                    [countDownTimer invalidate]; //取消定时器
+                     [self.getVerificationCode setTitle:@"获取验证码" forState:UIControlStateNormal];
                 }
             }];
-        }
+            self.registerButton.userInteractionEnabled = YES;
+         }
     }
 }
 #pragma mark - 注册按钮点击事件
@@ -169,7 +294,12 @@
     } else if ( ![self.passwordTextField.text isEqualToString:self.secondPasswordTextField.text]) {
         [self.view makeToast:@"两次密码输入不一致" duration:2.0f position:@"center"];
         [self flowHide];
-    } else {
+    }else if (value==NO){
+    
+        [self.view makeToast:@"请输入正确的验证码" duration:1.0f position:@"center"];
+        return;
+    
+    }else{
         
         if (self.states == 1)
         {
@@ -195,7 +325,11 @@
             
         } else {
             NSString*urlString=[self interfaceFromString:interface_register];
-            NSDictionary*dict=@{@"mobile":_telephoneTextField.text,@"password":_passwordTextField.text,@"password2":_secondPasswordTextField.text,@"machineType":name,@"machineCode":openUDID};
+            NSDictionary*dict;
+            dict=@{@"mobile":_telephoneTextField.text,@"password":_passwordTextField.text,@"password2":_secondPasswordTextField.text,@"machineType":name,@"machineCode":openUDID};
+            if (_recommendTextfile.text!=nil) {
+                dict=@{@"mobile":_telephoneTextField.text,@"password":_passwordTextField.text,@"password2":_secondPasswordTextField.text,@"machineType":name,@"machineCode":openUDID,@"inviteCode":_recommendTextfile.text};
+            }
             [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSDictionary*dict=(NSDictionary*)responseObject;
                 [self flowHide];
@@ -207,7 +341,8 @@
                        
                    [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"inviteCode"] forKey:@"inviteCode"];
                    [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] forKey:@"integrity"];
-                   [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"]objectForKey:@"certification"] forKey:@"certification"];
+                    NSMutableDictionary*parentDic=[[NSMutableDictionary alloc]initWithDictionary:[[[dict objectForKey:@"entity"] objectForKey:@"user"]objectForKey:@"certification"]];
+                    [delegate.userInforDic setObject:parentDic forKey:@"certification"];
                    NSUserDefaults*user=[NSUserDefaults standardUserDefaults];
                    if ([user objectForKey:@"username"]) {
                        [user removeObjectForKey:@"username"];

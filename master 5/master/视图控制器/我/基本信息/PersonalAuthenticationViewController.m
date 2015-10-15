@@ -224,6 +224,9 @@
         }
         if (indexPath.row==2) {
             NSArray*array=@[@"身份证正面照",@"身份证反面照"];
+            for (UIView*view in cell.contentView.subviews) {
+                [view removeFromSuperview];
+            }
             for (NSInteger i=0; i<array.count; i++) {
                 UIImageView*photoImage=[[UIImageView alloc]initWithFrame:CGRectMake(13+i*100, 40, 70, 70)];
                 photoImage.userInteractionEnabled=YES;
@@ -276,6 +279,7 @@
         NSDictionary*dict=(NSDictionary*)responseObject;
         if ([[dict objectForKey:@"rspCode"] integerValue]==200)
         {
+            [self.view makeToast:@"更新成功" duration:1.5f position:@"center"];
 //            NSLog(@"保存成功");
             if (row == 0)
             {
@@ -288,6 +292,7 @@
         }
         else
         {
+            [self.view makeToast:[dict objectForKey:@"msg"] duration:1 position:@"center"];
 //            NSLog(@"保存失败");
         }
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
@@ -376,14 +381,13 @@
         {
             UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
             CGSize imagesize = image.size;
-            
             UIImage *imageNew = [self imageWithImage:image scaledToSize:imagesize];
             //将图片转换成二进制
             NSData *imageData = UIImageJPEGRepresentation(imageNew, 0.1);
+            selectImage=nil;
             if (selectImage == nil)
             {
                 selectImage = [UIImage imageWithData:imageData];
-                
                 NSString*urlString=[self interfaceFromString:interface_uploadHeadImage];
                 NSDictionary *dict;
                 NSString*type;
@@ -404,7 +408,7 @@
                     
                     }
                 }
-                                
+                
                     [self flowShow];
                 [[httpManager share]POST:urlString parameters:dict constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
                     NSData *data = UIImageJPEGRepresentation(selectImage, 0.5);
@@ -413,20 +417,18 @@
                 } success:^(AFHTTPRequestOperation *operation, id responseObject) {
 //                    NSLog(@"++++++%@",responseObject);
                     NSDictionary*dict=(NSDictionary*)responseObject;
-            
+                    if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
                     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
                     [delegate requestInformation];
-                    isNoImage = YES;
                     NSDictionary*postDict=@{@"picture":image};
                     NSNotification*notiction=[[NSNotification alloc]initWithName:@"headRefersh" object:nil userInfo:postDict];
                     [[NSNotificationCenter defaultCenter]postNotification:notiction];
                     //                    headimag=image;
-                    NSDictionary *entityDic = responseObject[@"entity"];
-                    NSDictionary *attachmentDic = entityDic[@"attachment"];
-                    self.model.idNoFile = attachmentDic[@"resource"];
-                    [self.personalAuthorTableView reloadData];
+                    
+                    [self requestInfor];
+                    }
                     [self.view makeToast:[dict objectForKey:@"msg"] duration:1 position:@"center"];
-                    [self flowHide];
+                   
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                     NSLog(@" 结果 ===== %@",error);
                     [self flowHide];
@@ -434,6 +436,34 @@
             }
         }
     }];
+}
+
+-(void)requestInfor{
+
+    NSString*urlString=[self interfaceFromString:interface_personalDetail];
+    [[httpManager share]GET:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
+        NSDictionary*dict=(NSDictionary*)responseObject;
+        if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
+             [self flowHide];
+            if (_currentTag==40) {
+                self.model.idNoFile=[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"idNoFile"];
+                self.model.idNoId=[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"idNoId"];
+            }else{
+                
+                self.model.idNoBackFile=[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"idNoBackFile"];
+                self.model.idNoBackFileId=[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"idNoBackFileId"];
+                
+            }
+            
+        }
+          [self.personalAuthorTableView reloadData];
+        
+    } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+        
+         [self flowHide];
+        
+    }];
+
 }
 
 - (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize
@@ -455,14 +485,20 @@
 #pragma mark - 判断个人认证是否正确
 -(void) requestPersonalAuthor
 {
+     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+    NSMutableDictionary*parent=[delegate.userInforDic objectForKey:@"certification"];
+    [parent setObject:@"1" forKey:@"personalState"];
+
     NSString *urlString = [self interfaceFromString:interface_uploadIdentity];
     [[httpManager share]GET:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
-        
+       
         [self flowHide];
         NSDictionary*objDic=(NSDictionary*)responseObject;
         NSString *str = [objDic objectForKey:@"msg"];
         if ([[objDic objectForKey:@"rspCode"] integerValue]==200)
         {
+            NSMutableDictionary*parent=[delegate.userInforDic objectForKey:@"certification"];
+            [parent setObject:@"1" forKey:@"personalState"];
             [self.view makeToast:@"资料已提交，请耐心等候!" duration:2.0f position:@"center"];
             if (self.authorTypeBlock)
             {

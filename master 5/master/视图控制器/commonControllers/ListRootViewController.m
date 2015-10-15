@@ -598,11 +598,11 @@
             cell=[[listRootTableViewCell alloc]initWithStyle:0 reuseIdentifier:@"Cell1"];
         }
         cell.selectionStyle=0;
-        
         cell.typeLabel.text=self.type;
         cell.selectionStyle=0;
         cell.model=model;
         [cell reloadData];
+         cell.isShow=YES;
         return cell;
         
     }
@@ -615,6 +615,7 @@
     cell.selectionStyle=0;
     cell.model=model;
     [cell reloadData];
+    cell.isShow=NO;
     return cell;
     
 }

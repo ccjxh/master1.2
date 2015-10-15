@@ -42,6 +42,11 @@
 }
 
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return 50;
+
+}
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     AreaModel*model=_dataArray[indexPath.section];
@@ -51,10 +56,10 @@
     }
     cell.name.text=model.name;
     cell.model=model;
+    cell.isShowImage=YES;
     [cell reloadData];
     cell.imageView.hidden=NO;
     return cell;
-    
     
 }
 
@@ -66,19 +71,15 @@
     NSString*urlString=[self interfaceFromString:interface_updateServicerRegion];
     for (NSInteger i=0; i<self.selectArray.count; i++) {
         NSArray*array=self.selectArray[i];
-        for (NSInteger j=0; j<array.count; j++) {
-            AreaModel*proviceModel=array[0];
-            if (proviceModel.id==self.model.id) {
-                [self.selectArray replaceObjectAtIndex:i withObject:valueArray];
-            }
+        AreaModel*proviceModel=array[0];
+        if (proviceModel.id==self.model.id) {
+            [self.selectArray removeObject:array];
         }
     }
-    
     
     if (valueArray.count>1) {
      [self.selectArray addObject:valueArray];
     }
-    
     
     NSString*valueString;
     for (NSInteger i=0; i<self.selectArray.count; i++) {
@@ -108,6 +109,9 @@
                 
                 for (UIViewController*vc in self.navigationController.viewControllers) {
                       if ([vc isKindOfClass:[proviceSelectedViewController class]]==YES) {
+                          proviceSelectedViewController*pvc=(proviceSelectedViewController*)vc;
+                          pvc.selectArray=self.selectArray;
+                          [pvc.tableview reloadData];
                         [self.navigationController popToViewController:vc animated:YES];
                     }
                 }
@@ -119,7 +123,6 @@
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
         
         [self flowHide];
-
         
     }];
 

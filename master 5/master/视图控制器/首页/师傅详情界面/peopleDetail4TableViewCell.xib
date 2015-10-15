@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
@@ -17,6 +17,7 @@
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="服务区域" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bxj-By-OUm">
                         <rect key="frame" x="11" y="9" width="72" height="21"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="Kks-PZ-Vjn"/>
                             <constraint firstAttribute="width" constant="72" id="v9c-BF-XVD"/>
@@ -27,11 +28,13 @@
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4IQ-pO-01D">
                         <rect key="frame" x="86" y="9" width="222" height="21"/>
+                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <animations/>
                 <constraints>
                     <constraint firstItem="4IQ-pO-01D" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="1" id="43y-md-WJs"/>
                     <constraint firstItem="4IQ-pO-01D" firstAttribute="leading" secondItem="Bxj-By-OUm" secondAttribute="trailing" constant="3" id="7NY-gA-aGj"/>
@@ -41,6 +44,7 @@
                     <constraint firstItem="Bxj-By-OUm" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="3" id="wth-Yd-KA7"/>
                 </constraints>
             </tableViewCellContentView>
+            <animations/>
             <connections>
                 <outlet property="master_serviceRegion" destination="4IQ-pO-01D" id="iz1-6p-Bjx"/>
             </connections>

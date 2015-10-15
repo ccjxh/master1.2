@@ -46,7 +46,8 @@
         if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
             [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"inviteCode"] forKey:@"inviteCode"];
             [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] forKey:@"integrity"];
-            [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"]objectForKey:@"certification"] forKey:@"certification"];
+            NSMutableDictionary*parentDic=[[NSMutableDictionary alloc]initWithDictionary:[[[dict objectForKey:@"entity"] objectForKey:@"user"]objectForKey:@"certification"]];
+            [delegate.userInforDic setObject:parentDic forKey:@"certification"];
             delegate.integral=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue];
             NSUserDefaults*users=[NSUserDefaults standardUserDefaults];
             [users setObject:username forKey:@"username"];
@@ -54,10 +55,12 @@
             [users synchronize];
             [delegate requestInformation];
             loginComPlite;
+            
             [XGPush setAccount:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"pullTag"]];
+                       //注册推送
+            [delegate setupPushWithDictory];
+            
             delegate.signInfo=[[NSMutableDictionary alloc]initWithDictionary:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"signInfo"]];
-            //注册推送
-//            [self setupPushWithDictory];
             delegate.userPost=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"userPost"] integerValue];
             delegate.id=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"id"] integerValue];
             if (delegate.pullToken) {

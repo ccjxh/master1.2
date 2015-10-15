@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -12,11 +12,12 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="73"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="72.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="技能" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N6b-aB-Rja">
                         <rect key="frame" x="13" y="10" width="34" height="21"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="34" id="6Od-0o-2rV"/>
                             <constraint firstAttribute="height" constant="21" id="ecf-xd-Wff"/>
@@ -29,6 +30,7 @@
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="薪资要求" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tRS-Za-oMD">
                         <rect key="frame" x="13" y="47" width="56" height="21"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="56" id="9nB-es-ImS"/>
                         </constraints>
@@ -38,15 +40,18 @@
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rz2-kq-nGB">
                         <rect key="frame" x="41" y="5" width="265" height="37"/>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="klr-iy-g6g">
                         <rect key="frame" x="85" y="48" width="211" height="21"/>
+                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <animations/>
                 <constraints>
                     <constraint firstItem="N6b-aB-Rja" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="5" id="1jr-hq-jvr"/>
                     <constraint firstItem="rz2-kq-nGB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-3" id="4bW-h6-Wnb"/>
@@ -65,6 +70,7 @@
                     <constraint firstItem="rz2-kq-nGB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="33" id="zN8-BS-1KZ"/>
                 </constraints>
             </tableViewCellContentView>
+            <animations/>
             <connections>
                 <outlet property="master_payDescribeLabel" destination="klr-iy-g6g" id="3Dg-cC-r7v"/>
                 <outlet property="master_payLabel" destination="tRS-Za-oMD" id="KOt-Z9-aiC"/>

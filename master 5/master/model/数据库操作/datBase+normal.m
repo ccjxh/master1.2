@@ -282,6 +282,24 @@
 }
 
 
+-(void)updateInformationWithId:(NSInteger)ID Attribute:(NSString *)attribute Content:(NSString *)content{
+
+    __block BOOL isResult;
+    NSString*sql=[NSString stringWithFormat:@"update information set %@ = ? where id = %lu",attribute,ID];
+    [self inDatabase:^(FMDatabase *db) {
+        [db open];
+       isResult=[db executeUpdate:sql,content];
+        if (isResult) {
+            NSLog(@"%@更新成功",attribute);
+
+        }else{
+        NSLog(@"%@更新失败",attribute);
+        }
+        [db close];
+    }];
+
+}
+
 
 
 -(BOOL)inserInformationWithPeopleInfoematin:(PersonalDetailModel*)model{
@@ -345,7 +363,10 @@
             
             }
             
-    isResult=[db executeUpdate:sql,model.realName,model.icon,[model.certification objectForKey:@"personal"] ,[model.certification objectForKey:@"skill"],[model.certification objectForKey:@"company"],model.id,personalState,companyState,skillState,certifyType,qq,iconId,gendar,mobile,weChat,adress];
+       isResult=[db executeUpdate:sql,model.realName,model.icon,[model.certification objectForKey:@"personal"] ,[model.certification objectForKey:@"skill"],[model.certification objectForKey:@"company"],model.id,personalState,companyState,skillState,certifyType,qq,iconId,gendar,mobile,weChat,adress];
+        if (isResult==YES) {
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"updateUI" object:nil];
+            }
             
     }];
     
@@ -417,6 +438,8 @@
     NSLog(@"数据更新%@",isResult?@"成功":@"失败");
     return isResult;
 }
+
+
 
 
 -(BOOL)deleInformationWithID:(NSInteger)ID{

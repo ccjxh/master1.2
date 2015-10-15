@@ -50,14 +50,17 @@
     [[httpManager share]GET:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
         
         NSDictionary *dict = (NSDictionary*)responseObject;
+        if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
         AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
         delegate.integrity=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] integerValue];
+        [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"age"] forKey:@"age"];
         NSDictionary *entityDic = [dict objectForKey:@"entity"];
         NSDictionary *userDic = [entityDic objectForKey:@"user"];
         PersonalDetailModel*model=[[PersonalDetailModel alloc]init];
         [model setValuesForKeysWithDictionary:userDic];
         [[dataBase share]addInformationWithModel:model];
         [[NSNotificationCenter defaultCenter]postNotificationName:@"updateUI" object:nil userInfo:nil];
+        }
         } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
         
     }];

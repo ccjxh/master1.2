@@ -29,7 +29,7 @@
     UINavigationController*nc2=[[UINavigationController alloc]initWithRootViewController:mvc];
     nc2.navigationBar.barStyle=1;
     nc2.navigationBar.barTintColor=COLOR(22, 168, 234, 1);
-    mvc.title=@"我";
+    mvc.title=@"我的";
     UITabBarItem*item1=[[UITabBarItem alloc]initWithTitle:@"找师傅" image: [UIImage imageNamed:@"找师傅-未选择"] selectedImage: [self returnImageFromName:@"找师傅"]];
     UITabBarItem*item2=[[UITabBarItem alloc]initWithTitle:@"找活干" image: [UIImage imageNamed:@"找工作-未选择"] selectedImage: [self returnImageFromName:@"找工作"]];
     UITabBarItem*item3=[[UITabBarItem alloc]initWithTitle:@"我的" image: [UIImage imageNamed:@"我的-未选择"] selectedImage: [self returnImageFromName:@"我的"]];

@@ -33,6 +33,7 @@
 {
     
     //设置右边箭头
+   
     self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     self.listLabel.font = [UIFont systemFontOfSize:16];
     self.contentLabel.font = [UIFont systemFontOfSize:16];
@@ -145,6 +146,25 @@
                     }
                      self.contentLabel.text=age;
                 }
+            }else if (row==4){
+            
+                self.listLabel.text=@"岗位";
+                self.contentLabel.textColor=[UIColor lightGrayColor];
+                AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+                switch (delegate.userPost) {
+                    case 1:
+                        self.contentLabel.text=@"雇主";
+                        break;
+                        case 2:
+                        self.contentLabel.text=@"师傅";
+                        break;
+                        case 3 :
+                        self.contentLabel.text=@"工长";
+                        break;
+                    default:
+                        break;
+                }
+            
             }
         }
             break;
@@ -153,7 +173,6 @@
             if (row == 0)
             {
                 self.listLabel.text = @"电话号码";
-                
                 if([model.mobile isEqualToString:@""])
                 {
                     self.contentLabel.text = @"请输入电话号码";

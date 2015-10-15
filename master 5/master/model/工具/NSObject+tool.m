@@ -81,7 +81,7 @@
 -(CGFloat)accountSkillWithAllSkill:(NSMutableArray*)skillArray{
     
     if (skillArray.count==0) {
-        return 30;
+        return 44;
     }
     else
     {

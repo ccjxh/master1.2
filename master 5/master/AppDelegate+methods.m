@@ -55,6 +55,7 @@
                 [self resignNoticeation];
             }
             else{
+                
                 [self registerPushForIOS8];
             }
 #else

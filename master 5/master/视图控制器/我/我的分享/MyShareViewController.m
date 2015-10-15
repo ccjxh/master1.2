@@ -18,8 +18,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor=[UIColor whiteColor];
+    self.automaticallyAdjustsScrollViewInsets=NO;
     self.title=@"我的分享";
-    self.view=[[myShareView alloc]initWithFrame:self.view.bounds];
+    myShareView*view=[[myShareView alloc]initWithFrame:self.view.bounds];
+    [self.view addSubview:view];
+//    self.view=;
     
     // Do any additional setup after loading the view.
 }

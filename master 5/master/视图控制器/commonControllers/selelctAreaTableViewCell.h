@@ -14,5 +14,6 @@
 @property(nonatomic)NSInteger type;//0省市区  1为技能
 @property(nonatomic)AreaModel*model;
 @property(nonatomic)skillModel*Skilmodel;
+@property(nonatomic)BOOL isShowImage;
 -(void)reloadData;
 @end

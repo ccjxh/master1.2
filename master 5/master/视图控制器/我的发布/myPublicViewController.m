@@ -9,6 +9,7 @@
 #import "myPublicViewController.h"
 #import "mypublicListView.h"
 #import "findWorkDetailViewController.h"
+#import "findAddNewWorkViewController.h"
 @interface myPublicViewController ()
 
 @end
@@ -37,6 +38,7 @@
     [self request];
     [self noData];
     [self netIll];
+    [self customRightavigation];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateUI) name:@"public" object:nil];
     // Do any additional setup after loading the view.
 }
@@ -236,6 +238,32 @@
         [self flowHide];
         [self.view makeToast:@"网络异常" duration:1 position:@"center"];
     }];
+}
+
+
+
+-(void)customRightavigation{
+    
+    UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, 71, 28)];
+    [button setTitle:@"发布招工" forState:UIControlStateNormal];
+    //    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+    button.titleLabel.font=[UIFont systemFontOfSize:16];
+    button.layer.borderColor=COLOR(99, 206, 243, 1).CGColor;
+    button.layer.borderWidth=1;
+    button.layer.cornerRadius=5;
+    [button addTarget:self action:@selector(add) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithCustomView:button];
+}
+
+
+//发布工作
+-(void)add{
+    
+    findAddNewWorkViewController*fvc=[[findAddNewWorkViewController alloc]init];
+    fvc.hidesBottomBarWhenPushed=YES;
+    [self pushWinthAnimation:self.navigationController Viewcontroller:fvc];
+    
 }
 
 @end

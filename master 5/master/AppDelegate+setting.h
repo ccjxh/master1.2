@@ -19,7 +19,6 @@
 #import "myRecommendPeopleViewController.h"
 #import "OpenUDID.h"
 #import <sys/utsname.h>
-#import <SMS_SDK/SMS_SDK.h>
 #import "CustomDialogView.h"
 #import "sys/sysctl.h"
 #import "guideViewController.h"

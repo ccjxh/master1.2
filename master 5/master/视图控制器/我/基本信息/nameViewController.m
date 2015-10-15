@@ -26,7 +26,6 @@
     
      self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithTitle:@"确定" style:0 target:self action:@selector(confirm)];
     [self CreateFlow];
-    [self createIncreaseview];
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -97,15 +96,18 @@
                 if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] ) {
                     delegate.integrity=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] integerValue];
                     
-                    if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"]) {
+                }
+                if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"]) {
+                    if (delegate.integral-[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue]>0) {
                         delegate.integral= [[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue];
-                        [self showIncreaImage];
+                        NSDictionary*parent=@{@"value":[NSString stringWithFormat:@"%lu",delegate.integral]};
+                        NSNotification*noction=[[NSNotification alloc]initWithName:@"showIncreaImage" object:nil userInfo:parent];
+                        [[NSNotificationCenter defaultCenter]postNotification:noction];
 
                     }
-                }
+                }                
                 
-                
-                [self performSelector:@selector(delayMethod) withObject:nil afterDelay:1.5f];
+                [self performSelector:@selector(delayMethod) withObject:nil afterDelay:1.0f];
               
             }];
         }else{

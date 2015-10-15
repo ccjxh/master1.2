@@ -16,18 +16,18 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AXa-N3-ef7">
-                        <rect key="frame" x="11" y="14" width="206" height="17"/>
+                        <rect key="frame" x="13" y="14" width="206" height="17"/>
                         <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="206" id="n4w-e2-AVe"/>
                             <constraint firstAttribute="height" constant="17" id="rjm-rd-02v"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="skill.png" translatesAutoresizingMaskIntoConstraints="NO" id="sCP-sX-SiI">
-                        <rect key="frame" x="222" y="14" width="14" height="14"/>
+                        <rect key="frame" x="224" y="14" width="14" height="14"/>
                         <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="2au-qK-Tsd"/>
@@ -57,7 +57,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="money.png" translatesAutoresizingMaskIntoConstraints="NO" id="La0-lj-UwQ">
-                        <rect key="frame" x="11" y="64" width="14" height="14"/>
+                        <rect key="frame" x="13" y="64" width="14" height="14"/>
                         <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="DRj-ze-gzL"/>
@@ -65,7 +65,7 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yeg-eu-TpM">
-                        <rect key="frame" x="30" y="64" width="76" height="14"/>
+                        <rect key="frame" x="32" y="64" width="76" height="14"/>
                         <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="aMp-Jk-R1b"/>
@@ -87,7 +87,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RqB-0z-eNB">
-                        <rect key="frame" x="111" y="64" width="60" height="14"/>
+                        <rect key="frame" x="113" y="64" width="60" height="14"/>
                         <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="60" id="e7K-jG-QKA"/>
@@ -107,7 +107,7 @@
                     <constraint firstItem="ejQ-P5-SaS" firstAttribute="leading" secondItem="IuZ-PM-AXr" secondAttribute="trailing" constant="30" id="Bpp-Qy-3An"/>
                     <constraint firstItem="IuZ-PM-AXr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="3" id="CyR-xf-EN5"/>
                     <constraint firstAttribute="trailingMargin" secondItem="FDh-sg-FEI" secondAttribute="trailing" constant="6" id="D3k-gg-HFX"/>
-                    <constraint firstItem="La0-lj-UwQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="3" id="Ipu-t0-53s"/>
+                    <constraint firstItem="La0-lj-UwQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="5" id="Ipu-t0-53s"/>
                     <constraint firstItem="FDh-sg-FEI" firstAttribute="top" secondItem="ejQ-P5-SaS" secondAttribute="bottom" constant="11" id="M3y-qW-e3Q"/>
                     <constraint firstItem="RqB-0z-eNB" firstAttribute="leading" secondItem="yeg-eu-TpM" secondAttribute="trailing" constant="5" id="QKe-e7-fS0"/>
                     <constraint firstItem="yeg-eu-TpM" firstAttribute="top" secondItem="IuZ-PM-AXr" secondAttribute="bottom" constant="11" id="Rmt-z0-Wxx"/>
@@ -115,7 +115,7 @@
                     <constraint firstItem="sCP-sX-SiI" firstAttribute="leading" secondItem="AXa-N3-ef7" secondAttribute="trailing" constant="5" id="XhL-fq-aMA"/>
                     <constraint firstItem="RqB-0z-eNB" firstAttribute="top" secondItem="ejQ-P5-SaS" secondAttribute="bottom" constant="11" id="bFf-Wv-Nem"/>
                     <constraint firstItem="yeg-eu-TpM" firstAttribute="leading" secondItem="La0-lj-UwQ" secondAttribute="trailing" constant="5" id="exN-OG-Ic1"/>
-                    <constraint firstItem="AXa-N3-ef7" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="3" id="fKi-76-ucs"/>
+                    <constraint firstItem="AXa-N3-ef7" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="5" id="fKi-76-ucs"/>
                 </constraints>
             </tableViewCellContentView>
             <animations/>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -12,39 +12,28 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="99.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MNs-H5-FNj">
                         <rect key="frame" x="15" y="10" width="80" height="80"/>
+                        <animations/>
                         <accessibility key="accessibilityConfiguration">
-                            <accessibilityTraits key="traits" none="YES" image="YES" notEnabled="YES"/>
+                            <accessibilityTraits key="traits" image="YES" notEnabled="YES"/>
                         </accessibility>
                         <constraints>
                             <constraint firstAttribute="height" constant="80" id="Cnw-lP-MMQ"/>
                             <constraint firstAttribute="width" constant="80" id="Sh5-8i-hy4"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="向左滑动可以删除证书" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ycz-QV-ckB">
-                        <rect key="frame" x="133" y="39" width="166" height="21"/>
-                        <accessibility key="accessibilityConfiguration">
-                            <accessibilityTraits key="traits" none="YES" staticText="YES" notEnabled="YES"/>
-                        </accessibility>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="160" id="UF8-jo-6q0"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                 </subviews>
+                <animations/>
                 <constraints>
                     <constraint firstItem="MNs-H5-FNj" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="JPO-Nz-9bq"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="Ycz-QV-ckB" secondAttribute="trailing" constant="10" id="bq4-0S-s39"/>
                     <constraint firstItem="MNs-H5-FNj" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="10" id="hFS-RN-Gu2"/>
-                    <constraint firstAttribute="centerY" secondItem="Ycz-QV-ckB" secondAttribute="centerY" id="jem-A1-eAW"/>
                 </constraints>
             </tableViewCellContentView>
+            <animations/>
             <connections>
                 <outlet property="contentImage" destination="MNs-H5-FNj" id="n7Z-tB-YdD"/>
             </connections>

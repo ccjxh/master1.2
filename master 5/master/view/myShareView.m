@@ -117,12 +117,7 @@
          switch (state) {
              case SSDKResponseStateSuccess:
              {
-                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享成功"
-                                                                     message:nil
-                                                                    delegate:nil
-                                                           cancelButtonTitle:@"确定"
-                                                           otherButtonTitles:nil];
-                 [alertView show];
+                 
                  NSString *urlString=[self interfaceFromString:interface_shareApp];
              NSDictionary*dict=@{@"appKey":@"com.baoself.master",@"shareType":[NSString stringWithFormat:@"%lu",_currentTag]};
                  __weak typeof(self)weakSelf=self;
@@ -134,6 +129,15 @@
                              if ([[[[dict objectForKey:@"entity"] objectForKey:@"userShareDTO"] objectForKey:@"firstShare"] integerValue]==1) {
                                  
                                  [weakSelf requestGetIntral];
+                             }else{
+                             
+                                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享成功"
+                                                                                     message:nil
+                                                                                    delegate:nil
+                                                                           cancelButtonTitle:@"确定"
+                                                                           otherButtonTitles:nil];
+                                 [alertView show];
+                             
                              }
                          }
                          
@@ -191,6 +195,7 @@
                 if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"]) {
                 AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
                 delegate.integral=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue];
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"showIncreaImage" object:nil];
             }
             
         } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {

@@ -18,6 +18,9 @@
 #import "nameViewController.h"
 #import "ChangeDateViewController.h"
 #import "MyInformationTableViewCell.h"
+#import "personRecommendTableViewCell.h"
+
+
 @interface BasicInfoViewController ()
 {
     UITableView *myInfoTableView;
@@ -73,7 +76,7 @@
     [myInfoTableView registerNib:[UINib nibWithNibName:@"MyInfoTableViewCell" bundle:nil] forCellReuseIdentifier:@"myInfoTableView"];
     
     self.view.backgroundColor = [UIColor colorWithRed:245/255.0 green:245/255.0 blue:245/255.0 alpha:1.0];
-    [self createIncreaseview];
+
     
 }
 
@@ -123,7 +126,7 @@
     }
     else if (section == 1)
     {
-        return 4;
+        return 5;
     }
     else if (section == 2)
     {
@@ -141,11 +144,9 @@
         MyInformationTableViewCell*firstCell=[tableView dequeueReusableCellWithIdentifier:@"CEll"];
         if (!firstCell) {
             firstCell=[[[NSBundle mainBundle]loadNibNamed:@"MyInformationTableViewCell" owner:nil options:nil]lastObject];
-            //            firstCell.backgroundColor=COLOR(67, 172, 219, 0.9);
-            
-        }
+            }
         
-         NSString*urlString=[NSString stringWithFormat:@"%@%@",changeURL,personalDetailModel.icon];
+        NSString*urlString=[NSString stringWithFormat:@"%@%@",changeURL,personalDetailModel.icon];
         firstCell.selectionStyle=0;
         firstCell.name.text=personalDetailModel.realName;
         [firstCell.headImage sd_setImageWithURL:[NSURL URLWithString:urlString] placeholderImage:[UIImage imageNamed:headImageName]];
@@ -159,6 +160,45 @@
         return firstCell;
 
     }
+    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+    PersonalDetailModel*model=[[dataBase share]findPersonInformation:delegate.id];
+    
+    if (indexPath.section==3) {
+       
+        personRecommendTableViewCell*cell=[tableView dequeueReusableCellWithIdentifier:@"cell"];
+                if (!cell) {
+            cell=[[[NSBundle mainBundle]loadNibNamed:@"personRecommendTableViewCell" owner:nil options:nil]lastObject];
+        }
+
+       
+        if ([[[delegate.userInforDic objectForKey:@"certification"] objectForKey:@"personal"]integerValue] == 0)
+        {
+            //                self.contentLabel.text = @"未认证";personalState
+            if ([[[delegate.userInforDic objectForKey:@"certification"] objectForKey:@"personalState"]integerValue] == 0)
+            {
+                cell.status.text = @"未认证";
+                cell.status.textColor=COLOR(251, 128, 20, 1);
+                cell.imageWidth.constant=20;
+            }
+            else
+            {
+                cell.status.text = @"认证中";
+                cell.status.textColor=[UIColor grayColor];
+                cell.imageWidth.constant=0;
+            }
+        }
+        else
+        {
+            cell.status.text = @"已认证";
+             cell.imageWidth.constant=0;
+            cell.status.textColor = [UIColor grayColor];
+        }
+
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        return cell;
+        
+        }
+    
     
     MyInfoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"myInfoTableView"];
        if (cell == nil)
@@ -218,7 +258,6 @@
                         personalDetailModel.gendar = @"女";
                     }
                     
-                    
                     [myInfoTableView reloadData];
                 };
                 [self pushWinthAnimation:self.navigationController Viewcontroller:ctl];
@@ -253,12 +292,14 @@
                           if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] ) {
                               delegate.integrity=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] integerValue];
                               
-                              if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"]) {
+                                }
+                          if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"]) {
+                              if (delegate.integral-[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue]>0) {
                                   delegate.integral= [[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue];
-                                  [self showIncreaImage];
-                                  
+                                  [[NSNotificationCenter defaultCenter]postNotificationName:@"showIncreaImage" object:nil];
                               }
                           }
+
                           [self.view makeToast:@"更新成功" duration:1 position:@"center" Finish:^{
                              
                               personalDetailModel.birthday=date;
@@ -445,7 +486,7 @@
 //        NSLog(@"image info : %@",info);
         NSString *type = [info objectForKey:UIImagePickerControllerMediaType];
         if ([type isEqualToString:@"public.image"]) {
-            UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+            UIImage *image = [info objectForKey:@"UIImagePickerControllerEditedImage"];
             CGSize imagesize = image.size;
              UIImage *imageNew = [self imageWithImage:image scaledToSize:imagesize];
             [self flowShow];
@@ -466,25 +507,24 @@
                     NSDictionary*dict=(NSDictionary*)responseObject;
                     if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
                         [self.view makeToast:@"头像更换成功" duration:1 position:@"center" Finish:^{
+                        AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
                            NSDictionary *entityDic = responseObject[@"entity"];
-                            NSDictionary *attachmentDic = entityDic[@"attachment"];
-                            personalDetailModel.icon = attachmentDic[@"resource"];
-                            AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-//                            delegate.integral=;
-                      if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] ) {
-                          delegate.integrity=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] integerValue];
-                          
-                          if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"]) {
-                              delegate.integral= [[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue];
-                              [self showIncreaImage];
-                              
-                                }
-                            }
-                            
-                            
+                            NSDictionary *attachmentDic = entityDic[@"user"];
+                            personalDetailModel.icon = attachmentDic[@"icon"];
                             if (self.block) {
                                 self.block(@"",personalDetailModel.icon);                    }
                             [myInfoTableView reloadData];
+                      if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] ) {
+                          delegate.integrity=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] integerValue];
+                          
+                            }
+
+                        if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"]) {
+                                if (delegate.integral-[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue]>0) {
+                                    delegate.integral= [[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue];
+                                    [[NSNotificationCenter defaultCenter]postNotificationName:@"showIncreaImage" object:nil];
+                                }
+                            }
  
                         }];
                     }else{

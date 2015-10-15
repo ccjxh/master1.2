@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -12,18 +12,20 @@
             <rect key="frame" x="0.0" y="0.0" width="309" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="309" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iZT-OW-Irf">
                         <rect key="frame" x="8" y="11" width="20" height="20"/>
+                        <animations/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="18" id="7hF-Q9-XAn"/>
-                            <constraint firstAttribute="width" constant="21" id="Pqt-37-sK0"/>
+                            <constraint firstAttribute="height" constant="20" id="7hF-Q9-XAn"/>
+                            <constraint firstAttribute="width" constant="20" id="Pqt-37-sK0"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0hj-T8-jph">
                         <rect key="frame" x="47" y="11" width="208" height="21"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="2VN-Ew-ojY"/>
                         </constraints>
@@ -32,14 +34,16 @@
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <animations/>
                 <constraints>
-                    <constraint firstItem="iZT-OW-Irf" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="Ade-NV-DiB"/>
+                    <constraint firstItem="iZT-OW-Irf" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="5" id="Ade-NV-DiB"/>
                     <constraint firstAttribute="trailingMargin" secondItem="0hj-T8-jph" secondAttribute="trailing" constant="50" id="Bbs-BL-5NQ"/>
                     <constraint firstItem="0hj-T8-jph" firstAttribute="leading" secondItem="iZT-OW-Irf" secondAttribute="trailing" constant="15" id="YBX-T7-hV2"/>
-                    <constraint firstItem="iZT-OW-Irf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="12" id="anc-jc-gYL"/>
+                    <constraint firstItem="iZT-OW-Irf" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="10" id="anc-jc-gYL"/>
                     <constraint firstItem="0hj-T8-jph" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="10" id="fXn-e0-lDQ"/>
                 </constraints>
             </tableViewCellContentView>
+            <animations/>
             <connections>
                 <outlet property="type" destination="0hj-T8-jph" id="JpZ-Lr-9lf"/>
                 <outlet property="typeImage" destination="iZT-OW-Irf" id="dAF-kh-cej"/>

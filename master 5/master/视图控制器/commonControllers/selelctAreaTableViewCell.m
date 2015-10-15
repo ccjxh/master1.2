@@ -10,6 +10,11 @@
 
 @implementation selelctAreaTableViewCell
 
+-(void)setIsShowImage:(BOOL)isShowImage{
+
+    _isShowImage=isShowImage;
+}
+
 - (void)awakeFromNib {
     // Initialization code
 }
@@ -39,6 +44,12 @@
         else{
             self.imageview.image=[UIImage imageNamed:@"未选中"];
         }
+    }
+    if (_isShowImage==NO) {
+        self.imageview.hidden=YES;
+    }else{
+    
+        self.imageview.hidden=NO;
     }
 }
 

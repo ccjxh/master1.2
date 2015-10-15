@@ -14,15 +14,33 @@
 
 @implementation RootViewController
 
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"showIncreaImage" object:nil];
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     if( ([[[UIDevice currentDevice] systemVersion] doubleValue]>=7.0)) {
 //        self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    // Do any additional setup after loading the view.
+    
+    [self createIncreaseview];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(parse:) name:@"showIncreaImage" object:nil];
+    
+       // Do any additional setup after loading the view.
 }
 
+
+-(void)parse:(NSNotification*)notiction{
+
+    NSDictionary*dict=notiction.userInfo;
+    _addIntral=[[dict objectForKey:@"value"] integerValue];
+    [self showIncreaImage];
+
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -205,16 +223,35 @@
 }
 
 
--(void)createIncreaseview{
 
-    _increaseView=[[UIView alloc]initWithFrame:CGRectMake((SCREEN_WIDTH-100)/2, (SCREEN_HEIGHT-64-100)/2, 100, 100)];
-    _increaseView.backgroundColor=[UIColor blackColor];
+-(void)createIncreaseview{
+    _increaseView=[[UIView alloc]initWithFrame:self.view.bounds];
+    UIView*view=[[UIView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-140, SCREEN_HEIGHT/2-120, 280, 240)];
+    view.layer.cornerRadius=3;
+    view.backgroundColor=[UIColor whiteColor];
+    UIImageView*imageview=[[UIImageView alloc]initWithFrame:CGRectMake(view.frame.size.width/2-70, 20, 140, 140)];
+    UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(view.frame.size.width/2-70, CGRectGetMaxY(imageview.frame)+10, 160, 20)];
+    imageview.backgroundColor=[UIColor whiteColor];
+    imageview.alpha=1;
+    label.tag=100;
+    label.textAlignment=NSTextAlignmentCenter;
+    label.text=[NSString stringWithFormat:@"恭喜获得%lu积分",_addIntral];
+    label.textColor=COLOR(168, 218, 232, 1);
+    label.font=[UIFont systemFontOfSize:18];
+    [view addSubview:label];
+    imageview.image=[UIImage imageNamed:@"签到成功"];
+    [view addSubview:imageview];
+    [_increaseView addSubview:view];
+    _increaseView.backgroundColor=COLOR(29, 29, 29, 0.5);
 
 }
 
 
 -(void)showIncreaImage{
     [self.view addSubview:_increaseView];
+    UILabel*label=(id)[self.view viewWithTag:100];
+    label.text=[NSString stringWithFormat:@"恭喜获得%lu积分",(long)_addIntral];
+    [self.view bringSubviewToFront:_increaseView];
     [self performSelector:@selector(delayMethod) withObject:nil afterDelay:1.5f];
 
 }

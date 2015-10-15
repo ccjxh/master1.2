@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
@@ -17,6 +17,7 @@
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Prm-SD-KQh">
                         <rect key="frame" x="18" y="13" width="80" height="20"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="gND-yd-986"/>
                             <constraint firstAttribute="width" constant="80" id="kKF-VR-xML"/>
@@ -26,13 +27,15 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xaE-6r-ibe">
-                        <rect key="frame" x="108" y="8" width="194" height="27.5"/>
+                        <rect key="frame" x="108" y="8" width="214" height="27.5"/>
+                        <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" alpha="0.90000000000000002" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eRT-IM-YQj">
                         <rect key="frame" x="256" y="5" width="46" height="30"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="35" id="2L9-xq-dZ4"/>
                             <constraint firstAttribute="width" constant="35" id="GSE-LI-lV2"/>
@@ -45,9 +48,10 @@
                         </connections>
                     </button>
                 </subviews>
+                <animations/>
                 <constraints>
                     <constraint firstItem="eRT-IM-YQj" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="Ijg-mp-Xfi"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="xaE-6r-ibe" secondAttribute="trailing" constant="10" id="MDa-eZ-ZQn"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="xaE-6r-ibe" secondAttribute="trailing" constant="-10" id="MDa-eZ-ZQn"/>
                     <constraint firstAttribute="trailingMargin" secondItem="eRT-IM-YQj" secondAttribute="trailing" constant="10" id="X0l-Tf-6TT"/>
                     <constraint firstAttribute="bottomMargin" secondItem="xaE-6r-ibe" secondAttribute="bottom" id="gxN-8l-4qm"/>
                     <constraint firstItem="xaE-6r-ibe" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="sIW-2l-yrA"/>
@@ -56,6 +60,7 @@
                     <constraint firstItem="Prm-SD-KQh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="10" id="zt6-w5-D54"/>
                 </constraints>
             </tableViewCellContentView>
+            <animations/>
             <connections>
                 <outlet property="contentLabel" destination="xaE-6r-ibe" id="Ggu-by-AZu"/>
                 <outlet property="listLabel" destination="Prm-SD-KQh" id="vow-kj-tIz"/>

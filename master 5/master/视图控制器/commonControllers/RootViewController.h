@@ -30,6 +30,7 @@ typedef void (^loadMoreBlock)();
 @property(nonatomic)UIView*noDataView;//没有数据
 @property(nonatomic)UIView*netIll;//网络不好
 @property(nonatomic)UIView*increaseView;//积分增加view
+@property(nonatomic)NSInteger addIntral;//积分增加的数量
 -(void)CreateFlow;
 -(void)flowShow;
 -(void)flowHide;

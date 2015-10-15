@@ -139,12 +139,10 @@
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     PersonalDetailModel*model=[[dataBase share]findPersonInformation:delegate.id];
-    if (indexPath.section==0) {
+       if (indexPath.section==0) {
         myFirstTableViewCell*cell=[tableView dequeueReusableCellWithIdentifier:@"cell"];
         if (!cell) {
-            
             cell=[[[NSBundle mainBundle]loadNibNamed:@"myFirstTableViewCell" owner:nil options:nil]lastObject];
-            
         }
         NSString*urlString=[NSString stringWithFormat:@"%@%@",changeURL,model.icon];
         [cell.headImahe sd_setImageWithURL:[NSURL URLWithString:urlString] placeholderImage:[UIImage imageNamed:headImageName]];
@@ -155,7 +153,7 @@
         cell.name.text=model.realName;
         cell.headImahe.layer.cornerRadius=10;
         cell.integrity.text=[NSString stringWithFormat:@"%lu%%",(long)delegate.integrity];
-        cell.integrity.textColor=COLOR(220, 115, 0, 1);
+        cell.integrity.textColor=COLOR(249 , 123, 31, 1);
         cell.detail.text=model.mobile;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         return cell;
@@ -173,8 +171,11 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section==0) {
+        
         return 85;
+        
     }
+    
     return 50;
 
 }
@@ -184,16 +185,31 @@
     if (section==0) {
         return 0;
     }
-    if (section==1) {
+    if (section==1||section==3||section==5) {
         return 20;
     }
-    return 1;
+    return 0.5;
 
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     [[SelectManager share]tableviewDidSelectWithKindOfClass:@"MyViewController" IndexPath:indexPath Navigatingation:self.navigationController Tableview:tableView];    
+}
+
+
+-(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+
+    UIView*view=[[UIView alloc]initWithFrame:CGRectMake(10, 0, SCREEN_WIDTH, 40)];
+    if (section==2||section==4||section==6||section==7) {
+        view.backgroundColor=COLOR(194, 194, 194, 1);
+        return view;
+    }else{
+        
+        return nil;
+    
+    }
+   
 }
 
 

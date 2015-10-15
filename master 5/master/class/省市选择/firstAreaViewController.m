@@ -61,7 +61,10 @@
     }];
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 50;
 
+}
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
 
 
@@ -79,9 +82,7 @@
     UITableViewCell*Cell=[tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (!Cell) {
         Cell=[[UITableViewCell alloc]initWithStyle:1 reuseIdentifier:@"cell"];
-        
     }
-    
     AreaModel*model=_dataArray[indexPath.section];
     Cell.textLabel.text=model.name;
     Cell.textLabel.font=[UIFont systemFontOfSize:16];
@@ -94,8 +95,8 @@
     secondAreaViewController*svc=[[secondAreaViewController alloc]initWithNibName:@"firstAreaViewController" bundle:nil];
     svc.model=_dataArray[indexPath.section];
     AreaModel*model=_dataArray[indexPath.section];
-    NSMutableArray*array=[[NSMutableArray alloc]initWithObjects:model, nil];
-    [self.selectArray addObject:array];
+//    NSMutableArray*array=[[NSMutableArray alloc]initWithObjects:model, nil];
+//    [self.selectArray addObject:array];
     svc.selectArray=self.selectArray;
     [self pushWinthAnimation:self.navigationController Viewcontroller:svc];
 

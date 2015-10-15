@@ -13,7 +13,16 @@
 
 
 
+-(void)setIsShow:(BOOL)isShow{
+    _isShow=isShow;
+    if (_isShow) {
+        personalImageview.hidden=NO;
+    }else{
+    
+        personalImageview.hidden=YES;
+    }
 
+}
 
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
 
@@ -104,12 +113,12 @@
    
     [headImageView sd_setImageWithURL:[NSURL URLWithString:urlString] placeholderImage:[UIImage imageNamed:headImageName]];
     
-       if ([[self.model.certification objectForKey:@"personal"] integerValue]==1) {
+//       if ([[self.model.certification objectForKey:@"skill"] integerValue]==1) {
            personalImageview.image=[UIImage imageNamed:@"skill.png"];
-       }
-       if ([[self.model.certification objectForKey:@"company"] integerValue]==1) {
-           personalImageview.image=[UIImage imageNamed:@"ic_compay"];
-       }
+//       }
+//       if ([[self.model.certification objectForKey:@"company"] integerValue]==1) {
+//           personalImageview.image=[UIImage imageNamed:@"ic_compay"];
+//       }
 
     [phoneButton setImage:[UIImage imageNamed:@"phone"] forState:UIControlStateNormal];
     NSString*skillStr;

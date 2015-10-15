@@ -76,10 +76,10 @@
         NSDictionary*dict=(NSDictionary*)responseObject;
         [self flowHide];
         if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
-            
             [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"inviteCode"] forKey:@"inviteCode"];
             [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] forKey:@"integrity"];
-            [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"]objectForKey:@"certification"] forKey:@"certification"];
+            NSMutableDictionary*parentDic=[[NSMutableDictionary alloc]initWithDictionary:[[[dict objectForKey:@"entity"] objectForKey:@"user"]objectForKey:@"certification"]];
+            [delegate.userInforDic setObject:parentDic forKey:@"certification"];
              [self HXLoginWithUsername:username Password:password];
             [delegate requestInformation];
             NSUserDefaults*users=[NSUserDefaults standardUserDefaults];
@@ -185,25 +185,37 @@
         
             phoneType=@"unKnowIPhone";
         }
-    NSDictionary*dict=@{@"mobile":_account.text,@"password":_passWord.text,@"machineCode":openUDID,@"machineType":phoneType};
+    
+        __weak typeof(self)weakSelf=self;
+   NSDictionary*dict=@{@"mobile":_account.text,@"password":_passWord.text,@"machineCode":openUDID,@"machineType":phoneType};
         [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSDictionary*dict=(NSDictionary*)responseObject;
             [self flowHide];
             if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
-                  AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+                [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"inviteCode"] forKey:@"inviteCode"];
+                [delegate.userInforDic setObject:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] forKey:@"integrity"];
+                NSMutableDictionary*parentDic=[[NSMutableDictionary alloc]initWithDictionary:[[[dict objectForKey:@"entity"] objectForKey:@"user"]objectForKey:@"certification"]];
+                [delegate.userInforDic setObject:parentDic forKey:@"certification"];
+                [self HXLoginWithUsername:_account.text Password:_passWord.text];
                 [delegate requestInformation];
-//                [delegate requestAdImage];
-                [self.view makeToast:@"恭喜!登录成功。" duration:2.0f position:@"center"];
                 NSUserDefaults*users=[NSUserDefaults standardUserDefaults];
                 [users setObject:_account.text forKey:@"username"];
                 [users setObject:_passWord.text forKey:_account.text];
                 [users synchronize];
-                [XGPush setAccount:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"pullTag"]];
-                [delegate setupPushWithDictory];
+                delegate.integral=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue];
+                delegate.signInfo=[[NSMutableDictionary alloc]initWithDictionary:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"signInfo"]];
                 delegate.userPost=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"userPost"] integerValue];
                 delegate.id=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"id"] integerValue];
-                [delegate setHomeView];
-                
+                [delegate setupPushWithDictory];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    //延迟跳转
+                    [self.view makeToast:@"恭喜!登录成功。" duration:2.0f position:@"center"];
+                    [XGPush setAccount:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"pullTag"]];
+                    [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
+                    [delegate setHomeView];
+                    [delegate setupPushWithDictory];
+                    
+                });
             } else  {
                 [self.view makeToast:[dict objectForKey:@"msg"] duration:2.0f position:@"center"];
             }

@@ -21,6 +21,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title=@"证书管理";
     [self customNavigation];
     [self CreateFlow];
     [self request];
@@ -121,7 +122,7 @@
         //        NSLog(@"image info : %@",info);
         NSString *type = [info objectForKey:UIImagePickerControllerMediaType];
         if ([type isEqualToString:@"public.image"]) {
-            UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+            UIImage *image = [info objectForKey:@"UIImagePickerControllerEditedImage"];
             CGSize imagesize = image.size;
             UIImage *imageNew = [self imageWithImage:image scaledToSize:imagesize];
             NSData *imageData = UIImageJPEGRepresentation(imageNew, 0.5);

@@ -90,7 +90,7 @@
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     if ([[delegate.signInfo objectForKey:@"signState"] integerValue]==1) {
         
-        [_signButton setTitle:[NSString stringWithFormat:@"明日签到+%d",[[delegate.signInfo objectForKey:@"nextDayIntegral"]integerValue]] forState:UIControlStateNormal];
+        [_signButton setTitle:[NSString stringWithFormat:@"明日签到+%ld",[[delegate.signInfo objectForKey:@"nextDayIntegral"]integerValue]] forState:UIControlStateNormal];
         _signButton.userInteractionEnabled=NO;
         
     }else {
@@ -102,7 +102,7 @@
     [_signButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
     _signButton.titleLabel.font=[UIFont systemFontOfSize:14];
     [_signButton setBackgroundColor:[UIColor whiteColor]];
-    _signButton.layer.cornerRadius=15;
+    _signButton.layer.cornerRadius=5;
     _signButton.tag=BUTTON_TAG;
     [_firObjcView addSubview:_signButton];
     [self addSubview:_firObjcView];
@@ -121,13 +121,18 @@
 
 -(void)createScrollLabel{
 
-    _noticeView=[[UIView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, 20)];
+    _noticeView=[[UIView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, 24)];
     _noticeView.backgroundColor=COLOR(16, 118, 162, 1);
     [self addSubview:_noticeView];
-    UIImageView*imageview=[[UIImageView alloc]initWithFrame:CGRectMake(13, 5, 10, 12)];
+    UIImageView*imageview=[[UIImageView alloc]initWithFrame:CGRectMake(13, 4, 12, 12)];
     imageview.image=[UIImage imageNamed:@"公告.png"];
+    UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(imageview.frame)+5,3, 35, 14)];
+    label.text=@"公告:";
+    label.textColor=[UIColor whiteColor];
+    label.font=[UIFont systemFontOfSize:12];
+    [_noticeView addSubview:label];
     [_noticeView addSubview:imageview];
-    _tv=[[TextFlowView alloc]initWithFrame:CGRectMake(28, 5, SCREEN_WIDTH-10, 12)Text:@""];
+    _tv=[[TextFlowView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(label.frame)+5, 3, SCREEN_WIDTH-10-CGRectGetMaxX(label.frame), 14)Text:@""];
     [_tv startRun];
     [_tv setColor:[UIColor whiteColor]];
     [_tv setFont:[UIFont systemFontOfSize:12]];
@@ -145,18 +150,15 @@
         [_signButton setTitle:[NSString stringWithFormat:@"明日签到+%lu",self.model.nextDayIntegral] forState:UIControlStateNormal];
         _signButton.userInteractionEnabled=NO;
     }
-
-    _timeLabel.text=[NSString stringWithFormat:@"您已经连续登陆了%lu天",[[delegate.signInfo objectForKey:@"renewDay"] integerValue]];
+    _timeLabel.text=[NSString stringWithFormat:@"您已经连续签到了%lu天",[[delegate.signInfo objectForKey:@"renewDay"] integerValue]];
     _scoreLabel.text=[NSString stringWithFormat:@"%lu",delegate.integral];
     if (_isShowNotice==NO) {
         _noticeView.frame=CGRectMake(_noticeView.frame.origin.x, _noticeView.frame.origin.y, _noticeView.frame.size.width, 0);
     }else{
-    
      _noticeView.frame=CGRectMake(_noticeView.frame.origin.x, _noticeView.frame.origin.y, _noticeView.frame.size.width, 20);
     }
-   
     _firObjcView.frame=CGRectMake(0, CGRectGetMaxY(_noticeView.frame), SCREEN_WIDTH, 48);
-    _backView.frame=CGRectMake(0, CGRectGetMaxY(_firObjcView.frame)+10, SCREEN_WIDTH, SCREEN_HEIGHT-64-140);
+    _backView.frame=CGRectMake(0, CGRectGetMaxY(_firObjcView.frame), SCREEN_WIDTH, SCREEN_HEIGHT-44-140);
 }
 
 
@@ -176,11 +178,11 @@
 
 -(void)customCollection{
 
-    _backView=[[UIScrollView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_firObjcView.frame)+10, SCREEN_WIDTH, 600-64-140)];
+    _backView=[[UIScrollView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_firObjcView.frame), SCREEN_WIDTH, 600-64-60-10)];
+    _backView.bounces=YES;
     _backView.userInteractionEnabled=YES;
-    UIView*tempView=[[UIView alloc]initWithFrame:CGRectMake(13, 0, SCREEN_WIDTH-26, 155)];
+    UIView*tempView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 155)];
     tempView.backgroundColor=[UIColor whiteColor];
-    tempView.layer.cornerRadius=5;
     [_backView addSubview:tempView];
     NSArray*title=@[@"工长",@"师傅"];
     NSArray*contentArray=@[@"待办、管理现场进度、进度把控",@"工程施工、专业技能"];
@@ -207,45 +209,41 @@
         [button addSubview:functionLabel];
         [button addSubview:nameLabel];
         if (i==0) {
-            
-            UIView*view=[[UIView alloc]initWithFrame:CGRectMake(2, 69, SCREEN_WIDTH-30, 1)];
+            UIView*view=[[UIView alloc]initWithFrame:CGRectMake(2, 69, SCREEN_WIDTH-15, 1)];
             view.backgroundColor=COLOR(217, 217, 217, 1);
             [button addSubview:view];
-            
         }
         tempView.userInteractionEnabled=YES;
         button.tag=40+i;
         [button addTarget:self action:@selector(push:) forControlEvents:UIControlEventTouchUpInside];
         [tempView addSubview:button];
-        
     }
     
     [self addSubview:_backView];
     UICollectionViewFlowLayout*layout=[[UICollectionViewFlowLayout alloc]init];
     layout.scrollDirection=UICollectionViewScrollDirectionVertical;
     CGFloat space=(SCREEN_WIDTH-180-45)/4;
-    [layout setMinimumInteritemSpacing:space];
-    [layout setMinimumLineSpacing:10];
-    [layout setItemSize:CGSizeMake(50, 75)];
-    _collection=[[UICollectionView alloc]initWithFrame:CGRectMake(13, 170, SCREEN_WIDTH-26, _backView.frame.size.height-170) collectionViewLayout:layout];
+    [layout setMinimumInteritemSpacing:0];
+    [layout setMinimumLineSpacing:0];
+    [layout setItemSize:CGSizeMake(SCREEN_WIDTH/2, 75)];
+    _collection=[[UICollectionView alloc]initWithFrame:CGRectMake(0, 170, SCREEN_WIDTH, _backView.frame.size.height-100-75-15) collectionViewLayout:layout];
+    _collection.showsVerticalScrollIndicator=NO;
+    _collection.scrollEnabled=NO;
     NSInteger height=CGRectGetMaxY(_collection.frame);
     [_backView setContentSize:CGSizeMake(SCREEN_WIDTH, height)];
     _collection.backgroundColor=[UIColor whiteColor];
-    _collection.layer.cornerRadius=5;
     [_backView addSubview:_collection];
     _collection.delegate=self;
     _collection.dataSource=self;
-    UIImageView*hotImageview=[[UIImageView alloc]initWithFrame:CGRectMake(28, 18, 20, 20)];
-    hotImageview.image=[UIImage imageNamed:@"排行榜.png"];
-    [_collection addSubview:hotImageview];
-    UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(hotImageview.frame)+28, 18, 90, 16)];
+    UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(13, 18, 90, 16)];
     label.text=@"热度排行榜";
-    label.textColor=COLOR(146, 146, 146, 1);
+    label.textColor=[UIColor blackColor];
     label.font=[UIFont systemFontOfSize:16];
     [_collection addSubview:label];
     [ _collection setCollectionViewLayout:layout animated:YES];
     UINib *nib=[UINib nibWithNibName:@"hotRankCollectionViewCell" bundle:[NSBundle mainBundle]];
     [_collection registerNib:nib forCellWithReuseIdentifier:@"cell"];
+    [_collection registerNib:nib forCellWithReuseIdentifier:@"noSkill"];
     _refershButton=[[UIButton alloc]initWithFrame:CGRectMake(_collection.bounds.size.width/2-30, _collection.bounds.size.height/2-30 , 60, 60)];
     _refershButton.backgroundColor=[UIColor blackColor];
     [_refershButton addTarget:self action:@selector(refershData) forControlEvents:UIControlEventTouchUpInside];
@@ -313,34 +311,73 @@
 }
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
 
-    NSLog(@"%lu",_hotArray.count);
     return _hotArray.count;
 }
 
 -(UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-
+    
     MasterDetailModel*model=_hotArray[indexPath.row];
-    static NSString*cellName=@"cell";
-    hotRankCollectionViewCell*cell=[collectionView dequeueReusableCellWithReuseIdentifier:cellName forIndexPath:indexPath];
-    cell.name.text=model.realName;
-    [cell.headImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",changeURL,model.icon]] placeholderImage:[UIImage imageNamed:@"头像.png"]];
-    return cell;
+    NSArray*Array=@[@"first",@"second",@"third",@"fifth",@"fiveth",@"sixth"];
+    if ([[model.certification objectForKey:@"personal"] integerValue]==1) {
+        static  NSString*cellName=@"cell";
+        hotRankCollectionViewCell*cell=[collectionView dequeueReusableCellWithReuseIdentifier:cellName forIndexPath:indexPath];
+        cell.model=model;
+        [cell reloadData];
+        cell.skillpicture.hidden=NO;
+        if (indexPath.row>1) {
+            cell.vHine.hidden=YES;
+        }else{
+        
+            cell.vHine.hidden=NO;
 
+        }
+        if (indexPath.row>2) {
+            cell.rankWidth.constant=15;
+            cell.rankHeight.constant=15;
+            cell.rankTop.constant=30;
+        }else{
+            cell.rankWidth.constant=10;
+            cell.rankHeight.constant=30;
+            cell.rankTop.constant=23;
+        }
+        cell.rankImage.image=[UIImage imageNamed:Array[indexPath.row]];
+        return cell;
+    }
+    
+        static NSString*result=@"noSkill";
+        hotRankCollectionViewCell*noSkillCell=[collectionView dequeueReusableCellWithReuseIdentifier:result forIndexPath:indexPath];
+        noSkillCell.model=model;
+        [noSkillCell reloadData];
+        noSkillCell.skillpicture.hidden=YES;
+    if (indexPath.row>1) {
+        noSkillCell.vHine.hidden=YES;
+    }else{
+        
+        noSkillCell.vHine.hidden=NO;
+        
+    }
+        if (indexPath.row>2) {
+            noSkillCell.rankWidth.constant=15;
+            noSkillCell.rankHeight.constant=15;
+            noSkillCell.rankTop.constant=30;
+        }else{
+            noSkillCell.rankWidth.constant=10;
+            noSkillCell.rankHeight.constant=30;
+            noSkillCell.rankTop.constant=23;
+            
+        }
+        noSkillCell.rankImage.image=[UIImage imageNamed:Array[indexPath.row]];
+        return noSkillCell;
 }
 
 
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(52, 10, 2, 10);
+    return UIEdgeInsetsMake(52, 0, 0, 0);
 }
 
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-
-//    MasterDetailModel*model=_hotArray[indexPath.row];
-//    PeoDetailViewController*pvc=[[PeoDetailViewController alloc]init];
-//    
-//    [self pushWinthAnimation:self.na Viewcontroller:pvc];
 
     if (self.push) {
         self.push(indexPath);

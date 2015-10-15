@@ -321,6 +321,9 @@
             case interface_shareWorkInfor:
             urlString=@"share/projectShare";
             break;
+            case interface_myTotal:
+            urlString=@"integral/total";
+            break;
              default:
             break;
                 }

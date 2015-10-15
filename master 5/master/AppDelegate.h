@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <BaiduMapAPI/BMapKit.h>//引入所有的头文件
 #import "TencentOpenAPI/QQApiInterface.h"
-
 @interface AppDelegate : UIResponder <UIApplicationDelegate,UIAlertViewDelegate,CLLocationManagerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;

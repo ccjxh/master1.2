@@ -19,7 +19,7 @@
 #import "myRecommendPeopleViewController.h"
 #import "OpenUDID.h"
 #import <sys/utsname.h>
-#import <SMS_SDK/SMS_SDK.h>
+#import <SMS_SDK/SMSSDK.h>
 #import "CustomDialogView.h"
 #import "guideViewController.h"
 #include <sys/signal.h>
@@ -52,7 +52,6 @@
     
     _integral=integral;
     [[NSNotificationCenter defaultCenter]postNotificationName:@"intrgalUpdate" object:nil];
-    
 }
 
 
@@ -64,12 +63,13 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+     [XGPush startApp:2200123145 appKey:@"IT2RW4D1E84M"];  //信鸽推送初始化
      [[CrashReporter sharedInstance] installWithAppId:@"900006644"];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIViewController*temp=[[UIViewController alloc]init];
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     delegate.userInforDic=[[NSMutableDictionary alloc]init];
-   
     self.window.rootViewController=temp;
     [self setupRecommend];  //评分相关设置
     [self setupTestLin];    //云测相关设置
@@ -115,9 +115,9 @@
 
     }];
     
-    
-    [XGPush startApp:2200123145 appKey:@"IT2RW4D1E84M"];  //信鸽推送初始化
-     [SMS_SDK registerApp:@"93852832ce02" withSecret:@"a28d5c5bfbb3ddee35bf3a9585895472"]; //短信验证初始化
+    [SMSSDK registerApp:@"93852832ce02"
+             withSecret:@"a28d5c5bfbb3ddee35bf3a9585895472"];//短信验证初始化
+
     if (!_pictureArray) {
         
         _pictureArray=[[NSMutableArray alloc]init];
@@ -135,16 +135,14 @@
             _havePushMessage=YES;
         }
 //        [WXApi registerApp:@"wxaa561e93e30b45ca"];//微信注册
-        [self setupRootView];
         [self setupADImage];
+        [self setupRootView];
+        
     }else{
         
         [self setupguide];
-
     }
     
-    
-        
     return YES;
 }
 
@@ -251,11 +249,9 @@
 -(void)startRequestWithUsername:(NSString*)username Password:(NSString*)password{
     
     [[loginManager share]loginWithUsername:username Password:password LoginComplite:^(id object) {
-        
          _isLogin=YES;
          _isLoginSuccess=YES;
          [self setupPushWithDictory];
-        
 }];
 //    NSString*urlString=[self interfaceFromString:interface_login];
 //    NSString* openUDID = [OpenUDID value];
@@ -321,7 +317,7 @@
     if (delegate.pullTokenFinish==YES&&delegate.isSend==NO&&pull) {
     NSString* openUDID = [OpenUDID value];
     NSString*urlString=[NSString stringWithFormat:@"%@%@",changeURL,@"/openapi/user/checkMutilClientLogin.json"];
-    AppDelegate*delagate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+        AppDelegate*delagate=(AppDelegate*)[UIApplication sharedApplication].delegate;
         NSString*phoneType;
         if ([delegate getPhoneType]) {
             phoneType=[delegate getPhoneType];
@@ -503,15 +499,19 @@
     
     void (^successBlock)(void) = ^(void){
         //成功之后的处理
+        
         NSLog(@"信鸽服务器接受注册成功");
+        
     };
     
     void (^errorBlock)(void) = ^(void){
         //失败之后的处理
+        
         NSLog(@"信鸽服务器接受注册失败");
+        
     };
-
-     [XGPush registerDevice:deviceToken successCallback:successBlock errorCallback:errorBlock];
+    
+    [XGPush registerDevice:deviceToken successCallback:successBlock errorCallback:errorBlock];
     
    self.pullToken =[XGPush getDeviceToken:deviceToken];
     
@@ -519,7 +519,7 @@
 
     [self sendData:self.pullToken];
     
-  }
+}
 
 
 
@@ -532,9 +532,11 @@
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
-   
-       //推送反馈(app运行时)
+           //推送反馈(app运行时)
     [XGPush handleReceiveNotification:userInfo];
+    NSLog(@"%@",userInfo);
+    
+    
     NSString*str=[userInfo objectForKey:PUSHKEY];
     NSArray*array=[str componentsSeparatedByString:@"\"type\":\""];
     NSString*type=[array[1] componentsSeparatedByString:@"\"}"][0];
@@ -587,6 +589,41 @@
     if ([type isEqualToString:@"projectAuditFail"]==YES) {
         [self.window.rootViewController.view makeToast:@"招工信息审核不通过" duration:1 position:@"center"];
          [[NSNotificationCenter defaultCenter]postNotificationName:@"public" object:nil userInfo:nil];
+    }
+    
+    if (type) {
+        
+               NSString*urlString=[self interfaceFromString:interface_myTotal];
+        if ([type isEqualToString:@"projectAuditPass"]==YES) {
+            //招工审核通过
+            type=@"11";
+            
+        }
+        if ([type isEqualToString:@"projectAccept"]==YES) {
+            
+            //问题被采纳
+            type=@"8";
+        }
+        if ([type isEqualToString:@"personalPass"]==YES) {
+            
+            type=@"6";
+        }
+        NSDictionary*dict=@{@"type":type};
+        
+        [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
+            NSDictionary*dict=(NSDictionary*)responseObject;
+            if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
+                if ([[[dict objectForKey:@"entity"] objectForKey:@"userIntegral"] objectForKey:@"value"]) {
+                    NSDictionary*parent=@{@"value":[[[dict objectForKey:@"entity"] objectForKey:@"userIntegral"] objectForKey:@"value"]};
+                    NSNotification*noction=[[NSNotification alloc]initWithName:@"showIncreaImage" object:nil userInfo:parent];
+                    [[NSNotificationCenter defaultCenter]postNotification:noction];
+                }
+               
+            }
+            
+        } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+            
+        }];
     }
 
     [[NSNotificationCenter defaultCenter]postNotificationName:@"updateUI" object:nil userInfo:nil];

@@ -21,7 +21,7 @@ typedef void (^BlockDateValue)(NSString *textField);
 @property(nonatomic)NSString*begainTime;//开始时间
 @property(nonatomic)BOOL isPass;//是否可以选择过去的时间
 @property(nonatomic)BOOL isfuture;//是否可以选择未来的时间
-
+@property(nonatomic)BOOL isShowMessage;//是否显示提示
 /*!
  * @discussion 日期更改响应块
  */

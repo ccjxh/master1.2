@@ -10,8 +10,8 @@
 #import "selectedCityinforView.h"
 #import "firstAreaViewController.h"
 #import "openCityManagerViewController.h"
-
-@interface proviceSelectedViewController ()
+#import "selelctAreaTableViewCell.h"
+@interface proviceSelectedViewController ()<UIActionSheetDelegate>
 
 @end
 
@@ -19,14 +19,157 @@
 {
     
     NSMutableArray*_dataArray;
+    BOOL _isShow;  //是否删除状态
 
 }
+
+-(void)viewWillAppear:(BOOL)animated{
+
+    [super viewWillAppear:animated];
+    [_tableview reloadData];
+
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title=@"城市管理";
     self.automaticallyAdjustsScrollViewInsets=NO;
-    [self initData];
-    // Do any additional setup after loading the view from its nib.
+    [self customNavigation];
+       // Do any additional setup after loading the view from its nib.
+}
+
+
+
+-(void)customNavigation{
+
+//    NSArray*images=@[@"fifth",@"third"];
+        UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, 25, 6)];
+        [button setImage:[UIImage imageNamed:@"点点点"] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem*item=[[UIBarButtonItem alloc]initWithCustomView:button];
+    NSMutableArray*array=[[NSMutableArray alloc]init];
+    [array addObject:item];
+     self.navigationItem.rightBarButtonItems=array;
+}
+
+
+-(void)customCerfirmNavigation{
+
+    NSArray*array=@[@"确定",@"取消"];
+    NSMutableArray*buttons=[[NSMutableArray alloc]init];
+    for (NSInteger i=0; i<array.count; i++) {
+        UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, 35, 20)];
+        [button setTitle:array[i] forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        button.titleLabel.font=[UIFont systemFontOfSize:16];
+        button.tag=10+i;
+        [button addTarget:self action:@selector(cerfirmDelete:) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem*item=[[UIBarButtonItem alloc]initWithCustomView:button];
+        [buttons addObject:item];
+    }
+    
+    self.navigationItem.rightBarButtonItems=buttons;
+
+}
+
+//删除服务区域
+-(void)cerfirmDelete:(UIButton*)button{
+   
+    if (button.tag==10) {
+        NSString*cityString;
+        for (NSInteger i=0; i<self.selectArray.count; i++) {
+            NSArray*array=self.selectArray[i];
+            for (NSInteger j=0; j<array.count;j++) {
+                if (j==0) {
+                    continue;
+                }
+                AreaModel*model=array[j];
+                if (model.isselect==YES) {
+                    if (cityString==nil) {
+                        cityString=[NSString stringWithFormat:@"%lu",model.id];
+                    }else{
+                        cityString=[NSString stringWithFormat:@"%@,%lu",cityString,model.id];
+                    }
+                }
+            }
+        }
+        
+        if (cityString==nil) {
+            cityString=@"0";
+        }
+        NSDictionary*dict=@{@"regions":cityString};
+        NSString*urlString=[self interfaceFromString:interface_updateServicerRegion];
+        [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
+            NSDictionary*dict=(NSDictionary*)responseObject;
+            [self.view makeToast:[dict objectForKey:@"msg"] duration:1.5f position:@"center" Finish:^{
+                if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
+                    _isShow=NO;
+                    [self customNavigation];
+                    for (NSInteger i=0; i<self.selectArray.count;i++) {
+                        NSMutableArray*array=self.selectArray[i];
+                        for (NSInteger j=0; j<array.count; j++) {
+                            AreaModel*model=array[j];
+                            if (j==0) {
+                                continue;
+                            }
+                            if (model.isselect==NO) {
+                                [array removeObjectAtIndex:j];
+                                j--;
+                            }
+                        }
+                        if (array.count==1) {
+                            [self.selectArray removeObjectAtIndex:i];
+                            i--;
+                        }else{
+                            
+                            [self.selectArray replaceObjectAtIndex:i withObject:array];
+                        }
+                    }
+                    
+                    [_tableview reloadData];
+                }
+            }];
+            
+        } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+            
+        }];
+
+    }else{
+    
+        _isShow=NO;
+        [_tableview reloadData];
+        [self customNavigation];
+        
+    }
+   
+}
+
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+
+    if (buttonIndex==0) {
+       
+        //新增
+          firstAreaViewController*fvc=[[firstAreaViewController alloc]initWithNibName:@"firstAreaViewController" bundle:nil];
+          fvc.selectArray=self.selectArray;
+          [self pushWinthAnimation:self.navigationController Viewcontroller:fvc];
+
+    }else if (buttonIndex==1){
+    //删除
+        _isShow=YES;
+        [_tableview reloadData];
+        [self customCerfirmNavigation];
+    
+    }
+
+}
+
+-(void)onClick:(UIButton*)button{
+    
+    UIActionSheet*sheet=[[UIActionSheet alloc]initWithTitle:@"编辑选项" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"新增" otherButtonTitles:@"删除", nil];
+    [sheet showInView:self.view];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -34,64 +177,71 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)initData{
-
-    if (!_dataArray) {
-        
-        _dataArray=[[NSMutableArray alloc]initWithObjects:@"新增开通",@"管理", nil];
-        
-    }
-    
-    [_tableview reloadData];
-}
-
-
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
 
-
-    return _dataArray.count;
+    if (self.selectArray.count!=0) {
+        _isShow=YES;
+    }
+    return self.selectArray.count;
 }
 
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    NSArray*Array=self.selectArray[section];
+    return Array.count-1;
     
-    return 1;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    return 50;
+
+}
+
+-(NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    NSArray*Array=self.selectArray[section];
+    AreaModel*model=Array[0];
+    if (Array.count==1) {
+        return nil;
+    }
+    return model.name;
     
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
 
-    UITableViewCell*Cell=[tableView dequeueReusableCellWithIdentifier:@"cell"];
+    selelctAreaTableViewCell*Cell=[tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (!Cell) {
-        Cell=[[UITableViewCell alloc]initWithStyle:1 reuseIdentifier:@"cell"];
+        Cell=[[[NSBundle mainBundle]loadNibNamed:@"selelctAreaTableViewCell" owner:nil options:nil]lastObject];
     }
-    Cell.textLabel.text=_dataArray[indexPath.section];
-    Cell.textLabel.textAlignment=NSTextAlignmentCenter;
-    Cell.textLabel.font=[UIFont systemFontOfSize:16];
+    NSArray*array=self.selectArray[indexPath.section];
+    AreaModel*model=array[indexPath.row+1];
+    Cell.name.text=model.name;
+    Cell.model=model;
+    Cell.isShowImage=_isShow;
+    [Cell reloadData];
     return Cell;
     
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 
-    if (indexPath.section==0) {
-        //新增
-        firstAreaViewController*fvc=[[firstAreaViewController alloc]initWithNibName:@"firstAreaViewController" bundle:nil];
-        fvc.selectArray=self.selectArray;
-        [self pushWinthAnimation:self.navigationController Viewcontroller:fvc];
+    NSMutableArray*Array=self.selectArray[indexPath.section];
+    AreaModel*model=Array[indexPath.row+1];
+    if (_isShow) {
         
+        if (model.isselect==YES) {
+            model.isselect=NO;
+        }else{
+            model.isselect=YES;
+        }
+        NSInteger row=indexPath.row+1;
+        [Array replaceObjectAtIndex:row withObject:model];
+        [self.selectArray replaceObjectAtIndex:indexPath.section withObject:Array];
+        NSLog(@"%lu",[self.selectArray[indexPath.section] count]);
+        [_tableview reloadData];
     }
-    
-    if (indexPath.section==1) {
-        
-        //管理
-        openCityManagerViewController*ovc=[[openCityManagerViewController alloc]initWithNibName:@"openCityManagerViewController" bundle:nil];
-        ovc.dataArray=self.selectArray;
-        [self pushWinthAnimation:self.navigationController Viewcontroller:ovc];
-
-    }
-
 }
 
 

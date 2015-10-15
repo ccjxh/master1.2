@@ -80,11 +80,13 @@
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
 
     NSArray*Array=@[@"当前总积分",@"积分明细"];
-    UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(13, 0, SCREEN_WIDTH-26, 30)];
-    label.textColor=COLOR(164, 165, 165, 1);
+    UIView*view=[[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 30)];
+    UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(13, 5, 120, 16)];
+    label.textColor=[UIColor blackColor];
     label.text=Array[section];
-    label.font=[UIFont systemFontOfSize:16];
-    return label;
+    label.font=[UIFont boldSystemFontOfSize:16];
+    [view addSubview:label];
+    return view;
     
 }
 
@@ -233,18 +235,19 @@
 
 //行高
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    myIntrgalListModel*model=_dataArray[indexPath.section];
-    if (indexPath.row == 0) {   //父cell高
-        return 44;
-    }else{                      //子cell高
-//        IntegralLogEntity *entity = _dataSource[indexPath.section];
-//        NSString *word = entity.describe;
-//        DDLogVerbose(@"word:%@", word);
-        CGSize size = [model.readme sizeWithFont:[UIFont systemFontOfSize:13] constrainedToSize:CGSizeMake(tableView.frame.size.width - 40, INT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
-        return MAX(size.height, 44);
-        
-        
-    }
+//    myIntrgalListModel*model=_dataArray[indexPath.section];
+//    if (indexPath.row == 0) {   //父cell高
+//        return 44;
+//    }else{                      //子cell高
+////        IntegralLogEntity *entity = _dataSource[indexPath.section];
+////        NSString *word = entity.describe;
+//////        DDLogVerbose(@"word:%@", word);
+////        CGSize size = [model.readme sizeWithFont:[UIFont systemFontOfSize:13] constrainedToSize:CGSizeMake(tableView.frame.size.width - 40, INT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+////        return MAX(size.height, 44);
+//        
+//        
+//    }
+    return 44;
 }
 
 

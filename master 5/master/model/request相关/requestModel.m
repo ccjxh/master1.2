@@ -16,14 +16,21 @@
         AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
         NSDictionary*dict=(NSDictionary*)responseObject;
         if ([[dict objectForKey:@"rspCode"] integerValue]==200){
+            [delegate requestInformation];
           //integral
             if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] ) {
                 delegate.integrity=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] integerValue];
-                if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"]) {
+                    }
+            if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"]) {
+                if (delegate.integral-[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue]>0) {
                     delegate.integral= [[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue];
+                    NSDictionary*parent=@{@"value":[NSString stringWithFormat:@"%lu",delegate.integral]};
+                    NSNotification*noction=[[NSNotification alloc]initWithName:@"showIncreaImage" object:nil userInfo:parent];
+                    [[NSNotificationCenter defaultCenter]postNotification:noction];
                 }
             }
-
+            
+            
         } else {
 
         }
@@ -129,11 +136,16 @@
             
             if ([[[objDic objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] ) {
                 delegate.integrity=[[[[objDic objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integrity"] integerValue];
-                
-                if ([[[objDic objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"]) {
-                    delegate.integral= [[[[objDic objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue];
+            }
+            if ([[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"]) {
+                if (delegate.integral-[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue]>0) {
+                    delegate.integral= [[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"integral"] integerValue];
+                    NSDictionary*parent=@{@"value":[NSString stringWithFormat:@"%lu",delegate.integral]};
+                    NSNotification*noction=[[NSNotification alloc]initWithName:@"showIncreaImage" object:nil userInfo:parent];
+                    [[NSNotificationCenter defaultCenter]postNotification:noction];
                 }
             }
+
             NSLog(@"国籍更新成功!");
         }
         
