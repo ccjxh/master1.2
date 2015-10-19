@@ -61,7 +61,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     MyserviceViewController*mvc=[[MyserviceViewController alloc]initWithNibName:@"MyserviceViewController" bundle:nil];
     mvc.type=indexPath.row;
-    
+    mvc.title=@"成为宝师傅";
     [self pushWinthAnimation:self.navigationController Viewcontroller:mvc
      ];
 

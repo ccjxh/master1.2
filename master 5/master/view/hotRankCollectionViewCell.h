@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *rankImage;
 @property (weak, nonatomic) IBOutlet UIView *lineView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *rankWidth;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headImageLeading;
 @property (weak, nonatomic) IBOutlet UIView *vHine;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *rankHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *rankTop;

@@ -37,6 +37,8 @@
 #import <TencentOpenAPI/QQApiInterface.h>
 #import <TencentOpenAPI/TencentOAuth.h>
 #import <Bugly/CrashReporter.h>
+#import "DurexKit.h"
+
 @interface AppDelegate ()<TencentSessionDelegate,WXApiDelegate,UIAlertViewDelegate>
 @property (nonatomic) CLLocationManager *locMgr;
 @property(nonatomic)BOOL havePushMessage;//是否有推送消息
@@ -64,8 +66,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-     [XGPush startApp:2200123145 appKey:@"IT2RW4D1E84M"];  //信鸽推送初始化
-     [[CrashReporter sharedInstance] installWithAppId:@"900006644"];
+    [XGPush startApp:2200136520 appKey:@"I197YN27CXHD"];  //信鸽推送初始化
+    [[CrashReporter sharedInstance] installWithAppId:@"900006644"];
+    [self setupADImage];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIViewController*temp=[[UIViewController alloc]init];
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
@@ -118,6 +121,7 @@
     [SMSSDK registerApp:@"93852832ce02"
              withSecret:@"a28d5c5bfbb3ddee35bf3a9585895472"];//短信验证初始化
 
+    
     if (!_pictureArray) {
         
         _pictureArray=[[NSMutableArray alloc]init];
@@ -320,7 +324,9 @@
         AppDelegate*delagate=(AppDelegate*)[UIApplication sharedApplication].delegate;
         NSString*phoneType;
         if ([delegate getPhoneType]) {
+            
             phoneType=[delegate getPhoneType];
+            
         }else{
             
             phoneType=@"unKnowIpone";
@@ -349,7 +355,7 @@
     _isSend=NO;
     _pullTokenFinish=NO;
     _isLogin=NO;
-    [XGPush startApp:2200123145 appKey:@"IT2RW4D1E84M"];
+   [XGPush startApp:2200136520 appKey:@"I197YN27CXHD"];
     LoginViewController*lvc=[[LoginViewController alloc]init];
     UINavigationController*nc=[[UINavigationController alloc]initWithRootViewController:lvc];
     nc.navigationBar.barStyle=1;
@@ -534,17 +540,12 @@
 {
            //推送反馈(app运行时)
     [XGPush handleReceiveNotification:userInfo];
-    NSLog(@"%@",userInfo);
-    
-    
     NSString*str=[userInfo objectForKey:PUSHKEY];
     NSArray*array=[str componentsSeparatedByString:@"\"type\":\""];
     NSString*type=[array[1] componentsSeparatedByString:@"\"}"][0];
     if ([type isEqualToString:@"personalPass"]==YES||[type isEqualToString:@"personalFail"]==YES||[type isEqualToString:@"masterPostPass"]==YES||[type isEqualToString:@"masterPostFail"]==YES||[type isEqualToString:@"foremanPostPass"]==YES||[type isEqualToString:@"foremanPostFail"]==YES||[type isEqualToString:@"managerPostPass"]==YES||[type isEqualToString:@"managerPostFail"]==YES) {
         AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-        
         if ([type isEqualToString:@"foremanPostPass"]==YES) {
-            
          //3是工头  4是项目经理
             delegate.userPost=3;
         }else if ([type isEqualToString:@"managerPostPass"]==YES){
@@ -579,7 +580,7 @@
             
         }];
         
-    }
+    }else{
     
     if ([type isEqualToString:@"projectAuditPass"]==YES) {
         [self.window.rootViewController.view makeToast:@"招工信息审核通过" duration:1 position:@"center"];
@@ -613,19 +614,24 @@
         [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
             NSDictionary*dict=(NSDictionary*)responseObject;
             if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
+                
+                AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+                delegate.integral=[[[dict objectForKey:@"properties"] objectForKey:@"totalIntegral"] integerValue];
                 if ([[[dict objectForKey:@"entity"] objectForKey:@"userIntegral"] objectForKey:@"value"]) {
                     NSDictionary*parent=@{@"value":[[[dict objectForKey:@"entity"] objectForKey:@"userIntegral"] objectForKey:@"value"]};
                     NSNotification*noction=[[NSNotification alloc]initWithName:@"showIncreaImage" object:nil userInfo:parent];
                     [[NSNotificationCenter defaultCenter]postNotification:noction];
-                }
-               
-            }
+                        }
+              
+                    }
             
-        } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
+                } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
             
-        }];
-    }
+            }];
+        }
 
+    }
+    
     [[NSNotificationCenter defaultCenter]postNotificationName:@"updateUI" object:nil userInfo:nil];
 }
 

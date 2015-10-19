@@ -138,6 +138,7 @@
             <connections>
                 <outlet property="bottomLine" destination="qq5-90-HXU" id="x4q-vY-hnO"/>
                 <outlet property="headImage" destination="X02-I0-2tn" id="DQs-43-hCn"/>
+                <outlet property="headImageLeading" destination="tLa-PS-Gbh" id="tgj-be-TVX"/>
                 <outlet property="lineView" destination="Gpt-qF-bhg" id="Zbb-df-JgP"/>
                 <outlet property="mutableHeight" destination="NV1-LI-2GV" id="fim-Pr-HXc"/>
                 <outlet property="name" destination="H8f-tt-WAm" id="51R-Um-yal"/>

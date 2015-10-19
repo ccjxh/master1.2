@@ -75,6 +75,7 @@
                             PersonalDetailModel*model=[[dataBase share]findPersonInformation:delegate.id];
                             if (delegate.userPost==3||delegate.userPost==4||delegate.userPost==2||model.skillState==1) {
                                 MyserviceViewController*mvc=[[MyserviceViewController alloc]initWithNibName:@"MyserviceViewController" bundle:nil];
+                                mvc.title=@"我的服务";
                                 mvc.hidesBottomBarWhenPushed=YES;
                                 [self pushWinthAnimation:navigationController Viewcontroller:mvc];
                                 return;
@@ -91,11 +92,16 @@
                 }
                     break;
                 case 2:{
-                    
-                    myPublicViewController*mvc=[[myPublicViewController alloc]init];
-                    mvc.hidesBottomBarWhenPushed=YES;
-                    [self pushWinthAnimation:navigationController Viewcontroller:mvc];
-                    
+                    if (Delegate.userPost==1) {
+                        myPublicViewController*mvc=[[myPublicViewController alloc]init];
+                        mvc.hidesBottomBarWhenPushed=YES;
+                        [self pushWinthAnimation:navigationController Viewcontroller:mvc];
+                        return;
+                    }
+                   
+                    myCaseViewController *ctl = [[myCaseViewController alloc] initWithNibName:@"myCaseViewController" bundle:nil];
+                    ctl.hidesBottomBarWhenPushed=YES;
+                    [self pushWinthAnimation:navigationController Viewcontroller:ctl];
                 }
                     
                     break;
@@ -103,20 +109,15 @@
                 case 3:
                 {
                     if (Delegate.userPost!=1) {
-                        if (indexPath.row == 0) {
-                            myCaseViewController *ctl = [[myCaseViewController alloc] initWithNibName:@"myCaseViewController" bundle:nil];
-                            ctl.hidesBottomBarWhenPushed=YES;
-                            [self pushWinthAnimation:navigationController Viewcontroller:ctl];
-                        }else if (indexPath.row==1){
-                            myRecommendPeopleViewController*rvc=[[myRecommendPeopleViewController alloc]initWithNibName:@"myRecommendPeopleViewController" bundle:nil];
-                            rvc.hidesBottomBarWhenPushed=YES;
-                            [self pushWinthAnimation:navigationController Viewcontroller:rvc];
-                        }
+                       
+                        myPublicViewController*mvc=[[myPublicViewController alloc]init];
+                        mvc.hidesBottomBarWhenPushed=YES;
+                        [self pushWinthAnimation:navigationController Viewcontroller:mvc];
                     }else{
                         
-                        CollectViewController *cVC = [[CollectViewController alloc] init];
-                        cVC.hidesBottomBarWhenPushed=YES;
-                        [self pushWinthAnimation:navigationController Viewcontroller:cVC];
+                        myIntegralListViewController*mvc=[[myIntegralListViewController alloc]init];
+                        mvc.hidesBottomBarWhenPushed=YES;
+                        [self pushWinthAnimation:navigationController Viewcontroller:mvc];
                     }
                     
                 }
@@ -127,19 +128,20 @@
                         switch (indexPath.row) {
                             case 0:
                             {
-                                CollectViewController *cVC = [[CollectViewController alloc] init];
-                                cVC.hidesBottomBarWhenPushed=YES;
-                                [self pushWinthAnimation:navigationController Viewcontroller:cVC];
+                               
+                                myIntegralListViewController*mvc=[[myIntegralListViewController alloc]init];
+                                mvc.hidesBottomBarWhenPushed=YES;
+                                [self pushWinthAnimation:navigationController Viewcontroller:mvc];
+                                
                             }
                                 break;
                             default:
                                 break;
                         }
                     }else{
-                        myIntegralListViewController*mvc=[[myIntegralListViewController alloc]init];
-                        mvc.hidesBottomBarWhenPushed=YES;
-                        [self pushWinthAnimation:navigationController Viewcontroller:mvc];
-                        
+                        CollectViewController *cVC = [[CollectViewController alloc] init];
+                        cVC.hidesBottomBarWhenPushed=YES;
+                        [self pushWinthAnimation:navigationController Viewcontroller:cVC];
                     }
                 }
                     break;
@@ -148,9 +150,9 @@
                     
                     if (Delegate.userPost!=1) {
                         
-                        myIntegralListViewController*mvc=[[myIntegralListViewController alloc]init];
-                        mvc.hidesBottomBarWhenPushed=YES;
-                        [self pushWinthAnimation:navigationController Viewcontroller:mvc];
+                        CollectViewController *cVC = [[CollectViewController alloc] init];
+                        cVC.hidesBottomBarWhenPushed=YES;
+                        [self pushWinthAnimation:navigationController Viewcontroller:cVC];
                         
                     }else{
                         MyShareViewController*svc=[[MyShareViewController alloc]init];

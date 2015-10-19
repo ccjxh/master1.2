@@ -697,7 +697,6 @@
 		3CDE8FB11B4A16250095232F /* 订单-未选中@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDE8FAB1B4A16250095232F /* 订单-未选中@2x.png */; };
 		3CDE8FB21B4A16250095232F /* 订单-选中@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDE8FAC1B4A16250095232F /* 订单-选中@2x.png */; };
 		3CE0626A1BC6594F00B2E3E8 /* 200911131534353429@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE062481BC6594F00B2E3E8 /* 200911131534353429@2x.png */; settings = {ASSET_TAGS = (); }; };
-		3CE0626C1BC6594F00B2E3E8 /* 我的分享.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE0624A1BC6594F00B2E3E8 /* 我的分享.png */; settings = {ASSET_TAGS = (); }; };
 		3CE0626D1BC6594F00B2E3E8 /* 反馈icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE0624B1BC6594F00B2E3E8 /* 反馈icon@2x.png */; settings = {ASSET_TAGS = (); }; };
 		3CE0626E1BC6594F00B2E3E8 /* 发布ICON@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE0624C1BC6594F00B2E3E8 /* 发布ICON@2x.png */; settings = {ASSET_TAGS = (); }; };
 		3CE0626F1BC6594F00B2E3E8 /* 成为宝师傅ICON@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE0624D1BC6594F00B2E3E8 /* 成为宝师傅ICON@2x.png */; settings = {ASSET_TAGS = (); }; };
@@ -716,7 +715,7 @@
 		3CE25C1D1BCE522800C480F8 /* 工程案例.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE25C121BCE522800C480F8 /* 工程案例.png */; settings = {ASSET_TAGS = (); }; };
 		3CE25C1E1BCE522800C480F8 /* 意见反馈.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE25C131BCE522800C480F8 /* 意见反馈.png */; settings = {ASSET_TAGS = (); }; };
 		3CE25C1F1BCE522800C480F8 /* 成为宝师傅.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE25C141BCE522800C480F8 /* 成为宝师傅.png */; settings = {ASSET_TAGS = (); }; };
-		3CE25C201BCE522800C480F8 /* 我的分享.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE25C151BCE522800C480F8 /* 我的分享.png */; settings = {ASSET_TAGS = (); }; };
+		3CE25C201BCE522800C480F8 /* 我要分享.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE25C151BCE522800C480F8 /* 我要分享.png */; settings = {ASSET_TAGS = (); }; };
 		3CE25C211BCE522800C480F8 /* 我的发布.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE25C161BCE522800C480F8 /* 我的发布.png */; settings = {ASSET_TAGS = (); }; };
 		3CE25C221BCE522800C480F8 /* 我的收藏.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE25C171BCE522800C480F8 /* 我的收藏.png */; settings = {ASSET_TAGS = (); }; };
 		3CE25C231BCE522800C480F8 /* 我的服务@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE25C181BCE522800C480F8 /* 我的服务@2x.png */; settings = {ASSET_TAGS = (); }; };
@@ -724,6 +723,28 @@
 		3CE25C251BCE522800C480F8 /* 未认证.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE25C1A1BCE522800C480F8 /* 未认证.png */; settings = {ASSET_TAGS = (); }; };
 		3CE25C261BCE522800C480F8 /* 签到成功.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE25C1B1BCE522800C480F8 /* 签到成功.png */; settings = {ASSET_TAGS = (); }; };
 		3CE25C271BCE522800C480F8 /* 设置.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE25C1C1BCE522800C480F8 /* 设置.png */; settings = {ASSET_TAGS = (); }; };
+		3CE3FAD21BD4811C000B08D3 /* NSArray+SafeKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE3FAA11BD4811C000B08D3 /* NSArray+SafeKit.m */; settings = {ASSET_TAGS = (); }; };
+		3CE3FAD31BD4811C000B08D3 /* NSDictionary+SafeKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE3FAA31BD4811C000B08D3 /* NSDictionary+SafeKit.m */; settings = {ASSET_TAGS = (); }; };
+		3CE3FAD41BD4811C000B08D3 /* NSMutableArray+SafeKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE3FAA51BD4811C000B08D3 /* NSMutableArray+SafeKit.m */; settings = {ASSET_TAGS = (); }; };
+		3CE3FAD51BD4811C000B08D3 /* NSMutableDictionary+SafeKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE3FAA71BD4811C000B08D3 /* NSMutableDictionary+SafeKit.m */; settings = {ASSET_TAGS = (); }; };
+		3CE3FAD61BD4811C000B08D3 /* NSMutableString+SafeKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE3FAA91BD4811C000B08D3 /* NSMutableString+SafeKit.m */; settings = {ASSET_TAGS = (); }; };
+		3CE3FAD71BD4811C000B08D3 /* NSNumber+SafeKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE3FAAB1BD4811C000B08D3 /* NSNumber+SafeKit.m */; settings = {ASSET_TAGS = (); }; };
+		3CE3FAD81BD4811C000B08D3 /* NSObject+SafeKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE3FAAD1BD4811C000B08D3 /* NSObject+SafeKit.m */; settings = {ASSET_TAGS = (); }; };
+		3CE3FAD91BD4811C000B08D3 /* NSString+SafeKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE3FAAF1BD4811C000B08D3 /* NSString+SafeKit.m */; settings = {ASSET_TAGS = (); }; };
+		3CE3FADA1BD4811C000B08D3 /* NSException+SafeKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE3FAB21BD4811C000B08D3 /* NSException+SafeKit.m */; settings = {ASSET_TAGS = (); }; };
+		3CE3FADB1BD4811C000B08D3 /* NSObject+Swizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE3FAB41BD4811C000B08D3 /* NSObject+Swizzle.m */; settings = {ASSET_TAGS = (); }; };
+		3CE3FADC1BD4811C000B08D3 /* SafeKitConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE3FAB61BD4811C000B08D3 /* SafeKitConfig.m */; settings = {ASSET_TAGS = (); }; };
+		3CE3FADD1BD4811C000B08D3 /* SafeKitLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE3FAB91BD4811C000B08D3 /* SafeKitLog.m */; settings = {ASSET_TAGS = (); }; };
+		3CE3FADE1BD4811C000B08D3 /* SafeKitMacro.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE3FABB1BD4811C000B08D3 /* SafeKitMacro.m */; settings = {ASSET_TAGS = (); }; };
+		3CE3FADF1BD4811C000B08D3 /* CYRLayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE3FABF1BD4811C000B08D3 /* CYRLayoutManager.m */; settings = {ASSET_TAGS = (); }; };
+		3CE3FAE01BD4811C000B08D3 /* CYRTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE3FAC11BD4811C000B08D3 /* CYRTextStorage.m */; settings = {ASSET_TAGS = (); }; };
+		3CE3FAE11BD4811C000B08D3 /* CYRTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE3FAC31BD4811C000B08D3 /* CYRTextView.m */; settings = {ASSET_TAGS = (); }; };
+		3CE3FAE21BD4811C000B08D3 /* CYRToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE3FAC51BD4811C000B08D3 /* CYRToken.m */; settings = {ASSET_TAGS = (); }; };
+		3CE3FAE31BD4811C000B08D3 /* QEDTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE3FAC71BD4811C000B08D3 /* QEDTextView.m */; settings = {ASSET_TAGS = (); }; };
+		3CE3FAE41BD4811C000B08D3 /* SKMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE3FACB1BD4811C000B08D3 /* SKMainViewController.m */; settings = {ASSET_TAGS = (); }; };
+		3CE3FAE51BD4811C000B08D3 /* SKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE3FACD1BD4811C000B08D3 /* SKViewController.m */; settings = {ASSET_TAGS = (); }; };
+		3CE4BE051BD3F8AC0066C75A /* CBAutoScrollLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE4BE041BD3F8AC0066C75A /* CBAutoScrollLabel.m */; settings = {ASSET_TAGS = (); }; };
+		3CE548E91BD0F136006E000D /* 城市添加.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE548E81BD0F136006E000D /* 城市添加.png */; settings = {ASSET_TAGS = (); }; };
 		3CE749D61BCCD02400BD3D35 /* fifth.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE749D01BCCD02400BD3D35 /* fifth.png */; settings = {ASSET_TAGS = (); }; };
 		3CE749D71BCCD02400BD3D35 /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE749D11BCCD02400BD3D35 /* first.png */; settings = {ASSET_TAGS = (); }; };
 		3CE749D81BCCD02400BD3D35 /* fiveth.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE749D21BCCD02400BD3D35 /* fiveth.png */; settings = {ASSET_TAGS = (); }; };
@@ -749,6 +770,11 @@
 		3CE9859D1B300CA30038BF49 /* nameTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CE9859B1B300CA30038BF49 /* nameTableViewCell.xib */; };
 		3CE985A11B301C940038BF49 /* 删除.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE985A01B301C940038BF49 /* 删除.png */; };
 		3CE985A41B30829F0038BF49 /* LineLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE985A31B30829F0038BF49 /* LineLayout.m */; };
+		3CEAE9F71BD0CEAC009FE853 /* SecondCityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CEAE9F51BD0CEAC009FE853 /* SecondCityViewController.m */; settings = {ASSET_TAGS = (); }; };
+		3CEAE9F81BD0CEAC009FE853 /* SecondCityViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CEAE9F61BD0CEAC009FE853 /* SecondCityViewController.xib */; settings = {ASSET_TAGS = (); }; };
+		3CEAE9FA1BD0D012009FE853 /* 无数添加.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CEAE9F91BD0D012009FE853 /* 无数添加.png */; settings = {ASSET_TAGS = (); }; };
+		3CEAE9FE1BD0D904009FE853 /* thirdResignViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CEAE9FC1BD0D904009FE853 /* thirdResignViewController.m */; settings = {ASSET_TAGS = (); }; };
+		3CEAE9FF1BD0D904009FE853 /* thirdResignViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CEAE9FD1BD0D904009FE853 /* thirdResignViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		3CF384481BB12920008DD607 /* proviceSelectedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CF384461BB12920008DD607 /* proviceSelectedViewController.m */; settings = {ASSET_TAGS = (); }; };
 		3CF384491BB12920008DD607 /* proviceSelectedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CF384471BB12920008DD607 /* proviceSelectedViewController.xib */; settings = {ASSET_TAGS = (); }; };
 		3CF3844D1BB12AB6008DD607 /* firstAreaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CF3844B1BB12AB6008DD607 /* firstAreaViewController.m */; settings = {ASSET_TAGS = (); }; };
@@ -1832,7 +1858,6 @@
 		3CDE8FAB1B4A16250095232F /* 订单-未选中@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "订单-未选中@2x.png"; sourceTree = "<group>"; };
 		3CDE8FAC1B4A16250095232F /* 订单-选中@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "订单-选中@2x.png"; sourceTree = "<group>"; };
 		3CE062481BC6594F00B2E3E8 /* 200911131534353429@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "200911131534353429@2x.png"; sourceTree = "<group>"; };
-		3CE0624A1BC6594F00B2E3E8 /* 我的分享.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "我的分享.png"; sourceTree = "<group>"; };
 		3CE0624B1BC6594F00B2E3E8 /* 反馈icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "反馈icon@2x.png"; sourceTree = "<group>"; };
 		3CE0624C1BC6594F00B2E3E8 /* 发布ICON@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "发布ICON@2x.png"; sourceTree = "<group>"; };
 		3CE0624D1BC6594F00B2E3E8 /* 成为宝师傅ICON@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "成为宝师傅ICON@2x.png"; sourceTree = "<group>"; };
@@ -1851,7 +1876,7 @@
 		3CE25C121BCE522800C480F8 /* 工程案例.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "工程案例.png"; sourceTree = "<group>"; };
 		3CE25C131BCE522800C480F8 /* 意见反馈.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "意见反馈.png"; sourceTree = "<group>"; };
 		3CE25C141BCE522800C480F8 /* 成为宝师傅.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "成为宝师傅.png"; sourceTree = "<group>"; };
-		3CE25C151BCE522800C480F8 /* 我的分享.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "我的分享.png"; sourceTree = "<group>"; };
+		3CE25C151BCE522800C480F8 /* 我要分享.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "我要分享.png"; sourceTree = "<group>"; };
 		3CE25C161BCE522800C480F8 /* 我的发布.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "我的发布.png"; sourceTree = "<group>"; };
 		3CE25C171BCE522800C480F8 /* 我的收藏.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "我的收藏.png"; sourceTree = "<group>"; };
 		3CE25C181BCE522800C480F8 /* 我的服务@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "我的服务@2x.png"; sourceTree = "<group>"; };
@@ -1859,6 +1884,54 @@
 		3CE25C1A1BCE522800C480F8 /* 未认证.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "未认证.png"; sourceTree = "<group>"; };
 		3CE25C1B1BCE522800C480F8 /* 签到成功.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "签到成功.png"; sourceTree = "<group>"; };
 		3CE25C1C1BCE522800C480F8 /* 设置.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "设置.png"; sourceTree = "<group>"; };
+		3CE3FA9D1BD4811C000B08D3 /* DurexKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DurexKit.h; sourceTree = "<group>"; };
+		3CE3FA9F1BD4811C000B08D3 /* Foundation+SafeKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Foundation+SafeKit.h"; sourceTree = "<group>"; };
+		3CE3FAA01BD4811C000B08D3 /* NSArray+SafeKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+SafeKit.h"; sourceTree = "<group>"; };
+		3CE3FAA11BD4811C000B08D3 /* NSArray+SafeKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+SafeKit.m"; sourceTree = "<group>"; };
+		3CE3FAA21BD4811C000B08D3 /* NSDictionary+SafeKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+SafeKit.h"; sourceTree = "<group>"; };
+		3CE3FAA31BD4811C000B08D3 /* NSDictionary+SafeKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+SafeKit.m"; sourceTree = "<group>"; };
+		3CE3FAA41BD4811C000B08D3 /* NSMutableArray+SafeKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+SafeKit.h"; sourceTree = "<group>"; };
+		3CE3FAA51BD4811C000B08D3 /* NSMutableArray+SafeKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+SafeKit.m"; sourceTree = "<group>"; };
+		3CE3FAA61BD4811C000B08D3 /* NSMutableDictionary+SafeKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+SafeKit.h"; sourceTree = "<group>"; };
+		3CE3FAA71BD4811C000B08D3 /* NSMutableDictionary+SafeKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+SafeKit.m"; sourceTree = "<group>"; };
+		3CE3FAA81BD4811C000B08D3 /* NSMutableString+SafeKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableString+SafeKit.h"; sourceTree = "<group>"; };
+		3CE3FAA91BD4811C000B08D3 /* NSMutableString+SafeKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableString+SafeKit.m"; sourceTree = "<group>"; };
+		3CE3FAAA1BD4811C000B08D3 /* NSNumber+SafeKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+SafeKit.h"; sourceTree = "<group>"; };
+		3CE3FAAB1BD4811C000B08D3 /* NSNumber+SafeKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+SafeKit.m"; sourceTree = "<group>"; };
+		3CE3FAAC1BD4811C000B08D3 /* NSObject+SafeKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SafeKit.h"; sourceTree = "<group>"; };
+		3CE3FAAD1BD4811C000B08D3 /* NSObject+SafeKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SafeKit.m"; sourceTree = "<group>"; };
+		3CE3FAAE1BD4811C000B08D3 /* NSString+SafeKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SafeKit.h"; sourceTree = "<group>"; };
+		3CE3FAAF1BD4811C000B08D3 /* NSString+SafeKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SafeKit.m"; sourceTree = "<group>"; };
+		3CE3FAB11BD4811C000B08D3 /* NSException+SafeKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSException+SafeKit.h"; sourceTree = "<group>"; };
+		3CE3FAB21BD4811C000B08D3 /* NSException+SafeKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSException+SafeKit.m"; sourceTree = "<group>"; };
+		3CE3FAB31BD4811C000B08D3 /* NSObject+Swizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Swizzle.h"; sourceTree = "<group>"; };
+		3CE3FAB41BD4811C000B08D3 /* NSObject+Swizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Swizzle.m"; sourceTree = "<group>"; };
+		3CE3FAB51BD4811C000B08D3 /* SafeKitConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafeKitConfig.h; sourceTree = "<group>"; };
+		3CE3FAB61BD4811C000B08D3 /* SafeKitConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SafeKitConfig.m; sourceTree = "<group>"; };
+		3CE3FAB71BD4811C000B08D3 /* SafeKitCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafeKitCore.h; sourceTree = "<group>"; };
+		3CE3FAB81BD4811C000B08D3 /* SafeKitLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafeKitLog.h; sourceTree = "<group>"; };
+		3CE3FAB91BD4811C000B08D3 /* SafeKitLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SafeKitLog.m; sourceTree = "<group>"; };
+		3CE3FABA1BD4811C000B08D3 /* SafeKitMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafeKitMacro.h; sourceTree = "<group>"; };
+		3CE3FABB1BD4811C000B08D3 /* SafeKitMacro.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SafeKitMacro.m; sourceTree = "<group>"; };
+		3CE3FABE1BD4811C000B08D3 /* CYRLayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYRLayoutManager.h; sourceTree = "<group>"; };
+		3CE3FABF1BD4811C000B08D3 /* CYRLayoutManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYRLayoutManager.m; sourceTree = "<group>"; };
+		3CE3FAC01BD4811C000B08D3 /* CYRTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYRTextStorage.h; sourceTree = "<group>"; };
+		3CE3FAC11BD4811C000B08D3 /* CYRTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYRTextStorage.m; sourceTree = "<group>"; };
+		3CE3FAC21BD4811C000B08D3 /* CYRTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYRTextView.h; sourceTree = "<group>"; };
+		3CE3FAC31BD4811C000B08D3 /* CYRTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYRTextView.m; sourceTree = "<group>"; };
+		3CE3FAC41BD4811C000B08D3 /* CYRToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYRToken.h; sourceTree = "<group>"; };
+		3CE3FAC51BD4811C000B08D3 /* CYRToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CYRToken.m; sourceTree = "<group>"; };
+		3CE3FAC61BD4811C000B08D3 /* QEDTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QEDTextView.h; sourceTree = "<group>"; };
+		3CE3FAC71BD4811C000B08D3 /* QEDTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QEDTextView.m; sourceTree = "<group>"; };
+		3CE3FAC81BD4811C000B08D3 /* DurexKitExample-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DurexKitExample-Prefix.pch"; sourceTree = "<group>"; };
+		3CE3FACA1BD4811C000B08D3 /* SKMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKMainViewController.h; sourceTree = "<group>"; };
+		3CE3FACB1BD4811C000B08D3 /* SKMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKMainViewController.m; sourceTree = "<group>"; };
+		3CE3FACC1BD4811C000B08D3 /* SKViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKViewController.h; sourceTree = "<group>"; };
+		3CE3FACD1BD4811C000B08D3 /* SKViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKViewController.m; sourceTree = "<group>"; };
+		3CE3FAD01BD4811C000B08D3 /* DurexKit-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DurexKit-Prefix.pch"; sourceTree = "<group>"; };
+		3CE4BE031BD3F8AC0066C75A /* CBAutoScrollLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBAutoScrollLabel.h; sourceTree = "<group>"; };
+		3CE4BE041BD3F8AC0066C75A /* CBAutoScrollLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBAutoScrollLabel.m; sourceTree = "<group>"; };
+		3CE548E81BD0F136006E000D /* 城市添加.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "城市添加.png"; sourceTree = "<group>"; };
 		3CE749D01BCCD02400BD3D35 /* fifth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fifth.png; sourceTree = "<group>"; };
 		3CE749D11BCCD02400BD3D35 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = first.png; sourceTree = "<group>"; };
 		3CE749D21BCCD02400BD3D35 /* fiveth.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fiveth.png; sourceTree = "<group>"; };
@@ -1893,6 +1966,13 @@
 		3CE985A01B301C940038BF49 /* 删除.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "删除.png"; sourceTree = "<group>"; };
 		3CE985A21B30829F0038BF49 /* LineLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineLayout.h; sourceTree = "<group>"; };
 		3CE985A31B30829F0038BF49 /* LineLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineLayout.m; sourceTree = "<group>"; };
+		3CEAE9F41BD0CEAC009FE853 /* SecondCityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SecondCityViewController.h; path = "视图控制器/首页/SecondCityViewController.h"; sourceTree = "<group>"; };
+		3CEAE9F51BD0CEAC009FE853 /* SecondCityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SecondCityViewController.m; path = "视图控制器/首页/SecondCityViewController.m"; sourceTree = "<group>"; };
+		3CEAE9F61BD0CEAC009FE853 /* SecondCityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SecondCityViewController.xib; path = "视图控制器/首页/SecondCityViewController.xib"; sourceTree = "<group>"; };
+		3CEAE9F91BD0D012009FE853 /* 无数添加.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "无数添加.png"; sourceTree = "<group>"; };
+		3CEAE9FB1BD0D904009FE853 /* thirdResignViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = thirdResignViewController.h; path = "视图控制器/首页/thirdResignViewController.h"; sourceTree = "<group>"; };
+		3CEAE9FC1BD0D904009FE853 /* thirdResignViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = thirdResignViewController.m; path = "视图控制器/首页/thirdResignViewController.m"; sourceTree = "<group>"; };
+		3CEAE9FD1BD0D904009FE853 /* thirdResignViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = thirdResignViewController.xib; path = "视图控制器/首页/thirdResignViewController.xib"; sourceTree = "<group>"; };
 		3CF384451BB12920008DD607 /* proviceSelectedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = proviceSelectedViewController.h; path = "class/省市选择/proviceSelectedViewController.h"; sourceTree = "<group>"; };
 		3CF384461BB12920008DD607 /* proviceSelectedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = proviceSelectedViewController.m; path = "class/省市选择/proviceSelectedViewController.m"; sourceTree = "<group>"; };
 		3CF384471BB12920008DD607 /* proviceSelectedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = proviceSelectedViewController.xib; path = "class/省市选择/proviceSelectedViewController.xib"; sourceTree = "<group>"; };
@@ -2617,6 +2697,9 @@
 			isa = PBXGroup;
 			children = (
 				3C0861011B16A2DD004C0383 /* 师傅详情界面 */,
+				3CEAE9F41BD0CEAC009FE853 /* SecondCityViewController.h */,
+				3CEAE9F51BD0CEAC009FE853 /* SecondCityViewController.m */,
+				3CEAE9F61BD0CEAC009FE853 /* SecondCityViewController.xib */,
 			);
 			name = "详情";
 			sourceTree = "<group>";
@@ -3069,6 +3152,8 @@
 		3C8C05881AF8BF1300CF994E /* thirdLibrary */ = {
 			isa = PBXGroup;
 			children = (
+				3CE3FA9B1BD4811C000B08D3 /* DurexKit-master */,
+				3CE4BE021BD3F8AC0066C75A /* CBAutoScrollLabel */,
 				3CBD40221BCF892A00AC233A /* SMS_SDK */,
 				3CD82FFA1BC917260014EB27 /* Bugly.framework */,
 				3CD65AB11BC50A5C003B500C /* SLExpandableTableView */,
@@ -3613,6 +3698,9 @@
 				3C470CEF1B0B90860091055D /* headViewController.m */,
 				3C62C2711B0C5DB500CD82A2 /* contractorViewController.h */,
 				3C62C2721B0C5DB500CD82A2 /* contractorViewController.m */,
+				3CEAE9FB1BD0D904009FE853 /* thirdResignViewController.h */,
+				3CEAE9FC1BD0D904009FE853 /* thirdResignViewController.m */,
+				3CEAE9FD1BD0D904009FE853 /* thirdResignViewController.xib */,
 			);
 			name = "首页";
 			sourceTree = "<group>";
@@ -4569,7 +4657,6 @@
 			isa = PBXGroup;
 			children = (
 				3CE062481BC6594F00B2E3E8 /* 200911131534353429@2x.png */,
-				3CE0624A1BC6594F00B2E3E8 /* 我的分享.png */,
 				3CE0624B1BC6594F00B2E3E8 /* 反馈icon@2x.png */,
 				3CE0624C1BC6594F00B2E3E8 /* 发布ICON@2x.png */,
 				3CE0624D1BC6594F00B2E3E8 /* 成为宝师傅ICON@2x.png */,
@@ -4613,11 +4700,13 @@
 		3CE25C111BCE522800C480F8 /* 我的小图标 */ = {
 			isa = PBXGroup;
 			children = (
+				3CE548E81BD0F136006E000D /* 城市添加.png */,
+				3CEAE9F91BD0D012009FE853 /* 无数添加.png */,
 				3CBD402B1BCF94A200AC233A /* 点点点.png */,
 				3CE25C121BCE522800C480F8 /* 工程案例.png */,
 				3CE25C131BCE522800C480F8 /* 意见反馈.png */,
 				3CE25C141BCE522800C480F8 /* 成为宝师傅.png */,
-				3CE25C151BCE522800C480F8 /* 我的分享.png */,
+				3CE25C151BCE522800C480F8 /* 我要分享.png */,
 				3CE25C161BCE522800C480F8 /* 我的发布.png */,
 				3CE25C171BCE522800C480F8 /* 我的收藏.png */,
 				3CE25C181BCE522800C480F8 /* 我的服务@2x.png */,
@@ -4627,6 +4716,141 @@
 				3CE25C1C1BCE522800C480F8 /* 设置.png */,
 			);
 			path = "我的小图标";
+			sourceTree = "<group>";
+		};
+		3CE3FA9B1BD4811C000B08D3 /* DurexKit-master */ = {
+			isa = PBXGroup;
+			children = (
+				3CE3FA9C1BD4811C000B08D3 /* DurexKit */,
+				3CE3FABC1BD4811C000B08D3 /* DurexKitExample */,
+				3CE3FACE1BD4811C000B08D3 /* DurexKitExampleTests */,
+				3CE3FACF1BD4811C000B08D3 /* DurexKitLib */,
+				3CE3FAD11BD4811C000B08D3 /* Resource */,
+			);
+			name = "DurexKit-master";
+			path = "第三方/第三方完整框架/illes/DurexKit-master";
+			sourceTree = "<group>";
+		};
+		3CE3FA9C1BD4811C000B08D3 /* DurexKit */ = {
+			isa = PBXGroup;
+			children = (
+				3CE3FA9D1BD4811C000B08D3 /* DurexKit.h */,
+				3CE3FA9E1BD4811C000B08D3 /* Foundation */,
+				3CE3FAB01BD4811C000B08D3 /* SafeCore */,
+			);
+			path = DurexKit;
+			sourceTree = "<group>";
+		};
+		3CE3FA9E1BD4811C000B08D3 /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				3CE3FA9F1BD4811C000B08D3 /* Foundation+SafeKit.h */,
+				3CE3FAA01BD4811C000B08D3 /* NSArray+SafeKit.h */,
+				3CE3FAA11BD4811C000B08D3 /* NSArray+SafeKit.m */,
+				3CE3FAA21BD4811C000B08D3 /* NSDictionary+SafeKit.h */,
+				3CE3FAA31BD4811C000B08D3 /* NSDictionary+SafeKit.m */,
+				3CE3FAA41BD4811C000B08D3 /* NSMutableArray+SafeKit.h */,
+				3CE3FAA51BD4811C000B08D3 /* NSMutableArray+SafeKit.m */,
+				3CE3FAA61BD4811C000B08D3 /* NSMutableDictionary+SafeKit.h */,
+				3CE3FAA71BD4811C000B08D3 /* NSMutableDictionary+SafeKit.m */,
+				3CE3FAA81BD4811C000B08D3 /* NSMutableString+SafeKit.h */,
+				3CE3FAA91BD4811C000B08D3 /* NSMutableString+SafeKit.m */,
+				3CE3FAAA1BD4811C000B08D3 /* NSNumber+SafeKit.h */,
+				3CE3FAAB1BD4811C000B08D3 /* NSNumber+SafeKit.m */,
+				3CE3FAAC1BD4811C000B08D3 /* NSObject+SafeKit.h */,
+				3CE3FAAD1BD4811C000B08D3 /* NSObject+SafeKit.m */,
+				3CE3FAAE1BD4811C000B08D3 /* NSString+SafeKit.h */,
+				3CE3FAAF1BD4811C000B08D3 /* NSString+SafeKit.m */,
+			);
+			path = Foundation;
+			sourceTree = "<group>";
+		};
+		3CE3FAB01BD4811C000B08D3 /* SafeCore */ = {
+			isa = PBXGroup;
+			children = (
+				3CE3FAB11BD4811C000B08D3 /* NSException+SafeKit.h */,
+				3CE3FAB21BD4811C000B08D3 /* NSException+SafeKit.m */,
+				3CE3FAB31BD4811C000B08D3 /* NSObject+Swizzle.h */,
+				3CE3FAB41BD4811C000B08D3 /* NSObject+Swizzle.m */,
+				3CE3FAB51BD4811C000B08D3 /* SafeKitConfig.h */,
+				3CE3FAB61BD4811C000B08D3 /* SafeKitConfig.m */,
+				3CE3FAB71BD4811C000B08D3 /* SafeKitCore.h */,
+				3CE3FAB81BD4811C000B08D3 /* SafeKitLog.h */,
+				3CE3FAB91BD4811C000B08D3 /* SafeKitLog.m */,
+				3CE3FABA1BD4811C000B08D3 /* SafeKitMacro.h */,
+				3CE3FABB1BD4811C000B08D3 /* SafeKitMacro.m */,
+			);
+			path = SafeCore;
+			sourceTree = "<group>";
+		};
+		3CE3FABC1BD4811C000B08D3 /* DurexKitExample */ = {
+			isa = PBXGroup;
+			children = (
+				3CE3FABD1BD4811C000B08D3 /* CYRTextView */,
+				3CE3FAC81BD4811C000B08D3 /* DurexKitExample-Prefix.pch */,
+				3CE3FAC91BD4811C000B08D3 /* ExampleVC */,
+			);
+			path = DurexKitExample;
+			sourceTree = "<group>";
+		};
+		3CE3FABD1BD4811C000B08D3 /* CYRTextView */ = {
+			isa = PBXGroup;
+			children = (
+				3CE3FABE1BD4811C000B08D3 /* CYRLayoutManager.h */,
+				3CE3FABF1BD4811C000B08D3 /* CYRLayoutManager.m */,
+				3CE3FAC01BD4811C000B08D3 /* CYRTextStorage.h */,
+				3CE3FAC11BD4811C000B08D3 /* CYRTextStorage.m */,
+				3CE3FAC21BD4811C000B08D3 /* CYRTextView.h */,
+				3CE3FAC31BD4811C000B08D3 /* CYRTextView.m */,
+				3CE3FAC41BD4811C000B08D3 /* CYRToken.h */,
+				3CE3FAC51BD4811C000B08D3 /* CYRToken.m */,
+				3CE3FAC61BD4811C000B08D3 /* QEDTextView.h */,
+				3CE3FAC71BD4811C000B08D3 /* QEDTextView.m */,
+			);
+			path = CYRTextView;
+			sourceTree = "<group>";
+		};
+		3CE3FAC91BD4811C000B08D3 /* ExampleVC */ = {
+			isa = PBXGroup;
+			children = (
+				3CE3FACA1BD4811C000B08D3 /* SKMainViewController.h */,
+				3CE3FACB1BD4811C000B08D3 /* SKMainViewController.m */,
+				3CE3FACC1BD4811C000B08D3 /* SKViewController.h */,
+				3CE3FACD1BD4811C000B08D3 /* SKViewController.m */,
+			);
+			path = ExampleVC;
+			sourceTree = "<group>";
+		};
+		3CE3FACE1BD4811C000B08D3 /* DurexKitExampleTests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DurexKitExampleTests;
+			sourceTree = "<group>";
+		};
+		3CE3FACF1BD4811C000B08D3 /* DurexKitLib */ = {
+			isa = PBXGroup;
+			children = (
+				3CE3FAD01BD4811C000B08D3 /* DurexKit-Prefix.pch */,
+			);
+			path = DurexKitLib;
+			sourceTree = "<group>";
+		};
+		3CE3FAD11BD4811C000B08D3 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		3CE4BE021BD3F8AC0066C75A /* CBAutoScrollLabel */ = {
+			isa = PBXGroup;
+			children = (
+				3CE4BE031BD3F8AC0066C75A /* CBAutoScrollLabel.h */,
+				3CE4BE041BD3F8AC0066C75A /* CBAutoScrollLabel.m */,
+			);
+			name = CBAutoScrollLabel;
+			path = "第三方/第三方完整框架/CBAutoScrollLabel";
 			sourceTree = "<group>";
 		};
 		3CE7BD151B0D726300965836 /* 我的服务 */ = {
@@ -4940,6 +5164,7 @@
 				3C6EF4AA1B833E8500D57DE9 /* 男.png in Resources */,
 				3CD6E6181BC7597A00402EB7 /* 公告.png in Resources */,
 				3CB771BF1B968D9600BAA6E8 /* Appirater.podspec.json in Resources */,
+				3CEAE9F81BD0CEAC009FE853 /* SecondCityViewController.xib in Resources */,
 				3CF384491BB12920008DD607 /* proviceSelectedViewController.xib in Resources */,
 				3C62C2581B0C2C8B00CD82A2 /* 筛选-确定按钮.png in Resources */,
 				3CC2471A1B11A6D900BDBB7D /* Neou-Thin.ttf in Resources */,
@@ -4961,6 +5186,7 @@
 				3CB498D61B1EF53900AC1270 /* backgroundStar@2x.png in Resources */,
 				3CC247211B11A6D900BDBB7D /* wifimanhub_grayscale@2x.png in Resources */,
 				3C2C22321B9EDC8B00F66B21 /* otherMessageTableViewCell.xib in Resources */,
+				3CEAE9FA1BD0D012009FE853 /* 无数添加.png in Resources */,
 				3C62C26E1B0C2C8B00CD82A2 /* tab-下拉三角形-灰色-未点击.png in Resources */,
 				3CE0626F1BC6594F00B2E3E8 /* 成为宝师傅ICON@2x.png in Resources */,
 				3C62C25E1B0C2C8B00CD82A2 /* btn_call_press.png in Resources */,
@@ -5037,12 +5263,12 @@
 				01A0F07A1B16C75300140524 /* CityTableViewController.xib in Resources */,
 				3CBD40301BCF988800AC233A /* 身份证正面照片.png in Resources */,
 				3C62C26D1B0C2C8B00CD82A2 /* tab-下拉-点击返回按钮.png in Resources */,
-				3CE0626C1BC6594F00B2E3E8 /* 我的分享.png in Resources */,
 				3CB498D51B1EF53900AC1270 /* backgroundStar.png in Resources */,
 				3CC247071B11A6D900BDBB7D /* CabinCondensed-Bold.ttf in Resources */,
 				3C0860F81B16A1ED004C0383 /* AboutViewController.xib in Resources */,
 				3C62C2701B0C2C8B00CD82A2 /* 搜索.png in Resources */,
 				3C69F42D1B7DFB3D004224E3 /* Default-568h@2x.png in Resources */,
+				3CEAE9FF1BD0D904009FE853 /* thirdResignViewController.xib in Resources */,
 				3C6394D41B818900009B528C /* 72.png in Resources */,
 				3C62C23D1B0C2C8B00CD82A2 /* btn_chare_press.png in Resources */,
 				3C65ADF51B7AE18E002BF24C /* money.png in Resources */,
@@ -5163,6 +5389,7 @@
 				3C62C2471B0C2C8B00CD82A2 /* 详情-QQ-点击进.png in Resources */,
 				3C62C26A1B0C2C8B00CD82A2 /* ic_star_4.png in Resources */,
 				3C57B9E41B40E22A009DB823 /* allViewController.xib in Resources */,
+				3CE548E91BD0F136006E000D /* 城市添加.png in Resources */,
 				3C62C23C1B0C2C8B00CD82A2 /* btn_chare_normal.png in Resources */,
 				3C9382891B56519100D34D7A /* PhotoItemView.xib in Resources */,
 				3C62C26F1B0C2C8B00CD82A2 /* tab-下拉三角形-蓝色-点击.png in Resources */,
@@ -5190,7 +5417,7 @@
 				3CAA507E1B7A04680063DD16 /* 2@3x.png in Resources */,
 				3C6D19CA1B53B74C00EA2CF9 /* JKNotifier_default_icon@2x.png in Resources */,
 				3CAA50721B7A04680063DD16 /* 10@2x.png in Resources */,
-				3CE25C201BCE522800C480F8 /* 我的分享.png in Resources */,
+				3CE25C201BCE522800C480F8 /* 我要分享.png in Resources */,
 				3C704D0C1B2A799600F87475 /* staticDeliveryStaff@2x.png in Resources */,
 				3C62C2461B0C2C8B00CD82A2 /* 电话.png in Resources */,
 				3CBD42F41B808D0100670D28 /* peopleDetailTableViewCell.xib in Resources */,
@@ -5270,6 +5497,7 @@
 				018861971B16E92B00B7457D /* TownTableViewController.m in Sources */,
 				3C0860FB1B16A1ED004C0383 /* SetViewController.m in Sources */,
 				3C93BE8A1B65CEDD001F2AB2 /* rootViewModel.m in Sources */,
+				3CE3FAD81BD4811C000B08D3 /* NSObject+SafeKit.m in Sources */,
 				3CC992EA1B8D56800023D8E9 /* findWorkDetailViewController.m in Sources */,
 				3CD65AB41BC50A5C003B500C /* SLExpandableTableView.m in Sources */,
 				3C57B9ED1B40E280009DB823 /* waitCaseViewController.m in Sources */,
@@ -5293,6 +5521,7 @@
 				0139990A1B1EAC7B0005FB1F /* OrderDetailViewController.m in Sources */,
 				3C96164B1B3B96A300C1C614 /* dataBase+interface.m in Sources */,
 				3C6347711B8B267300795EE8 /* findAddNewWork.m in Sources */,
+				3CE3FAD71BD4811C000B08D3 /* NSNumber+SafeKit.m in Sources */,
 				3CBD430F1B809ACD00670D28 /* myPageTableViewCell.m in Sources */,
 				3C6D3D841B8C7A6500A08AA7 /* findWorkDetailSecondTableViewCell.m in Sources */,
 				3CB162131B0B11BE00B490FE /* firstTableViewCell.m in Sources */,
@@ -5336,6 +5565,7 @@
 				3C704D021B2A799600F87475 /* UIView+SDExtension.m in Sources */,
 				3CCA7F121B9C2BD400DA9574 /* myFriendView.m in Sources */,
 				3CB1621D1B0B12B900B490FE /* secondTableViewCell.m in Sources */,
+				3CE3FAE31BD4811C000B08D3 /* QEDTextView.m in Sources */,
 				3CC247451B12ED4900BDBB7D /* selectCityViewController.m in Sources */,
 				3CD155281BAFFE0700D9C05B /* TextFlowView.m in Sources */,
 				3C9382B61B56519100D34D7A /* SVIndefiniteAnimatedView.m in Sources */,
@@ -5364,6 +5594,7 @@
 				3C6EC38D1B423E9500AA0F43 /* recommendInforModel.m in Sources */,
 				3CB498911B1D37A700AC1270 /* orderListRootViewController.m in Sources */,
 				3CD2DD1A1BA0023500E3105E /* NSDateFormatter+Category.m in Sources */,
+				3CE3FAD21BD4811C000B08D3 /* NSArray+SafeKit.m in Sources */,
 				3CF74EDF1B2E7B140056C9AE /* projectCastDetailViewController.m in Sources */,
 				3C93828C1B56519100D34D7A /* NSString+File.m in Sources */,
 				3CB771C21B968D9600BAA6E8 /* README.md in Sources */,
@@ -5391,6 +5622,7 @@
 				3C0860F71B16A1ED004C0383 /* AboutViewController.m in Sources */,
 				3CC2470A1B11A6D900BDBB7D /* FeHandwriting.m in Sources */,
 				3CCE2AC21B8EA7E800A0B49E /* myPublicViewController.m in Sources */,
+				3CEAE9FE1BD0D904009FE853 /* thirdResignViewController.m in Sources */,
 				3CBB3A071B0EDD650085959A /* date.m in Sources */,
 				3CDA7CDF1BB528E200DCA6D9 /* serviceAdressCell.m in Sources */,
 				3CD65AC11BC5136D003B500C /* AccumulativeView.m in Sources */,
@@ -5400,6 +5632,7 @@
 				3C9382B51B56519100D34D7A /* CoreSVP.m in Sources */,
 				3C1F75E71BC26B080058CBE2 /* myShareView.m in Sources */,
 				3C57BA021B41175D009DB823 /* myorderListConfirmViewController.m in Sources */,
+				3CE3FAD41BD4811C000B08D3 /* NSMutableArray+SafeKit.m in Sources */,
 				3C9382B21B56519100D34D7A /* UIButton+SD.m in Sources */,
 				3CE9859C1B300CA30038BF49 /* nameTableViewCell.m in Sources */,
 				3C6D3D6A1B8BF8A300A08AA7 /* findAddNewWorkViewController.m in Sources */,
@@ -5411,6 +5644,7 @@
 				3CA706FF1AFA090F0085F498 /* model.m in Sources */,
 				3C9382961B56519100D34D7A /* UIDevice+Extend.m in Sources */,
 				3C6D3D761B8C737B00A08AA7 /* findWorkDetail.m in Sources */,
+				3CEAE9F71BD0CEAC009FE853 /* SecondCityViewController.m in Sources */,
 				3C9382971B56519100D34D7A /* UIFont+Extend.m in Sources */,
 				3CBE7D801B1C277B00D8CCDF /* expextationViewController.m in Sources */,
 				3CA86C021B579C0300EE708B /* adModel.m in Sources */,
@@ -5419,21 +5653,26 @@
 				3C5EAE221B292A4C00307FEA /* myActionViewController.m in Sources */,
 				3C9B27941B58D69100442528 /* myServiceSelectedViewController.m in Sources */,
 				3C9382901B56519100D34D7A /* NSArray+Extend.m in Sources */,
+				3CE3FAE01BD4811C000B08D3 /* CYRTextStorage.m in Sources */,
 				3CBB0E151B6B40D400175A46 /* opinionViewController.m in Sources */,
 				3C9382921B56519100D34D7A /* NSObject+Extend.m in Sources */,
 				3C0860F51B16A1ED004C0383 /* PersonalAuthenticationViewController.m in Sources */,
+				3CE3FADB1BD4811C000B08D3 /* NSObject+Swizzle.m in Sources */,
+				3CE3FADE1BD4811C000B08D3 /* SafeKitMacro.m in Sources */,
 				3C029A7B1B09D3490020F67B /* selectViewController.m in Sources */,
 				3CC247391B12CB0F00BDBB7D /* areaRootViewController.m in Sources */,
 				3CB162061B0AE0E500B490FE /* NSObject+json.m in Sources */,
 				3CF384481BB12920008DD607 /* proviceSelectedViewController.m in Sources */,
 				3C5E66901B1F4AE50021E862 /* UIViewController+Animation.m in Sources */,
 				3C93828E1B56519100D34D7A /* CALayer+Anim.m in Sources */,
+				3CE4BE051BD3F8AC0066C75A /* CBAutoScrollLabel.m in Sources */,
 				3CA95A441B2541D4007ABD60 /* replyViewController.m in Sources */,
 				3CA2634A1B4E0E9700FC3F99 /* commendTableViewCell.m in Sources */,
 				3CA706C41AF9AD120085F498 /* httpManager.m in Sources */,
 				3CC247101B11A6D900BDBB7D /* FeSpinnerTenDot.m in Sources */,
 				3CD65AC41BC5136D003B500C /* IntegralDetailTableViewHeaderCell.m in Sources */,
 				3CD65AC61BC5136D003B500C /* IntegralTableHeaderView.m in Sources */,
+				3CE3FAD91BD4811C000B08D3 /* NSString+SafeKit.m in Sources */,
 				3C6728BD1B86CC38003ACE3E /* RefershTableview.m in Sources */,
 				3C0860D41B16A1D3004C0383 /* MasterDetailModel.m in Sources */,
 				3CB498AD1B1D5E2100AC1270 /* MNextOrderDetailViewController.m in Sources */,
@@ -5444,6 +5683,7 @@
 				3CC992ED1B8D5B3D0023D8E9 /* findWorkDetailModel.m in Sources */,
 				3C7C2D981B17F1200038CB55 /* NSObject+customCell.m in Sources */,
 				3C9382B31B56519100D34D7A /* UIImageView+SD.m in Sources */,
+				3CE3FAE51BD4811C000B08D3 /* SKViewController.m in Sources */,
 				3C704CDB1B2A676000F87475 /* UIView+ABExtras.m in Sources */,
 				3C8C05661AF8B61700CF994E /* ViewController.m in Sources */,
 				3C9381E41B55FDB900D34D7A /* UIView+SDExtension.m in Sources */,
@@ -5469,6 +5709,7 @@
 				3C6D3D721B8C141A00A08AA7 /* findWorkListModel.m in Sources */,
 				3CC247181B11A6D900BDBB7D /* FXBlurView.m in Sources */,
 				3CB771C11B968D9600BAA6E8 /* CHANGELOG.md in Sources */,
+				3CE3FADD1BD4811C000B08D3 /* SafeKitLog.m in Sources */,
 				3C57B9F41B40EA67009DB823 /* mynextBillViewController.m in Sources */,
 				3CC247421B12D32A00BDBB7D /* provinceViewController.m in Sources */,
 				3C4B4CA61B283C1500DB769E /* DES.m in Sources */,
@@ -5478,6 +5719,7 @@
 				3C9E1DDE1B77A00B00E5214B /* findMaster.m in Sources */,
 				3C2C22281B9ED56200F66B21 /* messageView.m in Sources */,
 				3C93828A1B56519100D34D7A /* PhotoBroswerVC.m in Sources */,
+				3CE3FADA1BD4811C000B08D3 /* NSException+SafeKit.m in Sources */,
 				3C9382931B56519100D34D7A /* NSString+Extend.m in Sources */,
 				3C9382881B56519100D34D7A /* PhotoItemView.m in Sources */,
 				3C0861131B16A352004C0383 /* NSObject+URL.m in Sources */,
@@ -5490,6 +5732,7 @@
 				019080CC1B450B5A000181F0 /* ReportTableViewCell.m in Sources */,
 				3C6783491B7DD2BA00E26BD0 /* guideViewController.m in Sources */,
 				3C9616571B3CEC3500C1C614 /* PayViewController.m in Sources */,
+				3CE3FAE41BD4811C000B08D3 /* SKMainViewController.m in Sources */,
 				3CD202641BA80A7100CA7005 /* rootTableViewCell.m in Sources */,
 				3C2C22311B9EDC8B00F66B21 /* otherMessageTableViewCell.m in Sources */,
 				3C8C05601AF8B61700CF994E /* main.m in Sources */,
@@ -5507,13 +5750,16 @@
 				3C93829A1B56519100D34D7A /* UIImage+Extend.m in Sources */,
 				3C9382951B56519100D34D7A /* UIColor+Extend.m in Sources */,
 				3CA706EE1AF9F2400085F498 /* NSObject+animation.m in Sources */,
+				3CE3FAE11BD4811C000B08D3 /* CYRTextView.m in Sources */,
 				3CDA7CD01BB51C4300DCA6D9 /* compensation.m in Sources */,
 				3C9382871B56519100D34D7A /* PhotoImageView.m in Sources */,
 				3C93828D1B56519100D34D7A /* CoreArchive.m in Sources */,
+				3CE3FADC1BD4811C000B08D3 /* SafeKitConfig.m in Sources */,
 				3C9382831B56519100D34D7A /* PBBlurImageView.m in Sources */,
 				3CC908C71BA1192E003487B4 /* keyboardBar.m in Sources */,
 				3CA86C061B579DE800EE708B /* webDetailViewController.m in Sources */,
 				3CB498A61B1D4C0800AC1270 /* orderDetailOrderViewController.m in Sources */,
+				3CE3FAD31BD4811C000B08D3 /* NSDictionary+SafeKit.m in Sources */,
 				3C9382941B56519100D34D7A /* NSString+Password.m in Sources */,
 				3CC247111B11A6D900BDBB7D /* FeTenDot.m in Sources */,
 				3CD2DD391BA027E700E3105E /* EmojiEmoticons.m in Sources */,
@@ -5527,9 +5773,11 @@
 				3CA706E31AF9EBEA0085F498 /* DOPDropDownMenu.m in Sources */,
 				01D4532E1B40FA9A00D4939A /* InfoViewController.m in Sources */,
 				3CCA7F151B9C313400DA9574 /* myCheatViewController.m in Sources */,
+				3CE3FAD61BD4811C000B08D3 /* NSMutableString+SafeKit.m in Sources */,
 				3CD2DD321BA027B500E3105E /* XHMessageTextView.m in Sources */,
 				3C9382801B56519100D34D7A /* PhotoBroswerLayout.m in Sources */,
 				3C704D011B2A799600F87475 /* SDRefreshView.m in Sources */,
+				3CE3FAE21BD4811C000B08D3 /* CYRToken.m in Sources */,
 				3C9382841B56519100D34D7A /* PBPGView.m in Sources */,
 				3C6D19C91B53B74C00EA2CF9 /* JKNotifier.m in Sources */,
 				3CBB3AC71B0F2D5D0085959A /* RegisteredViewController.m in Sources */,
@@ -5551,6 +5799,7 @@
 				3C93BE941B65DA83001F2AB2 /* customTableViewCell.m in Sources */,
 				3C7D2D551B71A2E70042E798 /* personDetailViewModel.m in Sources */,
 				3C881F5F1B7C96DB00C670B1 /* CustomDialogView.m in Sources */,
+				3CE3FADF1BD4811C000B08D3 /* CYRLayoutManager.m in Sources */,
 				3CCBDB831B6F3D92005707D9 /* personalSkillViewController.m in Sources */,
 				3CF74EEB1B2EA4E30056C9AE /* picdisplayViewController.m in Sources */,
 				3CC247171B11A6D900BDBB7D /* FeZeroLoader.m in Sources */,
@@ -5579,6 +5828,7 @@
 				3CB498B11B1DBA9B00AC1270 /* recommendTableViewCell.m in Sources */,
 				3C6394AA1B81868B009B528C /* selectedCityinforView.m in Sources */,
 				3C5EBC3A1B822BAF00BF8F4F /* headCollectionReusableView.m in Sources */,
+				3CE3FAD51BD4811C000B08D3 /* NSMutableDictionary+SafeKit.m in Sources */,
 				3C6D3D6F1B8C0F5000A08AA7 /* findAddNewWorkModel.m in Sources */,
 				3CD2025D1BA806ED00CA7005 /* imageCellTableViewCell.m in Sources */,
 				3C7D2D501B719D310042E798 /* informationDetail.m in Sources */,

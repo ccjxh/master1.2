@@ -18,6 +18,7 @@
     [super viewDidLoad];
     NSURLRequest *request =[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",self.urlString]]];
     UIWebView*web=[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+    
     web.delegate=self;
 //    if ([[UIDevice currentDevice].systemVersion floatValue]>8) {
 //         web.frame=CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT-64-49);

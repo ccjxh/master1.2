@@ -72,7 +72,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
 
-    return 30;
+    return 27;
 
 }
 
@@ -116,12 +116,12 @@
     if (indexPath.section==0) {
         
         UITableViewCell*cell=[[UITableViewCell alloc]initWithStyle:0 reuseIdentifier:@"Cell"];
-        UILabel*lable=[[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-113, cell.contentView.frame.size.height/2-10, 100, 20)];
+        UILabel*lable=[[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-113, cell.contentView.frame.size.height/2-15, 100, 28)];
         AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
         lable.text=[NSString stringWithFormat:@"%lu",[[delegate.signInfo objectForKey:@"totalIntegral"] integerValue]];
         lable.textColor=COLOR(249, 190, 84, 1);
         lable.textAlignment=NSTextAlignmentRight;
-        lable.font=[UIFont systemFontOfSize:20];
+        lable.font=[UIFont systemFontOfSize:25];
         [cell.contentView addSubview:lable];
         return cell;
     }
@@ -145,14 +145,14 @@
     }
     view=[[UIView alloc]initWithFrame:cell.contentView.bounds];
     view.tag=20;
-    UILabel*typeLabel=[[UILabel alloc]initWithFrame:CGRectMake(13, 7.5, 120, 15)];
+    UILabel*typeLabel=[[UILabel alloc]initWithFrame:CGRectMake(13, 4.5, 120, 15)];
     typeLabel.textColor=COLOR(104, 104, 104, 1);
     typeLabel.font=[UIFont systemFontOfSize:15];
     typeLabel.text=model.type;
     [view addSubview:typeLabel];
-    UILabel*timeLabel=[[UILabel alloc]initWithFrame:CGRectMake(13, 27.5, 180, 15)];
+    UILabel*timeLabel=[[UILabel alloc]initWithFrame:CGRectMake(13, 24, 180, 15)];
     timeLabel.textColor=COLOR(104, 104, 104, 1);
-    timeLabel.font=[UIFont systemFontOfSize:15];
+    timeLabel.font=[UIFont systemFontOfSize:13];
     timeLabel.text=model.createTime;
     [view addSubview:timeLabel];
     UILabel*countLabel=[[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-133, (cell.contentView.frame.size.height-16)/2, 120, 16)];

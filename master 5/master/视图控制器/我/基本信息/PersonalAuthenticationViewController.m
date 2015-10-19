@@ -223,7 +223,9 @@
             isNoImage = YES;
         }
         if (indexPath.row==2) {
-            NSArray*array=@[@"身份证正面照",@"身份证反面照"];
+            
+            
+            NSArray*array=@[@"身份证正面照片",@"身份证背面照片"];
             for (UIView*view in cell.contentView.subviews) {
                 [view removeFromSuperview];
             }
@@ -379,7 +381,7 @@
         NSString *type = [info objectForKey:UIImagePickerControllerMediaType];
         if ([type isEqualToString:@"public.image"])
         {
-            UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+            UIImage *image = [info objectForKey:@"UIImagePickerControllerEditedImage"];
             CGSize imagesize = image.size;
             UIImage *imageNew = [self imageWithImage:image scaledToSize:imagesize];
             //将图片转换成二进制
@@ -394,6 +396,7 @@
                 if (_currentTag==40) {
                     type=@"idNo";
                     if (self.model.idNoId==nil) {
+    
                         dict=@{@"file":@"3",@"moduleType":@"com.bsf.common.domain.user.User",@"category":@"idNo",@"workId":self.model.id};
                     }else{
                         dict=@{@"file":@"3",@"moduleType":@"com.bsf.common.domain.user.User",@"category":@"idNo",@"workId":self.model.id,@"removeFileId":self.model.idNoId};
@@ -452,11 +455,12 @@
                 
                 self.model.idNoBackFile=[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"idNoBackFile"];
                 self.model.idNoBackFileId=[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"idNoBackFileId"];
-                
             }
             
         }
-          [self.personalAuthorTableView reloadData];
+        AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+        [[dataBase share]updateInformationWithId:delegate.id Attribute:@"personalState" Content:@"1"];
+        [self.personalAuthorTableView reloadData];
         
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
         
@@ -486,6 +490,7 @@
 -(void) requestPersonalAuthor
 {
      AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+    PersonalDetailModel*model=[[dataBase share]findPersonInformation:delegate.id];
     NSMutableDictionary*parent=[delegate.userInforDic objectForKey:@"certification"];
     [parent setObject:@"1" forKey:@"personalState"];
 
@@ -499,6 +504,7 @@
         {
             NSMutableDictionary*parent=[delegate.userInforDic objectForKey:@"certification"];
             [parent setObject:@"1" forKey:@"personalState"];
+            [[dataBase share]updateInformationWithId:delegate.id Attribute:@"personalState" Content:@"1"];
             [self.view makeToast:@"资料已提交，请耐心等候!" duration:2.0f position:@"center"];
             if (self.authorTypeBlock)
             {

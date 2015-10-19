@@ -17,6 +17,7 @@
 @property (nonatomic,copy) PersonalDetailModel *model;
 @property(nonatomic)NSInteger type;//1为个人认证的时候
 @property(nonatomic,copy)void(^normalBlock)();
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *toRihgt;
 
 -(void) upDateWithModel:(long)section :(long)row :(PersonalDetailModel *)model : (NSString *)urlString :(BOOL)type;
 

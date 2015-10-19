@@ -87,6 +87,12 @@
             [collectArr addObject:model];
         }
         
+        if (collectArr.count==0) {
+            collectTbView.separatorStyle=0;
+        }else{
+            
+            collectTbView.separatorStyle=1;
+        }
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.weakRefreshHeader endRefreshing];
             [self.refreshFooter endRefreshing];
@@ -117,12 +123,6 @@
 }
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    peoplr *p = collectArr[indexPath.row];
-//    NSArray *array = [p.service objectForKey:@"servicerSkills"];
-//    if (array.count%4 == 0)
-//    {
-//        return 80;
-//    }
     return 80;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -151,24 +151,6 @@
     [cell reloadData];
     return cell;
 
-    
-//    listRootTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"listRootTableViewCell"];
-//    if (cell == nil)
-//    {
-//        cell = [[listRootTableViewCell alloc]initWithStyle:0 reuseIdentifier:@"listRootTableViewCell"];
-//    }
-//    cell.type=1;
-//    cell.selectionStyle=0;
-//    peoplr *model = collectArr[indexPath.row];
-//        cell.typeLabel.text=self.type;
-//        if (model.userPost==3) {
-//            cell.typeLabel.text=@"工长";
-//        }else if (model.userPost==2){
-//            cell.typeLabel.text=@"师傅";
-//        }
-//    cell.model=model;
-//    [cell reloadData];
-//    return cell;
 }
 
 

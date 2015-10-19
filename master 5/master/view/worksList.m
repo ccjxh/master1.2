@@ -29,7 +29,7 @@
 
 -(void)initUI{
     
-    _menue=[[DOPDropDownMenu alloc]initWithOrigin:CGPointMake(0,64) andHeight:44];
+    _menue=[[DOPDropDownMenu alloc]initWithOrigin:CGPointMake(0,0) andHeight:44];
     _menue.dataSource=self;
     _menue.type=1;
     _menue.textColor=COLOR(67, 67, 67, 1);
@@ -38,7 +38,6 @@
     _menue.delegate=self;
     __weak typeof(self)WeSelf=self;
     _menue.personSkillBlock=^(BOOL isStatus){
-        
         if (WeSelf.personBlock) {
             WeSelf.personBlock(isStatus);
         }
@@ -46,10 +45,8 @@
     __weak typeof(DOPDropDownMenu*)menu=_menue;
     _menue.backgroundColor=[UIColor clearColor];
     _menue.block=^(NSMutableDictionary*dict){
-        
     };
     _menue.areablock=^(NSInteger status){
-        
         
     };
     _menue.rankblock=^(NSInteger status){

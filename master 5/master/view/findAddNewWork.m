@@ -49,9 +49,6 @@
     self.tableview.delegate=self;
     self.tableview.dataSource=self;
     [self addSubview:self.tableview];
-    UIView*view=[[UIView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-64+1, SCREEN_WIDTH, 1)];
-    view.backgroundColor=COLOR(212, 212, 212, 1);
-    [self addSubview:view];
     UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(13, SCREEN_HEIGHT-64+10, SCREEN_WIDTH-26, 44)];
     [button setTitle:@"发布" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -125,7 +122,7 @@
     NSArray*array=@[@"",@"    发布人信息"];
     UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(0, 10, SCREEN_WIDTH, 40)];
     label.text=array[section];
-    label.font=[UIFont systemFontOfSize:15];
+    label.font=[UIFont boldSystemFontOfSize:16];
     label.textColor=COLOR(114, 114, 114, 1);
     label.textColor=[UIColor blackColor];
     return label;

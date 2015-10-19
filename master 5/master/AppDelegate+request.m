@@ -12,10 +12,11 @@
 #pragma mark-获取已开通城市的列表
 -(void)getAllOpenCity{
     
-    NSString*urlString=[self interfaceFromString: interface_getOpenCityList];
+    NSString*urlString=[self interfaceFromString: interface_provinceList];
     [[httpManager share]GET:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
         NSDictionary*dict=(NSDictionary*)responseObject;
         if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
+            [[dataBase share]deleAllCityInformation];
             NSArray*array=[dict objectForKey:@"entities"];
             [[dataBase share]addCityToDataBase:array Pid:30000];
         }

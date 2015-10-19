@@ -41,8 +41,10 @@
         UIButton *resetPasswordBtn = [UIButton buttonWithType:UIButtonTypeSystem];
 //        resetPasswordBtn.backgroundColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1.0];
         resetPasswordBtn.frame = CGRectMake(120, 300, 80, 40);
+        resetPasswordBtn.backgroundColor=COLOR(39, 166, 233, 1);
         [resetPasswordBtn setTitle:@"重置密码" forState:UIControlStateNormal];
-        [resetPasswordBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [resetPasswordBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        resetPasswordBtn.layer.cornerRadius=5;
         resetPasswordBtn.titleLabel.font = [UIFont systemFontOfSize:15];
         [resetPasswordBtn addTarget:self action:@selector(resetPasswordClick) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:resetPasswordBtn];
@@ -56,6 +58,7 @@
     _verificationCodeTextField.backgroundColor = [UIColor clearColor];
     _verificationCodeTextField.clearButtonMode = UITextFieldViewModeAlways;
     _passwordTextField.backgroundColor = [UIColor clearColor];
+    
     //设置密码为隐藏状态
     _passwordTextField.secureTextEntry = YES;
     _passwordTextField.clearButtonMode = UITextFieldViewModeAlways;
@@ -64,12 +67,22 @@
     _secondPasswordTextField.clearButtonMode = UITextFieldViewModeAlways;
 //    [_getVerificationCode setImage:[self imageWithColor:[UIColor orangeColor]] forState:UIControlStateHighlighted];
     [helpButton setImage:[UIImage imageNamed:@"问号"] forState:UIControlStateNormal];
-    _getVerificationCode.layer.cornerRadius=5;
+    
+    _getVerificationCode.layer.cornerRadius=2;
     _getVerificationCode.layer.masksToBounds=YES;
+    _getVerificationCode.titleLabel.textAlignment=NSTextAlignmentCenter;
+    _getVerificationCode.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     _getVerificationCode.backgroundColor=COLOR(39, 166, 233, 1);
     _registerButton.layer.cornerRadius=5;
     _registerButton.userInteractionEnabled=NO;
     [helpButton addTarget:self action:@selector(help) forControlEvents:UIControlEventTouchUpInside];
+    
+    if (_states==1) {
+        _recommButton.hidden=YES;
+        _recommendTextfile.hidden=YES;
+        helpButton.hidden=YES;
+        
+    }
        [self CreateFlow];
 }
 
@@ -94,7 +107,7 @@
 
     if (textField ==_telephoneTextField) {
             _mobileButton.backgroundColor=COLOR(39, 166, 233, 1);
-            _countButton.backgroundColor=[UIColor lightGrayColor];
+            _countButton.backgroundColor=COLOR(226, 228, 226, 0.5);
             _passwordButton.backgroundColor=_countButton.backgroundColor;
             _rePasswordButton.backgroundColor=_countButton.backgroundColor;
             _recommButton.backgroundColor=_countButton.backgroundColor;
@@ -102,7 +115,7 @@
 
     if (textField==_verificationCodeTextField) {
             _countButton.backgroundColor=_getVerificationCode.backgroundColor;
-            _mobileButton.backgroundColor=[UIColor lightGrayColor];
+            _mobileButton.backgroundColor=COLOR(226, 228, 226, 0.5);
             _passwordButton.backgroundColor=_mobileButton.backgroundColor;
             _rePasswordButton.backgroundColor=_mobileButton.backgroundColor;
             _recommButton.backgroundColor=_mobileButton.backgroundColor;
@@ -110,7 +123,7 @@
     if (textField==_passwordTextField) {
        
             _passwordButton.backgroundColor=_getVerificationCode.backgroundColor;
-            _mobileButton.backgroundColor=[UIColor lightGrayColor];
+            _mobileButton.backgroundColor=COLOR(226, 228, 226, 0.5);
             _countButton.backgroundColor=_mobileButton.backgroundColor;
             _rePasswordButton.backgroundColor=_mobileButton.backgroundColor;
             _recommButton.backgroundColor=_mobileButton.backgroundColor;
@@ -118,7 +131,7 @@
     if (textField ==_secondPasswordTextField) {
       
             _rePasswordButton.backgroundColor=_getVerificationCode.backgroundColor;
-            _mobileButton.backgroundColor=[UIColor lightGrayColor];
+            _mobileButton.backgroundColor=COLOR(226, 228, 226, 0.5);
             _countButton.backgroundColor=_mobileButton.backgroundColor;
             _passwordButton.backgroundColor=_mobileButton.backgroundColor;
             _recommButton.backgroundColor=_mobileButton.backgroundColor;
@@ -126,7 +139,7 @@
         
     if (textField ==_recommendTextfile) {
             _recommButton.backgroundColor=_getVerificationCode.backgroundColor;
-            _mobileButton.backgroundColor=[UIColor lightGrayColor];
+            _mobileButton.backgroundColor=COLOR(226, 228, 226, 0.5);
             _countButton.backgroundColor=_mobileButton.backgroundColor;
             _passwordButton.backgroundColor=_mobileButton.backgroundColor;
             _rePasswordButton.backgroundColor=_mobileButton.backgroundColor;
@@ -142,17 +155,7 @@
 
 }
 
-//  button1普通状态下的背景色
-- (void)button1BackGroundNormal:(UIButton *)sender
-{
-    sender.backgroundColor = [UIColor orangeColor];
-}
 
-//  button1高亮状态下的背景色
-- (void)button1BackGroundHighlighted:(UIButton *)sender
-{
-    sender.backgroundColor = [UIColor greenColor];
-}
 
 
 - (UIImage *)imageWithColor:(UIColor *)color {

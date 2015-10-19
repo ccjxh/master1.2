@@ -120,8 +120,6 @@
 
 - (void)viewDidLoad {
     
-    self.title=@"我的服务";
-    
     self.automaticallyAdjustsScrollViewInsets=NO;
     
     [self customNaigationLeftButton];
@@ -698,6 +696,14 @@
                 }
                 Cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 Cell.function.text=@"岗位";
+                if ([self.title isEqualToString:@"成为宝师傅"]==YES) {
+                    if (self.type==0) {
+                        Cell.content.text=@"师傅";
+                    }else if (self.type==1){
+                    
+                    Cell.content.text=@"工长";
+                    }
+                }else{
                 if (delegate.userPost==1) {
                     Cell.content.text=@"雇主";
                 }else if (delegate.userPost==2){
@@ -706,8 +712,8 @@
                 }else if (delegate.userPost==3){
                 
                     Cell.content.text=@"工长";
+                    }
                 }
-                
                 return Cell;
                 
             }
@@ -993,6 +999,10 @@
         switch (indexPath.row) {
             case 0:
             {
+                if (model.personal==1||model.personalState==1) {
+                    [self.view makeToast:@"已认证的用户不能修改此项信息" duration:1 position:@"center"];
+                    return;
+                }
                 nameViewController*nvc=[[nameViewController alloc]initWithNibName:@"nameViewController" bundle:nil];
                 if (model.realName) {
                     nvc.origin=model.realName;
@@ -1009,7 +1019,10 @@
                 break;
                 case 2:
             {
-            
+                if (model.personal==1||model.personalState==1) {
+                    [self.view makeToast:@"已认证的用户不能修改此项信息" duration:1 position:@"center"];
+                    return;
+                }
                 ChangeDateViewController*cvc=[[ChangeDateViewController alloc]init];
                 cvc.isfuture=YES;
                 cvc.isPass=YES;
@@ -1063,19 +1076,19 @@
               int day = [comps day];
               NSString*age;
               if (day>[third intValue]) {
-                  age=[NSString stringWithFormat:@"%lu岁",year-[first integerValue]-1];
+                  age=[NSString stringWithFormat:@"%lu岁",year-[first integerValue]];
                   if (year==[first intValue]) {
                       age=@"0岁";
                   }
               }
                             
               else  if ([currentSecond integerValue]>[second integerValue]){
-                  age=[NSString stringWithFormat:@"%lu岁",year-[first integerValue]-1];
+                  age=[NSString stringWithFormat:@"%lu岁",year-[first integerValue]];
                   if (year==[first intValue]) {
                       age=@"0岁";
                   }
               }else{
-                  age=[NSString stringWithFormat:@"%lu岁",year-[first integerValue]];
+                  age=[NSString stringWithFormat:@"%lu岁",year-[first integerValue]+1];
                   if (year==[first intValue]) {
                       age=@"0岁";
                       
@@ -1096,12 +1109,19 @@
                     }];
                 };
                 
-                [self pushWinthAnimation:self.navigationController Viewcontroller:cvc];
+            [self pushWinthAnimation:self.navigationController Viewcontroller:cvc];
             }
                 break;
                 case 1:
             {
-            
+                if (model.personal==1||model.personalState==1) {
+                    [self.view makeToast:@"已认证的用户不能修改此项信息" duration:1 position:@"center"];
+                    return;
+                }
+                if ([[delegate.userInforDic objectForKey:@"personal"] integerValue]==1) {
+                    [self.view makeToast:@"已认证的用户不能修改此项信息" duration:1 position:@"center"];
+                    return;
+                }
                 ModifySexViewController *ctl = [[ModifySexViewController alloc] init];
                 ctl.gendarValueBlock = ^(long gendarId,long tag){
                     NSString *urlString = [self interfaceFromString:interface_updateGendar];
@@ -1680,15 +1700,17 @@
     }
     cell.function.text=@"服务区域";
     NSString*Str;
-        for (NSInteger i=0; i<_serviceArray.count; i++) {
+    for (NSInteger i=0; i<_serviceArray.count; i++) {
             NSMutableArray*array=_serviceArray[i];
             for (NSInteger j=1; j<array.count; j++) {
                 AreaModel*model=array[j];
                 if (i==0||j==1) {
                     Str=model.name;
+            
                 }else{
                 
                     Str=[NSString stringWithFormat:@"%@、%@",Str,model.name];
+                   
                 }
             }
             

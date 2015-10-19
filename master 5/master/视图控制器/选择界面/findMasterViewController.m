@@ -14,6 +14,7 @@
 #import "findMaster.h"
 #import "checkManager.h"
 #import "PeoDetailViewController.h"
+#import "ProvinceTableViewController.h"
 
 
 @interface findMasterViewController ()<UIScrollViewDelegate,SDCycleScrollViewDelegate,UIAlertViewDelegate,FDAlertViewDelegate>
@@ -40,6 +41,18 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(update) name:@"updateUI" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refershUI) name:@"intrgalUpdate" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadData:) name:@"placeChange" object:nil];
+    
+}
+
+-(void)reloadData:(NSNotification*)nc{
+    
+        NSDictionary*dict=nc.userInfo;
+        AreaModel*model=[dict objectForKey:@"model"];
+        _currentCityName=model.name;
+        [self initUI];
+        [self request];
+        [self requestHotRank];
     
 }
 
@@ -51,6 +64,7 @@
 
 -(void)update{
 
+    [findView reloadData];
 
 }
 
@@ -60,6 +74,7 @@
     
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"update" object:nil];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"intrgalUpdate" object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"placeChange" object:nil];
 }
 
 
@@ -78,7 +93,8 @@
     [self checkNewVersion];  //版本检测更新
     [self receiveNotice];   //收到推送时刷新UI
     [self customNavigation];
-    [self performSelector:@selector(requestNotice) withObject:nil afterDelay:1.0f];
+    [self CreateFlow];
+    [self requestNotice];
 //     [self requestNotice];   //请求通知公告
     [self requestSignInformation];//请求个人签到信息
     [self requestHotRank];//热度排行榜请求
@@ -86,9 +102,9 @@
     [delegate setupMap];
     delegate.cityChangeBlock=^(NSString*name){
         
-        if (delegate.id!=381) {
+    if (delegate.id!=381) {
             
-            if ([_currentCityName isEqualToString:delegate.city]==NO) {
+        if ([_currentCityName isEqualToString:delegate.city]==NO) {
                 UIAlertView*alert=[[UIAlertView alloc]initWithTitle:@"" message:@"是否切换到定位城市" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
                 [alert show];
                 
@@ -98,7 +114,7 @@
     
     _tencentOAuth = [[TencentOAuth alloc] initWithAppId:@"1104650241" andDelegate:self];
     _permissions =[NSArray arrayWithObjects:@"get_user_info", @"get_simple_userinfo", @"add_t", nil];
-    [self CreateFlow];
+    
     [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;
     
     
@@ -206,18 +222,12 @@
 {
     
     cityViewController*cvc=[[cityViewController alloc]init];
+    cvc.hidesBottomBarWhenPushed=YES;
     if (self.orginCity) {
         
         cvc.city=self.orginCity;
     }
-    __weak typeof(self)weakSelf=self;
-    cvc.TBlock=^(AreaModel*CityModel){
-        _currentCityName=CityModel.name;
-        [self initUI];
-        [weakSelf requestHotRank];
-        
-    };
-    
+    cvc.count=2;
     [self pushWinthAnimation:self.navigationController Viewcontroller:cvc];
     
 }
@@ -322,7 +332,7 @@
     findView.refershHotRank=^(){
     
         [weakSelf requestHotRank];
-    
+        
     };
     self.view.backgroundColor=COLOR(232, 233, 232, 1);
     [self.view addSubview:findView];
@@ -336,21 +346,23 @@
     NSString*urlString=[self interfaceFromString:interface_signIn];
     [[httpManager share]POST:urlString parameters:nil success:^(AFHTTPRequestOperation *Operation, id responseObject) {
         NSDictionary*dict=(NSDictionary*)responseObject;
-        [self.view makeToast:[dict objectForKey:@"msg"] duration:1 position:@"center" Finish:^{
             //签到成功处理
             if ([[dict objectForKey:@"rspCode"]integerValue]==200) {
             AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
             [delegate.signInfo setObject:@"1" forKey:@"signState"];
-            NSInteger todayIntegral=[[delegate.signInfo objectForKey:@"nextDayIntegral"] integerValue];
-                NSDictionary*parent=@{@"value":[NSString stringWithFormat:@"%lu",todayIntegral]};
-                NSNotification*noction=[[NSNotification alloc]initWithName:@"showIncreaImage" object:nil userInfo:parent];
-                [[NSNotificationCenter defaultCenter]postNotification:noction];
-            NSInteger totalIntegral=[[delegate.signInfo objectForKey:@"totalIntegral"] integerValue];
+//            NSInteger todayIntegral=[[delegate.signInfo objectForKey:@"nextDayIntegral"] integerValue];
+            NSDictionary*parent=@{@"value":[NSString stringWithFormat:@"%lu",[[delegate.signInfo objectForKey:@"todayIntegral"] integerValue]]};
+            NSNotification*noction=[[NSNotification alloc]initWithName:@"showIncreaImage" object:nil userInfo:parent];
+            [[NSNotificationCenter defaultCenter]postNotification:noction];
+            NSInteger todayIntegral=[[delegate.signInfo objectForKey:@"todayIntegral"] integerValue];
             [delegate.signInfo setObject:[NSString stringWithFormat:@"%d",[[delegate.signInfo objectForKey:@"renewDay"] integerValue]+1] forKey:@"renewDay"];
-            delegate.integral =todayIntegral+totalIntegral;
+            NSInteger totalIntegral= [[delegate.signInfo objectForKey:@"totalIntegral"] integerValue];
+            [delegate.signInfo setObject:[NSString stringWithFormat:@"%lu",totalIntegral+todayIntegral] forKey:@"totalIntegral"];
+            delegate.integral=[[delegate.signInfo objectForKey:@"totalIntegral"] integerValue];
             [findView reloadData];
-            }
-        }];
+            }else{
+            [self.view makeToast:@"请求失败，请稍后重试" duration:1.5f position:@"center"];
+        }
         
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
        
@@ -462,7 +474,6 @@
     [findView hideNoDataPicture];
     NSString*urlString=[self interfaceFromString:interface_hotRang];
     AreaModel*model=[[dataBase share]findWithCity:_currentCityName];
-    [_hotArray removeAllObjects];
     NSDictionary*dict;
     if (model) {
         dict=@{@"firstLocation":[NSString stringWithFormat:@"%lu",model.id]};
@@ -470,6 +481,7 @@
     [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *Operation, id responseObject) {
         [self flowHide];
        [self.view makeToast:[dict objectForKey:@"msg"] duration:1.5f position:@"center" Finish:^{
+            [_hotArray removeAllObjects];
            NSDictionary*dict=(NSDictionary*)responseObject;
            if ([[dict objectForKey:@"rspCode"] integerValue]==200) {
                NSArray*array=[dict objectForKey:@"entities"];

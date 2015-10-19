@@ -69,7 +69,6 @@
         unsigned int numberOfItemsInRow :1;
         unsigned int titleForRowAtIndexPath :1;
         unsigned int titleForItemsInRowAtIndexPath :1;
-        
     }_dataSourceFlags;
 }
 
@@ -225,7 +224,6 @@
         
         if (!self.valueDict) {
             self.valueDict=[[NSMutableDictionary alloc]init];
-            
         }
         [self.valueDict removeAllObjects];
         _origin = origin;
@@ -488,15 +486,11 @@
         NSInteger num = [_leftTableView numberOfRowsInSection:0];
         CGFloat tableViewHeight = num * kTableViewCellHeight > kTableViewHeight+1 ? kTableViewHeight:num*kTableViewCellHeight+1;
         if (self.type==0) {
-            
-            
         //设置筛选菜单高度***************************************************
-            
         if (_currentSelectedMenudIndex==1) {
             tableViewHeight=SCREEN_HEIGHT-64-49-60;
             }
         }
-        
         
         [UIView animateWithDuration:0.2 animations:^{
             if (haveItems) {
@@ -796,7 +790,7 @@
     }];
     [_valueDict removeAllObjects];
     if (_block) {
-        _block(_valueDict);
+        _block(nil);
     }
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section

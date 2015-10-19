@@ -31,8 +31,8 @@
     
     self.height.constant=height+5;
     if (self.type==1) {
-        self.topToSuperview.constant=5;
-        self.topToSuperVIew1.constant=3;
+        self.topToSuperview.constant=15;
+        self.topToSuperVIew1.constant=15;
     }
     
     

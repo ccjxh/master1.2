@@ -13,6 +13,7 @@
 #import "BasicInfoViewController.h"
 #import "OrderDetailViewController.h"
 #import "AddCommonAddressCtl.h"
+#import "findMasterViewController.h"
 @interface CityTableViewController ()
 
 @property(nonatomic,copy) NSMutableArray *cityArr;
@@ -22,9 +23,6 @@
 @end
 
 @implementation CityTableViewController
-
-
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -36,8 +34,9 @@
     _cityArr = [NSMutableArray array];
     [_rVC CreateFlow];
     [self requestCityInfo:self.provinceId];
-    
 }
+
+
 #pragma mark - Table view data source
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -80,6 +79,10 @@
     else if([type isEqualToString:@"2"])
     {
         viewController = [[OrderDetailViewController alloc] init];
+    }else if ([type isEqualToString:@"5"]){
+    
+        viewController=[[findMasterViewController alloc]init];
+    
     }
     else
     {
@@ -106,17 +109,18 @@
             else if ([type isEqualToString:@"2"])
             {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"order" object:dict];
-            }
-            else
+            }else if ([type isEqualToString:@"5"]){
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"home" object:dict];
+                
+            }else
             {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"address" object:dict];
             }
+            
             [self.navigationController popToViewController:controller animated:YES];
         }
     }
-
-    
-    
 }
 
 #pragma mark - 请求城市信息

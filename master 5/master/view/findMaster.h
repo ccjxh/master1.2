@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "SDCycleScrollView.h"
+#import "CBAutoScrollLabel.h"
+
 /*
  选择界面view
  **/
@@ -18,7 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *wokerButton;
 @property(nonatomic)NSMutableArray*dataArray;//热度排行榜数据源
 @property(nonatomic)NSMutableArray* urlArray;
-@property(nonatomic,strong)TextFlowView*tv;//通知公告
+@property(nonatomic,strong)CBAutoScrollLabel*tv;//通知公告
 @property(nonatomic)myIntegralInforModel*model;//签到信息
 @property (nonatomic) UICollectionView *collection;//热度排行榜视图
 @property(nonatomic)NSMutableArray*hotArray;

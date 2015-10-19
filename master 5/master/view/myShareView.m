@@ -65,7 +65,7 @@
 }
 
 -(void)buttonOnclick:(UIButton*)button{
-    
+    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     _currentTag=button.tag-10+1;
     SSDKPlatformType type;
     NSInteger version=button.tag-10+1;
@@ -78,26 +78,30 @@
             //qq好友
         {
             type=SSDKPlatformSubTypeQQFriend;
-            [shareParams SSDKSetupQQParamsByText:@"这么好的app，您值得拥有" title:@"这款app值得拥有" url:[NSURL URLWithString:finaUrlString]   thumbImage:[UIImage imageNamed:@"Icon.png"] image:nil type:SSDKContentTypeWebPage forPlatformSubType:type];
+             NSString*content=[NSString stringWithFormat:@"注册填邀请码获取积分,邀请码是:%@",[delegate.userInforDic objectForKey:@"inviteCode"]];
+            [shareParams SSDKSetupQQParamsByText:content title:@"找防水师傅,就上宝师傅" url:[NSURL URLWithString:finaUrlString]   thumbImage:[UIImage imageNamed:@"Icon.png"] image:nil type:SSDKContentTypeWebPage forPlatformSubType:type];
         }
             break;
             case 11:
             //qq空间
         {
             type=SSDKPlatformSubTypeQZone;
-            [shareParams SSDKSetupQQParamsByText:@"这么好的app，您值得拥有" title:@"这款app值得拥有" url:[NSURL URLWithString:finaUrlString]   thumbImage:[UIImage imageNamed:@"Icon.png"] image:nil type:SSDKContentTypeWebPage forPlatformSubType:type];
+              NSString*content=[NSString stringWithFormat:@"注册填邀请码获取积分,邀请码是:%@",[delegate.userInforDic objectForKey:@"inviteCode"]];
+            [shareParams SSDKSetupQQParamsByText:content title:@"找防水师傅,就上宝师傅" url:[NSURL URLWithString:finaUrlString]   thumbImage:[UIImage imageNamed:@"Icon.png"] image:nil type:SSDKContentTypeWebPage forPlatformSubType:type];
         }
             break;
         case 12:
         {
             type=SSDKPlatformSubTypeWechatSession;
-            [shareParams SSDKSetupWeChatParamsByText:@"这么好的app，您值得拥有" title:@"这款app值得拥有" url:[NSURL URLWithString:finaUrlString] thumbImage:[UIImage imageNamed:@"Icon.png"] image:nil musicFileURL:nil extInfo:nil fileData:nil emoticonData:nil type:SSDKContentTypeWebPage forPlatformSubType:type];
+             NSString*content=[NSString stringWithFormat:@"注册填邀请码获取积分,邀请码是:%@",[delegate.userInforDic objectForKey:@"inviteCode"]];
+            [shareParams SSDKSetupWeChatParamsByText:content title:@"找防水师傅,就上宝师傅" url:[NSURL URLWithString:finaUrlString] thumbImage:[UIImage imageNamed:@"Icon.png"] image:nil musicFileURL:nil extInfo:nil fileData:nil emoticonData:nil type:SSDKContentTypeWebPage forPlatformSubType:type];
         }
             break;
             case 13:
         {
             type=SSDKPlatformSubTypeWechatTimeline;
-            [shareParams SSDKSetupWeChatParamsByText:@"这么好的app，您值得拥有" title:@"这款app值得拥有" url:[NSURL URLWithString:finaUrlString]  thumbImage:[UIImage imageNamed:@"Icon.png"] image:nil musicFileURL:nil extInfo:nil fileData:nil emoticonData:nil type:SSDKContentTypeWebPage forPlatformSubType:type];
+            NSString*content=[NSString stringWithFormat:@"注册填邀请码获取积分,邀请码是:%@",[delegate.userInforDic objectForKey:@"inviteCode"]];
+            [shareParams SSDKSetupWeChatParamsByText:content title:@"找防水师傅,就上宝师傅" url:[NSURL URLWithString:finaUrlString]  thumbImage:[UIImage imageNamed:@"Icon.png"] image:nil musicFileURL:nil extInfo:nil fileData:nil emoticonData:nil type:SSDKContentTypeWebPage forPlatformSubType:type];
         }
             
             break;

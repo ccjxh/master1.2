@@ -26,8 +26,8 @@
                         <rect key="frame" x="281" y="10" width="27" height="22"/>
                         <animations/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="30" id="kIU-qq-iZS"/>
-                            <constraint firstAttribute="width" constant="30" id="zXd-Mq-72M"/>
+                            <constraint firstAttribute="height" constant="16" id="kIU-qq-iZS"/>
+                            <constraint firstAttribute="width" constant="16" id="zXd-Mq-72M"/>
                         </constraints>
                     </imageView>
                 </subviews>
@@ -36,7 +36,7 @@
                     <constraint firstAttribute="bottomMargin" secondItem="nQA-Cp-Quu" secondAttribute="bottom" constant="10" id="7ds-2s-fNE"/>
                     <constraint firstItem="nQA-Cp-Quu" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="10" id="Kxr-Tt-Mr0"/>
                     <constraint firstItem="nQA-Cp-Quu" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="10" id="Xg4-RO-SeR"/>
-                    <constraint firstItem="eYb-t1-atj" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="5" id="Z7T-Wc-wYw"/>
+                    <constraint firstItem="eYb-t1-atj" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="10" id="Z7T-Wc-wYw"/>
                     <constraint firstItem="eYb-t1-atj" firstAttribute="leading" secondItem="nQA-Cp-Quu" secondAttribute="trailing" constant="20" id="mZ8-on-B6u"/>
                     <constraint firstAttribute="trailingMargin" secondItem="eYb-t1-atj" secondAttribute="trailing" constant="10" id="vey-o2-cnn"/>
                 </constraints>

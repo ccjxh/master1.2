@@ -36,6 +36,7 @@
     NSTimer *timer;
     NSInteger index;
     NSInteger _currentPage;
+    NSMutableDictionary*_parent;//筛选条件字典
 }
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -44,6 +45,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self initDict];
     _currentCity=self.cityName;
     self.automaticallyAdjustsScrollViewInsets=NO;
     [self seleceMenuDate];
@@ -70,6 +72,21 @@
     // Do any additional setup after loading the view from its nib.
 }
 
+
+-(void)initDict{
+
+    if (!_parent) {
+        _parent=[[NSMutableDictionary alloc]init];
+    }
+     AreaModel*citymodel=[[dataBase share]findWithCity:_currentCity];
+    [_parent setObject:[NSString stringWithFormat:@"%ld",(long)citymodel.id] forKey:@"firstLocation"];
+    [_parent setObject:[NSString stringWithFormat:@"%ld",(long)self.firstLocation] forKey:@"userPost"];
+    [_parent setObject:[NSString stringWithFormat:@"%ld",(long)_currentPage] forKey:@"pageNo"];
+    [_parent setObject:@"10" forKey:@"pageSize"];
+    [_parent setObject:[NSString stringWithFormat:@"%ld",(long)_currentRank] forKey:@"orderType"];
+    
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -94,17 +111,38 @@
     _menue.delegate=self;
     __weak typeof(self)weSelf=self;
     __weak typeof(DOPDropDownMenu*)menu=_menue;
+    __weak typeof(NSMutableDictionary*)weakDict=_parent;
     _menue.block=^(NSMutableDictionary*dict){
-        [weSelf selectRefersh:dict];
+        if (dict.allKeys.count==0) {
+            [weakDict removeAllObjects];
+            AreaModel*citymodel=[[dataBase share]findWithCity:_currentCity];
+            [_parent setObject:[NSString stringWithFormat:@"%ld",(long)citymodel.id] forKey:@"firstLocation"];
+            [_parent setObject:[NSString stringWithFormat:@"%ld",(long)self.firstLocation] forKey:@"userPost"];
+            [_parent setObject:[NSString stringWithFormat:@"%ld",(long)_currentPage] forKey:@"pageNo"];
+            [_parent setObject:@"10" forKey:@"pageSize"];
+            [_parent setObject:[NSString stringWithFormat:@"%ld",(long)_currentRank] forKey:@"orderType"];
+            
+        }else{
+        for (NSString*key in dict.allKeys) {
+            [weakDict setObject:[dict objectForKey:key] forKey:key];
+            }
+        }
+//        [weSelf selectRefersh:dict];
+     
         menu.selectDict=[[NSMutableDictionary alloc]initWithDictionary:dict];
         menu.isOpen=[[dict objectForKey:@"filterCertification"] integerValue];
+        self.isRefersh=YES;
+        [weSelf requestInformation];
         [menu.leftTableView reloadData];
-        
     };
+    
     _menue.areablock=^(NSInteger status){
         _currentTownID=status;
         weSelf.isRefersh=YES;
+        self.isRefersh=YES;
         [weSelf requestInformation];
+        [menu.leftTableView reloadData];
+
     };
     _menue.rankblock=^(NSInteger status){
         if (status==1) {
@@ -112,8 +150,10 @@
             _currentRank=2;
         }
         weSelf.isRefersh=YES;
+        [weakDict setObject:[NSString stringWithFormat:@"%ld",(long)_currentRank] forKey:@"orderType"];
         [weSelf requestInformation];
-        
+        [menu.leftTableView reloadData];
+
     };
     
     [self.view addSubview:_menue];
@@ -172,6 +212,7 @@
     
     [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary*dict=(NSDictionary*)responseObject;
+        _totalResults=[dict objectForKey:@"totalResults"];
         NSDictionary*inforDict=[dict objectForKey:@"response"];
         [_dataArray removeAllObjects];
         NSArray*array=[dict objectForKey:@"entities"];
@@ -188,8 +229,8 @@
             
             self.noDataView.hidden=YES;
         }
-        
         [_inforTableview reloadData];
+        [self referCount];
         [self flowHide];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self flowHide];
@@ -237,6 +278,10 @@
 }
 
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
+    if (searchText.length!=0) {
+        [_parent setObject:searchText forKey:@"keyWord"];
+  
+    }
     _informationRefersh=YES;
     self.noDataView.hidden=YES;
     self.netIll.hidden=YES;
@@ -248,71 +293,76 @@
     NSString*urlString=[self interfaceFromString:interface_list];
     NSMutableDictionary*dict=[[NSMutableDictionary alloc]init];
     AreaModel*citymodel=[[dataBase share]findWithCity:_currentCity];
-    [dict setObject:[NSString stringWithFormat:@"%ld",(long)citymodel.id] forKey:@"firstLocation"];
-    [dict setObject:[NSString stringWithFormat:@"%ld",(long)self.firstLocation] forKey:@"userPost"];
-    [dict setObject:[NSString stringWithFormat:@"%ld",(long)_currentPage] forKey:@"pageNo"];
-    [dict setObject:@"10" forKey:@"pageSize"];
+//    [dict setObject:[NSString stringWithFormat:@"%ld",(long)citymodel.id] forKey:@"firstLocation"];
+//    [dict setObject:[NSString stringWithFormat:@"%ld",(long)self.firstLocation] forKey:@"userPost"];
+//    [dict setObject:[NSString stringWithFormat:@"%ld",(long)_currentPage] forKey:@"pageNo"];
+//    [dict setObject:@"10" forKey:@"pageSize"];
     
     if (_townArray.count==0) {
-        [dict setObject:@"0" forKey:@"secordLocation"];
+//        [dict setObject:@"0" forKey:@"secordLocation"];
+         [_parent setObject:@"0" forKey:@"secordLocation"];
     }
     else
     {
         AreaModel*tempModel=_townArray[_currentTownID];
         if (tempModel.id==400000) {
-            [dict setObject:@"0" forKey:@"secordLocation"];
+//            [dict setObject:@"0" forKey:@"secordLocation"];
+            [_parent setObject:@"0" forKey:@"secordLocation"];
         }
         else
         {
-            [dict setObject:[NSString stringWithFormat:@"%ld",(long)tempModel.id] forKey:@"secordLocation"];
+//            [dict setObject:[NSString stringWithFormat:@"%ld",(long)tempModel.id] forKey:@"secordLocation"];
+            [_parent setObject:[NSString stringWithFormat:@"%ld",(long)tempModel.id] forKey:@"secordLocation"];
         }
     }
     
-    [dict setObject:_searchBar.text forKey:@"keyWord"];
-    [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary*dict=(NSDictionary*)responseObject;
-        if (self.isRefersh) {
-            [_dataArray removeAllObjects];
-        }
-        NSDictionary*inforDict=[dict objectForKey:@"response"];
-        NSArray*array=[dict objectForKey:@"entities"];
-        self.totalResults=[dict objectForKey:@"totalPage"];
-        for (NSInteger i=0; i<array.count; i++) {
-            NSDictionary*tempDict=array[i];
-            peoplr*model=[[peoplr alloc]init];
-            [model setValuesForKeysWithDictionary:[tempDict objectForKey:@"user"]];
-            AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-            [_dataArray addObject:model];
-        }
-        if (_dataArray.count==0) {
-            self.noDataView.hidden=NO;
-        }else{
-            
-            self.noDataView.hidden=YES;
-        }
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [_inforTableview reloadData];
-            [self.weakRefreshHeader endRefreshing];
-            [self.refreshFooter endRefreshing];
-            _informationRefersh=NO;
-            self.isRefersh=NO;
-            if (!_informationRefersh&&!_requestRefersh) {
-                [self flowHide];
-            }
-            
-        });
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        _informationRefersh=NO;
-        if (!_informationRefersh&&!_requestRefersh) {
-            [_progressHUD hide:YES];
-        }
-        self.netIll.hidden=NO;
-        [self.weakRefreshHeader endRefreshing];
-        [self.refreshFooter endRefreshing];
-        self.isRefersh=NO;
-    }];
+    self.isRefersh=YES;
+    [self requestInformation];
+//    [dict setObject:_searchBar.text forKey:@"keyWord"];
+//    [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        NSDictionary*dict=(NSDictionary*)responseObject;
+//        if (self.isRefersh) {
+//            [_dataArray removeAllObjects];
+//        }
+//        NSDictionary*inforDict=[dict objectForKey:@"response"];
+//        NSArray*array=[dict objectForKey:@"entities"];
+//         _totalResults=[dict objectForKey:@"totalResults"];
+//        for (NSInteger i=0; i<array.count; i++) {
+//            NSDictionary*tempDict=array[i];
+//            peoplr*model=[[peoplr alloc]init];
+//            [model setValuesForKeysWithDictionary:[tempDict objectForKey:@"user"]];
+//            [_dataArray addObject:model];
+//        }
+//        if (_dataArray.count==0) {
+//            self.noDataView.hidden=NO;
+//        }else{
+//            
+//            self.noDataView.hidden=YES;
+//        }
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            [_inforTableview reloadData];
+//            [self.weakRefreshHeader endRefreshing];
+//            [self.refreshFooter endRefreshing];
+//            _informationRefersh=NO;
+//            self.isRefersh=NO;
+//            if (!_informationRefersh&&!_requestRefersh) {
+//                [self flowHide];
+//            }
+//            
+//        });
+//        
+//        [self referCount];
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        
+//        _informationRefersh=NO;
+//        if (!_informationRefersh&&!_requestRefersh) {
+//            [_progressHUD hide:YES];
+//        }
+//        self.netIll.hidden=NO;
+//        [self.weakRefreshHeader endRefreshing];
+//        [self.refreshFooter endRefreshing];
+//        self.isRefersh=NO;
+//    }];
     
 }
 
@@ -335,7 +385,7 @@
 -(void)footerRefresh{
     if (_currentPage+1>[self.totalResults integerValue]) {
         [self.refreshFooter endRefreshing];
-        [self.view makeToast:@"没有更多页了" duration:1 position:@"center"];
+        [self.view makeToast:@"没有更多了" duration:1 position:@"center"];
         return;
     }
     _currentPage++;
@@ -439,15 +489,13 @@
     //
     
     [dict setObject:[NSString stringWithFormat:@"%ld",(long)_currentRank] forKey:@"orderType"];
-    
-    [[httpManager share]POST:urlString parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [[httpManager share]POST:urlString parameters:_parent success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary*dict=(NSDictionary*)responseObject;
-        
         if (self.isRefersh) {
             [_dataArray removeAllObjects];
         }
-        
-        _totalResults=[dict objectForKey:@"totalPage"] ;
+//        _totalResults=[dict objectForKey:@"totalPage"] ;
+        _totalResults=[dict objectForKey:@"totalResults"];
         UILabel*label=(id)[self.view viewWithTag:500];
         NSDictionary*inforDict=[dict objectForKey:@"response"];
         NSArray*array=[dict objectForKey:@"entities"];
@@ -455,16 +503,13 @@
             NSDictionary*tempDict=array[i];
             peoplr*model=[[peoplr alloc]init];
             [model setValuesForKeysWithDictionary:[tempDict objectForKey:@"user"]];
-            
-            AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-            
             [_dataArray addObject:model];
         }
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [_inforTableview reloadData];
             if (label) {
-                label.text=[NSString stringWithFormat:@"共有%lu页数据",[_totalResults intValue]];
+                label.text=[NSString stringWithFormat:@"共有%d位",[_totalResults intValue]];
             }else{
                 
                 [self createFooter];
@@ -475,6 +520,7 @@
             [self.refreshFooter endRefreshing];
             _informationRefersh=NO;
             self.isRefersh=NO;
+            [self referCount];
             [self flowHide];
             
         });
@@ -574,13 +620,19 @@
     label.layer.cornerRadius=3;
     label.layer.borderWidth=1;
     label.layer.borderColor=[UIColor lightGrayColor].CGColor;
-    label.text=[NSString stringWithFormat:@"共有%lu页数据",[_totalResults integerValue]];
-//    label.textColor=[UIColor lightGrayColor];
+    label.text=[NSString stringWithFormat:@"共有%lu位",[_totalResults integerValue]];
     label.font=[UIFont systemFontOfSize:16];
     label.textAlignment=NSTextAlignmentCenter;
     label.tag=500;
     self.inforTableview.tableFooterView=label;
     
+}
+
+-(void)referCount{
+
+    UILabel*label=(id)[self.view viewWithTag:500];
+    label.text=[NSString stringWithFormat:@"共有%lu位",[_totalResults integerValue]];
+
 }
 
 #pragma mark-tableview 协议

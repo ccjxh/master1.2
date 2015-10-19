@@ -215,6 +215,8 @@
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+    PersonalDetailModel*model= [[dataBase share]findPersonInformation:delegate.id];
     switch (indexPath.section)
     {
         case 0:
@@ -224,14 +226,16 @@
             break;
         case 1:
         {
-            AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-           PersonalDetailModel*model= [[dataBase share]findPersonInformation:delegate.id];
+            if (model.personal==1||model.personalState==1) {
+                [self.view makeToast:@"已认证的用户不能修改此项信息" duration:1 position:@"center"];
+                return;
+            }
+
             if (indexPath.row==0) {
-                
                 if (model.personal==0&&model.personalState==0) {
                 nameViewController*nvc=[[nameViewController alloc]initWithNibName:@"nameViewController" bundle:nil];
                 nvc.origin=model.realName;
-                    nvc.contentChange=^(NSString*name){
+                nvc.contentChange=^(NSString*name){
                         personalDetailModel.realName=name;
                         [myInfoTableView reloadData];
                     };
@@ -244,6 +248,11 @@
             
            else if (indexPath.row == 1)
             {
+                if (model.personal==1||model.personalState==1) {
+                    [self.view makeToast:@"已认证的用户不能修改此项信息" duration:1 position:@"center"];
+                    return;
+                }
+                
                 ModifySexViewController *ctl = [[ModifySexViewController alloc] init];
                 ctl.gendarValueBlock = ^(long gendarId,long tag){
                     NSString *urlString = [self interfaceFromString:interface_updateGendar];
@@ -264,6 +273,12 @@
             }
             else if(indexPath.row==2)
             {
+                if (model.personal==1||model.personalState==1) {
+                    [self.view makeToast:@"已认证的用户不能修改此项信息" duration:1 position:@"center"];
+                    return;
+                }
+                
+
                 ProvinceTableViewController *ctl = [[ProvinceTableViewController alloc] init];
                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                 [defaults setObject:@"1" forKey:@"type"];
@@ -271,6 +286,12 @@
                 [self pushWinthAnimation:self.navigationController Viewcontroller:ctl];
             }else if (indexPath.row==3){
             
+                if (model.personal==1||model.personalState==1) {
+                    [self.view makeToast:@"已认证的用户不能修改此项信息" duration:1 position:@"center"];
+                    return;
+                }
+                
+
                 ChangeDateViewController*cvc=[[ChangeDateViewController alloc]init];
                 cvc.isfuture=YES;
                 cvc.isPass=YES;

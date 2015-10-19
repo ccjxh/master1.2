@@ -11,6 +11,7 @@
 #import "firstAreaViewController.h"
 #import "openCityManagerViewController.h"
 #import "selelctAreaTableViewCell.h"
+#define BUTTON_TAG 200
 @interface proviceSelectedViewController ()<UIActionSheetDelegate>
 
 @end
@@ -26,24 +27,65 @@
 -(void)viewWillAppear:(BOOL)animated{
 
     [super viewWillAppear:animated];
+    [self reloadData];
     [_tableview reloadData];
 
 }
 
 
+-(void)reloadData{
+
+    UIButton*button=(id)[self.view viewWithTag:BUTTON_TAG];
+    if (button) {
+        if (self.selectArray.count==0) {
+            button.hidden=NO;
+            self.tableview.separatorStyle=0;
+        }else{
+            self.tableview.separatorStyle=1;
+            button.hidden=YES;
+        }
+    }
+
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    for (NSInteger i=0; i<self.selectArray.count; i++) {
+        NSMutableArray*array=self.selectArray[i];
+        for (NSInteger j=0; j<array.count; j++) {
+            AreaModel*model=array[j];
+            model.isselect=NO;
+            [array replaceObjectAtIndex:j withObject:model];
+        }
+        
+        [self.selectArray replaceObjectAtIndex:i withObject:array];
+        
+    }
+    
     self.title=@"城市管理";
     self.automaticallyAdjustsScrollViewInsets=NO;
     [self customNavigation];
-       // Do any additional setup after loading the view from its nib.
+    UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-100, SCREEN_HEIGHT/2-70, 200, 90)];
+      [button setImage:[UIImage imageNamed:@"城市添加"] forState:UIControlStateNormal];
+      [button addTarget:self action:@selector(addNewPlace) forControlEvents:UIControlEventTouchUpInside];
+    button.tag=BUTTON_TAG;
+    [self.view addSubview:button];
+    if (self.selectArray.count==0) {
+        button.hidden=NO;
+    }else{
+    
+        button.hidden=YES;
+    }
+    
+          // Do any additional setup after loading the view from its nib.
 }
+
 
 
 
 -(void)customNavigation{
 
-//    NSArray*images=@[@"fifth",@"third"];
+
         UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, 25, 6)];
         [button setImage:[UIImage imageNamed:@"点点点"] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -54,29 +96,9 @@
 }
 
 
--(void)customCerfirmNavigation{
-
-    NSArray*array=@[@"确定",@"取消"];
-    NSMutableArray*buttons=[[NSMutableArray alloc]init];
-    for (NSInteger i=0; i<array.count; i++) {
-        UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, 35, 20)];
-        [button setTitle:array[i] forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        button.titleLabel.font=[UIFont systemFontOfSize:16];
-        button.tag=10+i;
-        [button addTarget:self action:@selector(cerfirmDelete:) forControlEvents:UIControlEventTouchUpInside];
-        UIBarButtonItem*item=[[UIBarButtonItem alloc]initWithCustomView:button];
-        [buttons addObject:item];
-    }
-    
-    self.navigationItem.rightBarButtonItems=buttons;
-
-}
-
 //删除服务区域
--(void)cerfirmDelete:(UIButton*)button{
-   
-    if (button.tag==10) {
+-(void)cerfirmDelete{
+    
         NSString*cityString;
         for (NSInteger i=0; i<self.selectArray.count; i++) {
             NSArray*array=self.selectArray[i];
@@ -85,11 +107,13 @@
                     continue;
                 }
                 AreaModel*model=array[j];
-                if (model.isselect==YES) {
+                if (model.isselect==NO) {
                     if (cityString==nil) {
                         cityString=[NSString stringWithFormat:@"%lu",model.id];
+                        
                     }else{
                         cityString=[NSString stringWithFormat:@"%@,%lu",cityString,model.id];
+                        
                     }
                 }
             }
@@ -107,42 +131,34 @@
                     _isShow=NO;
                     [self customNavigation];
                     for (NSInteger i=0; i<self.selectArray.count;i++) {
-                        NSMutableArray*array=self.selectArray[i];
-                        for (NSInteger j=0; j<array.count; j++) {
-                            AreaModel*model=array[j];
+                        NSMutableArray*cityArray=self.selectArray[i];
+                        for (NSInteger j=0; j<cityArray.count; j++) {
+                            AreaModel*model=cityArray[j];
                             if (j==0) {
                                 continue;
                             }
-                            if (model.isselect==NO) {
-                                [array removeObjectAtIndex:j];
+                            if (model.isselect==YES) {
+                                [cityArray removeObjectAtIndex:j];
                                 j--;
                             }
                         }
-                        if (array.count==1) {
+                        if (cityArray.count==1) {
                             [self.selectArray removeObjectAtIndex:i];
                             i--;
                         }else{
                             
-                            [self.selectArray replaceObjectAtIndex:i withObject:array];
+                            [self.selectArray replaceObjectAtIndex:i withObject:cityArray];
                         }
                     }
                     
                     [_tableview reloadData];
+                    [self reloadData];
                 }
             }];
             
         } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
             
-        }];
-
-    }else{
-    
-        _isShow=NO;
-        [_tableview reloadData];
-        [self customNavigation];
-        
-    }
-   
+    }];
 }
 
 
@@ -150,18 +166,21 @@
 
     if (buttonIndex==0) {
        
-        //新增
-          firstAreaViewController*fvc=[[firstAreaViewController alloc]initWithNibName:@"firstAreaViewController" bundle:nil];
-          fvc.selectArray=self.selectArray;
-          [self pushWinthAnimation:self.navigationController Viewcontroller:fvc];
+        [self addNewPlace];
 
     }else if (buttonIndex==1){
-    //删除
-        _isShow=YES;
-        [_tableview reloadData];
-        [self customCerfirmNavigation];
-    
+        //删除
+        [self cerfirmDelete];
     }
+}
+
+
+-(void)addNewPlace{
+
+    //新增
+    firstAreaViewController*fvc=[[firstAreaViewController alloc]initWithNibName:@"firstAreaViewController" bundle:nil];
+    fvc.selectArray=self.selectArray;
+    [self pushWinthAnimation:self.navigationController Viewcontroller:fvc];
 
 }
 
@@ -205,8 +224,8 @@
     if (Array.count==1) {
         return nil;
     }
-    return model.name;
     
+    return model.name;
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -226,11 +245,10 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-
+    
     NSMutableArray*Array=self.selectArray[indexPath.section];
     AreaModel*model=Array[indexPath.row+1];
     if (_isShow) {
-        
         if (model.isselect==YES) {
             model.isselect=NO;
         }else{
@@ -239,7 +257,6 @@
         NSInteger row=indexPath.row+1;
         [Array replaceObjectAtIndex:row withObject:model];
         [self.selectArray replaceObjectAtIndex:indexPath.section withObject:Array];
-        NSLog(@"%lu",[self.selectArray[indexPath.section] count]);
         [_tableview reloadData];
     }
 }

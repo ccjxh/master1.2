@@ -102,22 +102,23 @@
     if (Delegate.userPost==2||Delegate.userPost==3) {
         secondArray=@[@"我的服务"];
     }
-    NSArray*findJobArray=@[@"我的发布"];
-    NSArray*thirdArray=@[@"工程案例"];
-    NSArray*fourArray=@[@"我的收藏"];
+    NSArray*findJobArray=@[@"工程案例"];
+    NSArray*thirdArray=@[@"我的发布"];
+    NSArray*fourArray=@[@"我的积分"];
     NSArray*fifArray=@[@"设置"];
-    NSArray*sixarray=@[@"我的积分"];
-    NSArray*sevenArray=@[@"我的分享"];
+    NSArray*sixarray=@[@"我的收藏"];
+    NSArray*sevenArray=@[@"我要分享"];
     if (!_dataArray) {
         _dataArray=[[NSMutableArray alloc]init];
     }
     [_dataArray addObject:FirstArray];
     [_dataArray addObject:secondArray];
-    [_dataArray addObject:findJobArray];
-//    [_dataArray addObject:thirdArray];
     if (Delegate.userPost==2||Delegate.userPost==3) {
-        [_dataArray addObject:thirdArray];
+        [_dataArray addObject:findJobArray];
     }
+    [_dataArray addObject:thirdArray];
+//    [_dataArray addObject:thirdArray];
+    
     [_dataArray addObject:fourArray];
     [_dataArray addObject:sixarray];
     [_dataArray addObject:sevenArray];
@@ -130,6 +131,7 @@
     return _dataArray.count;
 
 }
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     return [_dataArray[section] count];
@@ -182,11 +184,21 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
 
+    AppDelegate*delagate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     if (section==0) {
         return 0;
     }
-    if (section==1||section==3||section==5) {
+    
+    if (delagate.userPost!=1) {
+        if (section==1||section==4||section==7) {
+            return 20;
+        }
+        
+    }else{
+    
+    if (section==1||section==3||section==6) {
         return 20;
+        }
     }
     return 0.5;
 
@@ -200,16 +212,29 @@
 
 -(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
 
+    UIView*otherView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
+    otherView.backgroundColor=COLOR(234,235, 236, 1);
+    AppDelegate*delagate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     UIView*view=[[UIView alloc]initWithFrame:CGRectMake(10, 0, SCREEN_WIDTH, 40)];
-    if (section==2||section==4||section==6||section==7) {
-        view.backgroundColor=COLOR(194, 194, 194, 1);
+    if (delagate.userPost!=1) {
+        if (section==2||section==4||section==6||section==7||section==3) {
+            view.backgroundColor=COLOR(234,235, 236, 1);
+            return view;
+        }else{
+            
+            return otherView;
+        }
+        
+    }else{
+       if (section==2||section==4||section==6||section==7) {
+        view.backgroundColor=COLOR(234,235, 236, 1);
         return view;
     }else{
         
-        return nil;
+        return otherView;
     
+        }
     }
-   
 }
 
 

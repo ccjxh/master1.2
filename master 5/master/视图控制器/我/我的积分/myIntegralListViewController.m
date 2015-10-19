@@ -80,6 +80,7 @@
 -(void)request{
 
 //    NSMutableArray*Array=[[NSMutableArray alloc]initWithObjects:@"fdsf",@"ffsdf", nil];
+    
     if (!_dataArray) {
         _dataArray=[[NSMutableArray alloc]init];
     }
@@ -96,9 +97,7 @@
                 myIntrgalListModel*model=[[myIntrgalListModel alloc]init];
                 [model setValuesForKeysWithDictionary:[inforDic objectForKey:@"userIntegral"]];
                 [_dataArray addObject:model];
-                
             }
-            
             _listView.dataArray=_dataArray;
             _dict=[[NSMutableDictionary alloc]init];
             for ( NSInteger i=0; i<_dataArray.count; i++) {

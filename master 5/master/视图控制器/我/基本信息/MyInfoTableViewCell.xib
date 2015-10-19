@@ -33,26 +33,10 @@
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" alpha="0.90000000000000002" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eRT-IM-YQj">
-                        <rect key="frame" x="256" y="5" width="46" height="30"/>
-                        <animations/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="35" id="2L9-xq-dZ4"/>
-                            <constraint firstAttribute="width" constant="35" id="GSE-LI-lV2"/>
-                        </constraints>
-                        <state key="normal" backgroundImage="ic_address.png">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                        <connections>
-                            <action selector="normal:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Uv7-Ky-rCx"/>
-                        </connections>
-                    </button>
                 </subviews>
                 <animations/>
                 <constraints>
-                    <constraint firstItem="eRT-IM-YQj" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="Ijg-mp-Xfi"/>
                     <constraint firstAttribute="trailingMargin" secondItem="xaE-6r-ibe" secondAttribute="trailing" constant="-10" id="MDa-eZ-ZQn"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="eRT-IM-YQj" secondAttribute="trailing" constant="10" id="X0l-Tf-6TT"/>
                     <constraint firstAttribute="bottomMargin" secondItem="xaE-6r-ibe" secondAttribute="bottom" id="gxN-8l-4qm"/>
                     <constraint firstItem="xaE-6r-ibe" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="sIW-2l-yrA"/>
                     <constraint firstItem="xaE-6r-ibe" firstAttribute="leading" secondItem="Prm-SD-KQh" secondAttribute="trailing" constant="10" id="se7-oC-8TM"/>
@@ -64,11 +48,8 @@
             <connections>
                 <outlet property="contentLabel" destination="xaE-6r-ibe" id="Ggu-by-AZu"/>
                 <outlet property="listLabel" destination="Prm-SD-KQh" id="vow-kj-tIz"/>
-                <outlet property="normalButton" destination="eRT-IM-YQj" id="499-Vg-09n"/>
+                <outlet property="toRihgt" destination="MDa-eZ-ZQn" id="rb0-rR-xFK"/>
             </connections>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="ic_address.png" width="96" height="96"/>
-    </resources>
 </document>

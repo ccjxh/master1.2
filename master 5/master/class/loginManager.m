@@ -55,7 +55,6 @@
             [users synchronize];
             [delegate requestInformation];
             loginComPlite;
-            
             [XGPush setAccount:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"pullTag"]];
                        //注册推送
             [delegate setupPushWithDictory];

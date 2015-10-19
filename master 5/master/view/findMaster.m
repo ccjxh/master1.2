@@ -22,7 +22,7 @@
     UILabel*_scoreLabel;//总积分标签
     UIScrollView*_backView;
     BOOL _isShowNotice;//是否显示通知
-    UIButton*_signButton;//签到button
+    UIButton*_signedButton;//签到button
     UIButton*_refershButton;
 
 }
@@ -62,16 +62,6 @@
 -(void)customUI{
 
     self.backgroundColor=COLOR(232, 233, 232, 1);
-//    self.wokerButton.layer.borderColor=COLOR(194, 194, 194, 1).CGColor;
-//    self.workHeadButton.layer.borderColor=COLOR(194, 194, 194, 1).CGColor;
-//    self.wokerButton.backgroundColor=[UIColor whiteColor];
-//    self.workHeadButton.backgroundColor=[UIColor whiteColor];
-//    self.wokerButton.layer.borderWidth=2;
-//    self.workHeadButton.layer.borderWidth=2;
-//    self.wokerButton.layer.masksToBounds=YES;
-//    self.workHeadButton.layer.masksToBounds=YES;
-//    self.wokerButton.layer.cornerRadius=20;
-//    self.workHeadButton.layer.cornerRadius=20;
     _firObjcView=[[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_noticeView.frame), SCREEN_WIDTH, 48)];
     _firObjcView.backgroundColor=COLOR(100, 172, 196, 1);
     _firObjcView.userInteractionEnabled=YES;
@@ -85,28 +75,15 @@
     _scoreLabel=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(imageview.frame)+5, CGRectGetMaxY(_timeLabel.frame)+6, 40, 12)];
     _scoreLabel.textColor=[UIColor whiteColor];
     _scoreLabel.font=[UIFont systemFontOfSize:12];
+    [self createSignButton];
     [_firObjcView addSubview:_scoreLabel];
-    _signButton=[[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-113, 10.5, 100, _firObjcView.frame.size.height-21)];
-    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-    if ([[delegate.signInfo objectForKey:@"signState"] integerValue]==1) {
-        
-        [_signButton setTitle:[NSString stringWithFormat:@"明日签到+%ld",[[delegate.signInfo objectForKey:@"nextDayIntegral"]integerValue]] forState:UIControlStateNormal];
-        _signButton.userInteractionEnabled=NO;
-        
-    }else {
-        
-        [_signButton setTitle:@"今日签到+10" forState:UIControlStateNormal];
-        [_signButton addTarget:self action:@selector(sign:) forControlEvents:UIControlEventTouchUpInside];
-    }
-   
-    [_signButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
-    _signButton.titleLabel.font=[UIFont systemFontOfSize:14];
-    [_signButton setBackgroundColor:[UIColor whiteColor]];
-    _signButton.layer.cornerRadius=5;
-    _signButton.tag=BUTTON_TAG;
-    [_firObjcView addSubview:_signButton];
     [self addSubview:_firObjcView];
 
+}
+
+-(void)createSignButton{
+
+   
 }
 
 
@@ -115,26 +92,27 @@
     if (self.signin) {
         self.signin();
     }
-
 }
 
 
 -(void)createScrollLabel{
 
-    _noticeView=[[UIView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, 24)];
+    _noticeView=[[UIView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, 0)];
     _noticeView.backgroundColor=COLOR(16, 118, 162, 1);
     [self addSubview:_noticeView];
     UIImageView*imageview=[[UIImageView alloc]initWithFrame:CGRectMake(13, 4, 12, 12)];
     imageview.image=[UIImage imageNamed:@"公告.png"];
-    UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(imageview.frame)+5,3, 35, 14)];
+    UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(imageview.frame)+5,3, 30, 14)];
     label.text=@"公告:";
     label.textColor=[UIColor whiteColor];
     label.font=[UIFont systemFontOfSize:12];
     [_noticeView addSubview:label];
     [_noticeView addSubview:imageview];
-    _tv=[[TextFlowView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(label.frame)+5, 3, SCREEN_WIDTH-10-CGRectGetMaxX(label.frame), 14)Text:@""];
-    [_tv startRun];
-    [_tv setColor:[UIColor whiteColor]];
+    _tv=[[CBAutoScrollLabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(label.frame), 3, SCREEN_WIDTH-10-CGRectGetMaxX(label.frame), 14)];
+    _tv.textColor = [UIColor whiteColor];
+    _tv.labelSpacing = 70; // distance between start and end labels
+    _tv.pauseInterval = 0; // seconds of pause before scrolling starts again
+    _tv.scrollSpeed = 30;
     [_tv setFont:[UIFont systemFontOfSize:12]];
     [_noticeView addSubview:_tv];
  
@@ -142,23 +120,47 @@
 
 -(void)reloadData{
 
+    
+    [UIView beginAnimations:@"move" context:nil];
+    [UIView setAnimationDuration:0.1f];
+    [UIView setAnimationDelegate:self];
+    [_signedButton removeFromSuperview];
+    _signedButton=[[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-113, _firObjcView.frame.size.height/2-10, 100, 20)];
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-    if ([[delegate.signInfo objectForKey:@"signState"] integerValue]==0) {
-        [_signButton setTitle:[NSString stringWithFormat:@"今日签到+%lu",self.model.nextDayIntegral] forState:UIControlStateNormal];
-    }else{
+    if ([[delegate.signInfo objectForKey:@"signState"] integerValue]==1) {
+        [_signedButton setTitle:[NSString stringWithFormat:@"明日签到+%ld",[[delegate.signInfo objectForKey:@"nextDayIntegral"]integerValue]] forState:UIControlStateNormal];
+        //        button.userInteractionEnabled=NO;
         
-        [_signButton setTitle:[NSString stringWithFormat:@"明日签到+%lu",self.model.nextDayIntegral] forState:UIControlStateNormal];
-        _signButton.userInteractionEnabled=NO;
+    }else {
+        
+        [_signedButton setTitle:[NSString stringWithFormat:@"明日签到+%ld",[[delegate.signInfo objectForKey:@"todayIntegral"] integerValue]] forState:UIControlStateNormal];
+        [_signedButton addTarget:self action:@selector(sign:) forControlEvents:UIControlEventTouchUpInside];
+        _signedButton.userInteractionEnabled=YES;
     }
+    [_signedButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    _signedButton.titleLabel.font=[UIFont systemFontOfSize:14];
+    [_signedButton setBackgroundColor:[UIColor whiteColor]];
+    _signedButton.layer.cornerRadius=5;
+    _signedButton.tag=BUTTON_TAG;
+    [_firObjcView addSubview:_signedButton];
+    [UIView commitAnimations];
+
+    
     _timeLabel.text=[NSString stringWithFormat:@"您已经连续签到了%lu天",[[delegate.signInfo objectForKey:@"renewDay"] integerValue]];
-    _scoreLabel.text=[NSString stringWithFormat:@"%lu",delegate.integral];
+    _scoreLabel.text=[NSString stringWithFormat:@"%lu",delegate.integral ];
+    [UIView beginAnimations:@"move" context:nil];
+    [UIView setAnimationDuration:0.5f];
+    [UIView setAnimationDelegate:self];
+    
     if (_isShowNotice==NO) {
         _noticeView.frame=CGRectMake(_noticeView.frame.origin.x, _noticeView.frame.origin.y, _noticeView.frame.size.width, 0);
     }else{
-     _noticeView.frame=CGRectMake(_noticeView.frame.origin.x, _noticeView.frame.origin.y, _noticeView.frame.size.width, 20);
+        _noticeView.frame=CGRectMake(_noticeView.frame.origin.x, _noticeView.frame.origin.y, _noticeView.frame.size.width, 20);
     }
     _firObjcView.frame=CGRectMake(0, CGRectGetMaxY(_noticeView.frame), SCREEN_WIDTH, 48);
-    _backView.frame=CGRectMake(0, CGRectGetMaxY(_firObjcView.frame), SCREEN_WIDTH, SCREEN_HEIGHT-44-140);
+    _backView.frame=CGRectMake(0, CGRectGetMaxY(_firObjcView.frame), SCREEN_WIDTH, SCREEN_HEIGHT-24-140);
+    [UIView commitAnimations];    
+   
 }
 
 
@@ -178,7 +180,7 @@
 
 -(void)customCollection{
 
-    _backView=[[UIScrollView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_firObjcView.frame), SCREEN_WIDTH, 600-64-60-10)];
+    _backView=[[UIScrollView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_firObjcView.frame), SCREEN_WIDTH, 600-24-60-10)];
     _backView.bounces=YES;
     _backView.userInteractionEnabled=YES;
     UIView*tempView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 155)];
@@ -209,7 +211,7 @@
         [button addSubview:functionLabel];
         [button addSubview:nameLabel];
         if (i==0) {
-            UIView*view=[[UIView alloc]initWithFrame:CGRectMake(2, 69, SCREEN_WIDTH-15, 1)];
+            UIView*view=[[UIView alloc]initWithFrame:CGRectMake(0, 69, SCREEN_WIDTH, 1)];
             view.backgroundColor=COLOR(217, 217, 217, 1);
             [button addSubview:view];
         }
@@ -226,7 +228,7 @@
     [layout setMinimumInteritemSpacing:0];
     [layout setMinimumLineSpacing:0];
     [layout setItemSize:CGSizeMake(SCREEN_WIDTH/2, 75)];
-    _collection=[[UICollectionView alloc]initWithFrame:CGRectMake(0, 170, SCREEN_WIDTH, _backView.frame.size.height-100-75-15) collectionViewLayout:layout];
+    _collection=[[UICollectionView alloc]initWithFrame:CGRectMake(0, 170, SCREEN_WIDTH, _backView.frame.size.height-100-100-15) collectionViewLayout:layout];
     _collection.showsVerticalScrollIndicator=NO;
     _collection.scrollEnabled=NO;
     NSInteger height=CGRectGetMaxY(_collection.frame);
@@ -244,8 +246,18 @@
     UINib *nib=[UINib nibWithNibName:@"hotRankCollectionViewCell" bundle:[NSBundle mainBundle]];
     [_collection registerNib:nib forCellWithReuseIdentifier:@"cell"];
     [_collection registerNib:nib forCellWithReuseIdentifier:@"noSkill"];
-    _refershButton=[[UIButton alloc]initWithFrame:CGRectMake(_collection.bounds.size.width/2-30, _collection.bounds.size.height/2-30 , 60, 60)];
-    _refershButton.backgroundColor=[UIColor blackColor];
+    _refershButton=[[UIButton alloc]initWithFrame:CGRectMake(_collection.bounds.size.width/2-80, _collection.bounds.size.height/2-30 , 160, 60)];
+    UIImageView*imageview=[[UIImageView alloc]initWithFrame:CGRectMake(60, 0, 40, 40)];
+    imageview.image=[UIImage imageNamed:@"表情.jpg"];
+    _refershButton.backgroundColor=[UIColor whiteColor];
+    [_refershButton addSubview:imageview];
+    UILabel*messageLabel=[[UILabel alloc]initWithFrame:CGRectMake(5, 40, 160, 40)];
+    messageLabel.text=@"暂无数据，点击刷新";
+    messageLabel.textAlignment=NSTextAlignmentCenter;
+    messageLabel.textColor=[UIColor lightGrayColor];
+    messageLabel.font=[UIFont systemFontOfSize:15];
+    [_refershButton addSubview:messageLabel];
+//    _refershButton.backgroundColor=[UIColor blackColor];
     [_refershButton addTarget:self action:@selector(refershData) forControlEvents:UIControlEventTouchUpInside];
     _refershButton.hidden=YES;
     [_collection addSubview:_refershButton];
@@ -291,8 +303,6 @@
             break;
           case 41:
         {
-        
-            
             if (self.workBlock) {
                 self.workBlock();
             }
@@ -315,7 +325,6 @@
 }
 
 -(UICollectionViewCell*)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    
     MasterDetailModel*model=_hotArray[indexPath.row];
     NSArray*Array=@[@"first",@"second",@"third",@"fifth",@"fiveth",@"sixth"];
     if ([[model.certification objectForKey:@"personal"] integerValue]==1) {
@@ -327,19 +336,18 @@
         if (indexPath.row>1) {
             cell.vHine.hidden=YES;
         }else{
-        
             cell.vHine.hidden=NO;
-
         }
         if (indexPath.row>2) {
-            cell.rankWidth.constant=15;
-            cell.rankHeight.constant=15;
+            cell.rankWidth.constant=9;
+            cell.rankHeight.constant=13;
             cell.rankTop.constant=30;
         }else{
             cell.rankWidth.constant=10;
             cell.rankHeight.constant=30;
             cell.rankTop.constant=23;
         }
+        cell.headImageLeading.constant=-1;
         cell.rankImage.image=[UIImage imageNamed:Array[indexPath.row]];
         return cell;
     }
@@ -357,32 +365,34 @@
         
     }
         if (indexPath.row>2) {
-            noSkillCell.rankWidth.constant=15;
-            noSkillCell.rankHeight.constant=15;
+            noSkillCell.rankWidth.constant=9;
+            noSkillCell.rankHeight.constant=13;
             noSkillCell.rankTop.constant=30;
         }else{
             noSkillCell.rankWidth.constant=10;
             noSkillCell.rankHeight.constant=30;
             noSkillCell.rankTop.constant=23;
-            
         }
         noSkillCell.rankImage.image=[UIImage imageNamed:Array[indexPath.row]];
+        noSkillCell.headImageLeading.constant=-1;
         return noSkillCell;
 }
 
 
--(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+-(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)sectio9
 {
+    
     return UIEdgeInsetsMake(52, 0, 0, 0);
+    
 }
 
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-
+    
     if (self.push) {
         self.push(indexPath);
     }
-
+    
 }
 
 @end

@@ -219,9 +219,7 @@
 -(void)reRequest{
     
 
-
 }
-
 
 
 -(void)createIncreaseview{
@@ -235,8 +233,8 @@
     imageview.alpha=1;
     label.tag=100;
     label.textAlignment=NSTextAlignmentCenter;
-    label.text=[NSString stringWithFormat:@"恭喜获得%lu积分",_addIntral];
-    label.textColor=COLOR(168, 218, 232, 1);
+    label.text=[NSString stringWithFormat:@"恭喜您获得%lu积分",_addIntral];
+    label.textColor=COLOR(248, 101, 0, 1);
     label.font=[UIFont systemFontOfSize:18];
     [view addSubview:label];
     imageview.image=[UIImage imageNamed:@"签到成功"];
@@ -253,7 +251,6 @@
     label.text=[NSString stringWithFormat:@"恭喜获得%lu积分",(long)_addIntral];
     [self.view bringSubviewToFront:_increaseView];
     [self performSelector:@selector(delayMethod) withObject:nil afterDelay:1.5f];
-
 }
 
 -(void)delayMethod{

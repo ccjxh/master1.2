@@ -33,8 +33,8 @@
 {
     
     //设置右边箭头
-   
-    self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+    PersonalDetailModel*inforModel=[[dataBase share]findPersonInformation:delegate.id];
     self.listLabel.font = [UIFont systemFontOfSize:16];
     self.contentLabel.font = [UIFont systemFontOfSize:16];
     switch (section)
@@ -55,15 +55,29 @@
         {
             
             if (row==0) {
+                
+                if (inforModel.personalState==1||inforModel.personal==1) {
+                    
+                    self.accessoryType = 0;;
+                    self.toRihgt.constant=20;
+                    
+                }else{
+                    
+                    self.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+                    self.toRihgt.constant=-10;
+                }
+
                 self.listLabel.text=@"姓名";
                 self.contentLabel.text=@"点击填写姓名";
-                self.contentLabel.textColor = [UIColor grayColor];
+//                self.contentLabel.textColor = [UIColor grayColor];
                 if ([model.realName isEqualToString:@""]) {
                     self.contentLabel.text=@"";
                 }else{
                     self.contentLabel.text=@"";
                     self.contentLabel.text=model.realName;
+                    
                 }
+                
             }
             
            else if (row == 1)
@@ -81,11 +95,34 @@
                     self.contentLabel.textColor = [UIColor blackColor];
                     
                 }
+                
+                if (inforModel.personalState==1||inforModel.personal==1) {
+                    
+                    self.accessoryType = 0;;
+                    self.toRihgt.constant=20;
+                    
+                }else{
+                    
+                    self.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+                    self.toRihgt.constant=-10;
+                }
+
               
             }
             else if(row==2)
             {
                 
+                if (inforModel.personalState==1||inforModel.personal==1) {
+                    
+                    self.accessoryType = 0;;
+                    self.toRihgt.constant=20;
+                    
+                }else{
+                    
+                    self.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+                    self.toRihgt.constant=-10;
+                }
+
                 self.listLabel.text = @"籍贯";
                 self.contentLabel.text=@"点击选择籍贯";
                 NSString *str = [model.nativeProvince objectForKey:@"name"];
@@ -94,6 +131,18 @@
                 
                 
             }else if (row==3){
+                
+                if (inforModel.personalState==1||inforModel.personal==1) {
+                    
+                    self.accessoryType = 0;;
+                    self.toRihgt.constant=20;
+                    
+                }else{
+                    
+                    self.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+                    self.toRihgt.constant=-10;
+                }
+
                 self.listLabel.text=@"年龄";
                 NSString*age;
                 self.contentLabel.text=@"点击选择选择出生日期";
@@ -125,7 +174,7 @@
                   int day = [comps day];
                   
                   if (day>[third intValue]) {
-                      age=[NSString stringWithFormat:@"%lu岁",year-[first integerValue]-1];
+                      age=[NSString stringWithFormat:@"%lu岁",year-[first integerValue]];
                       if (year==[first intValue]) {
                           age=@"0岁";
                       }
@@ -133,23 +182,36 @@
                   }
                   else  if ([currentSecond integerValue]>[second integerValue]){
                     self.contentLabel.text = model.birthday;
-                    age=[NSString stringWithFormat:@"%lu岁",year-[first integerValue]-1];
+                    age=[NSString stringWithFormat:@"%lu岁",year-[first integerValue]];
                          if (year==[first intValue]) {
                              age=@"0岁";
                          }
                 }else{
-                    age=[NSString stringWithFormat:@"%lu岁",year-[first integerValue]];
+                    age=[NSString stringWithFormat:@"%lu岁",year-[first integerValue]+1];
                     if (year==[first intValue]) {
                         age=@"0岁";
                         
                         }
                     }
+                     
+                     
                      self.contentLabel.text=age;
                 }
             }else if (row==4){
             
+                if (inforModel.personalState==1||inforModel.personal==1) {
+                    
+                    self.accessoryType = 0;;
+                    self.toRihgt.constant=20;
+                    
+                }else{
+                    
+                    self.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+                    self.toRihgt.constant=-10;
+                }
+
                 self.listLabel.text=@"岗位";
-                self.contentLabel.textColor=[UIColor lightGrayColor];
+//                self.contentLabel.textColor=[UIColor lightGrayColor];
                 AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
                 switch (delegate.userPost) {
                     case 1:
@@ -170,6 +232,17 @@
             break;
         case 2:
         {
+            if (inforModel.personalState==1||inforModel.personal==1) {
+                
+                self.accessoryType = 0;;
+                self.toRihgt.constant=20;
+                
+            }else{
+                
+                self.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+                self.toRihgt.constant=-10;
+            }
+
             if (row == 0)
             {
                 self.listLabel.text = @"电话号码";
@@ -181,7 +254,7 @@
                 else
                 {
                     self.contentLabel.text = model.mobile;
-                    self.contentLabel.textColor = [UIColor lightGrayColor];
+//                    self.contentLabel.textColor = [UIColor lightGrayColor];
                 }
             }
             else if (row == 1)

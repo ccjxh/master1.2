@@ -138,10 +138,10 @@
     self.name.font=[UIFont fontWithName:@"zapfino" size:30];
     self.loginButton.layer.cornerRadius=3;
     self.loginButton.backgroundColor=COLOR(22, 168, 234, 1);
-    UIImageView*accountImage=[[UIImageView alloc]initWithFrame:CGRectMake(0, 11, 14, 16)];
+    UIImageView*accountImage=[[UIImageView alloc]initWithFrame:CGRectMake(0, 13, 13, 16)];
     accountImage.image=[UIImage imageNamed:@"Shape 32@2x"];
     [self.backView addSubview:accountImage];
-    UIImageView*passWordImage=[[UIImageView alloc]initWithFrame:CGRectMake(0, 51, 14, 20)];
+    UIImageView*passWordImage=[[UIImageView alloc]initWithFrame:CGRectMake(0, 51, 13, 17)];
     passWordImage.image=[UIImage imageNamed:@"LOCK@2x"];
     [self.backView addSubview:passWordImage];
     [self.backView addSubview:_passWord];
@@ -207,9 +207,9 @@
                 delegate.userPost=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"userPost"] integerValue];
                 delegate.id=[[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"id"] integerValue];
                 [delegate setupPushWithDictory];
+                [self.view makeToast:@"恭喜!登录成功。" duration:2.0f position:@"center"];
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     //延迟跳转
-                    [self.view makeToast:@"恭喜!登录成功。" duration:2.0f position:@"center"];
                     [XGPush setAccount:[[[dict objectForKey:@"entity"] objectForKey:@"user"] objectForKey:@"pullTag"]];
                     [MBProgressHUD hideHUDForView:weakSelf.view animated:YES];
                     [delegate setHomeView];

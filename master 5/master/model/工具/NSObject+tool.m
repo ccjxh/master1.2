@@ -18,7 +18,7 @@
         cell=[[UITableViewCell alloc]initWithStyle:1 reuseIdentifier:@"CEll"];
     }
     if (skillArray.count==0) {
-        cell.detailTextLabel.text=@"  技能";
+        cell.detailTextLabel.text=@"技能";
         cell.detailTextLabel.textColor=[UIColor lightGrayColor];
         cell.detailTextLabel.font=[UIFont systemFontOfSize:16];
         return cell;
@@ -80,14 +80,16 @@
 //计算技能的高度
 -(CGFloat)accountSkillWithAllSkill:(NSMutableArray*)skillArray{
     
-    if (skillArray.count==0) {
-        return 44;
+    if (skillArray.count<=2) {
+        
+        return 40;
     }
     else
     {
         if (skillArray.count%3==0) {
             
             return skillArray.count/3*30+10;
+            
         }
         else
         {

@@ -106,7 +106,7 @@
             NSString *emailRegex =@"[1-9][0-9]{4,}";
             NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES%@",emailRegex];
             
-            if ( [emailTest evaluateWithObject:self.modifyInfoTextField.text] || self.modifyInfoTextField.text.length == 0)   //判断qq是否为空
+            if ( self.modifyInfoTextField.text.length<=12|| self.modifyInfoTextField.text.length == 0)   //判断qq是否为空
             {
 //                NSLog(@"%@",self.modifyInfoTextField.text);
                 self.modifyBasicInfoBlock(self.modifyInfoTextField.text,1);
@@ -192,6 +192,16 @@
             break;
     }
 }
+
+-(BOOL)isQQNumber  {
+    NSString *qqRegex = @"^[0-9]+$";
+    
+    NSPredicate *qqTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",qqRegex];
+    
+    return [qqTest evaluateWithObject:self];
+
+}
+
 #pragma mark - 验证身份证是否正确
 - (BOOL)verifyIDCardNumber:(NSString *)value
 {

@@ -124,7 +124,7 @@
     NSString*urlString=[self interfaceFromString:interface_phonerecommend];
     NSMutableDictionary*dict=[[NSMutableDictionary alloc]init];
     [dict setObject: [NSString stringWithFormat:@"%lu",delegate.id] forKey:@"fromId"];
-    [dict setObject:[NSString stringWithFormat:@"%u",self.model.id] forKey:@"targetId"];
+    [dict setObject:[NSString stringWithFormat:@"%lu",self.model.id] forKey:@"targetId"];
     [dict setObject:self.model.phone forKey:@"targetMobile"];
     if ([self.model.publisher objectForKey:@"realName"]) {
         [dict setObject:[self.model.publisher objectForKey:@"realName"] forKey:@"targetRealName"];

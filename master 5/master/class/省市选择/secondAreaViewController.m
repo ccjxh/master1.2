@@ -109,6 +109,16 @@
                 
                 for (UIViewController*vc in self.navigationController.viewControllers) {
                       if ([vc isKindOfClass:[proviceSelectedViewController class]]==YES) {
+                          for (NSInteger i=0; i<self.selectArray.count; i++) {
+                              NSMutableArray*array=self.selectArray[i];
+                              for (NSInteger j=0; j<array.count; j++) {
+                                  AreaModel*model=array[j];
+                                  model.isselect=NO;
+                                  [array replaceObjectAtIndex:j withObject:model];
+                              }
+                              
+                              [self.selectArray replaceObjectAtIndex:i withObject:array];
+                          }
                           proviceSelectedViewController*pvc=(proviceSelectedViewController*)vc;
                           pvc.selectArray=self.selectArray;
                           [pvc.tableview reloadData];

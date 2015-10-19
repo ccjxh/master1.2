@@ -48,6 +48,7 @@
         [cityModel setValuesForKeysWithDictionary:tempDict];
             
      BOOL isSuccess=[db executeUpdate:sql,cityModel.name,[self getnumberFromString:[NSString stringWithFormat:@"%lu",cityModel.id]],cityModel.indexLetter,[self getnumberFromString:[NSString stringWithFormat:@"%lu",pid]]];
+            NSLog(@"%lu",array.count);
             
         if (!isSuccess) {
         isSuccess= [db executeUpdate:updateSql,cityModel.name,cityModel.indexLetter,[self getnumberFromString:[NSString stringWithFormat:@"%lu",pid]],[self getnumberFromString:[NSString stringWithFormat:@"%lu",cityModel.id]]];

@@ -28,17 +28,16 @@
 
 -(void)dealloc{
 
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"city" object:nil];
-
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"workPlace" object:nil];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self requestToken];
     [self initData];
     [self initUI];
-    [self customRightNavigation];
     [self CreateFlow];
-     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(cityInfprmatin:) name:@"city" object:nil];  //省市选择通知
+//     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(cityInfprmatin:) name:@"city" object:nil];  //省市选择通知
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(cityInfprmatin:) name:@"workPlace" object:nil];
     // Do any additional setup after loading the view.
 }
 
@@ -48,13 +47,10 @@
 -(void)cityInfprmatin:(NSNotification*)nc{
     [_serviceArray removeAllObjects];
     NSDictionary*dict=nc.userInfo;
-    NSMutableArray*Array=[dict objectForKey:@"cityInformation"];
-    AreaModel*cityModel=Array[0];
-    AreaModel*townModel=Array[1];
-    
-    
-    [subDict setObject:[NSString stringWithFormat:@"%lu",townModel.id] forKey:@"workSite.id"];
-    [_view.firstArrayPlacea replaceObjectAtIndex:3 withObject:townModel.name];
+    AreaModel*model=[dict objectForKey:@"model"];
+    [subDict setObject:[NSString stringWithFormat:@"%lu",model.id] forKey:@"workSite.id"];
+    [_view.firstArrayPlacea replaceObjectAtIndex:3 withObject:model.name];
+    [_view.colorArray replaceObjectAtIndex:3 withObject:@"1"];
     [_view.tableview reloadData];
     
     
@@ -65,20 +61,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-
--(void)customRightNavigation{
-
-    UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 25)];
-    [button setTitle:@"保存" forState:UIControlStateNormal];
-    button.titleLabel.font=[UIFont systemFontOfSize:16];
-    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(save)  forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc]initWithCustomView:button];
-    
-    
-}
-
 
 
 -(void)save{
@@ -260,6 +242,7 @@
 //                    [Weself pushWinthAnimation:Weself.navigationController Viewcontroller:pvc];
                     
                     cityViewController*cvc=[[cityViewController alloc]initWithNibName:@"cityViewController" bundle:nil];
+                    cvc.count=3;
                     if ([weDict objectForKey:@"workSite.id"]) {
                         AreaModel*model=[[dataBase share]findWithCity:WeView.firstArrayPlacea[3]];
                         NSMutableArray*array=[[NSMutableArray alloc]initWithObjects:model, nil];

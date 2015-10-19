@@ -200,18 +200,18 @@
     [_datePicker setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addConstraints:constraints];
     
-    UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(13, 64, SCREEN_WIDTH, 30)];
-    label.text=@"工期截止日:";
-    label.textColor=[UIColor blackColor];
-    label.font=[UIFont systemFontOfSize:16];
-    [self.view addSubview:label];
-    if (_isShowMessage) {
-        label.hidden=NO;
-        
-    }else{
-        label.hidden=YES;
-    }
-
+//    UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(13, 64, SCREEN_WIDTH, 30)];
+//    label.text=@"工期截止日:";
+//    label.textColor=[UIColor blackColor];
+//    label.font=[UIFont systemFontOfSize:16];
+//    [self.view addSubview:label];
+//    if (_isShowMessage) {
+//        label.hidden=NO;
+//        
+//    }else{
+//        label.hidden=YES;
+//    }
+//
     
 }
 

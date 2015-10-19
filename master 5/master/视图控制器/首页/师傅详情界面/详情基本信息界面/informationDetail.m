@@ -117,15 +117,15 @@
             [model setValuesForKeysWithDictionary:[self.model.service objectForKey:@"servicerSkills"][i]];
             [skillArray addObject:model];
         }
-               
-        return [self accountSkillWithAllSkill:skillArray];
+        
+        return [self accountSkillWithAllSkill:skillArray]-25;
     }
         else if (indexPath.row==4){
         
         if ([self accountStringHeightFromString:[self.model.service objectForKeyedSubscript:@"serviceDescribe"] Width:SCREEN_WIDTH-110]>16) {
-            return [self accountStringHeightFromString:[self.model.service objectForKeyedSubscript:@"serviceDescribe"] Width:SCREEN_WIDTH-110]+15;
+            return [self accountStringHeightFromString:[self.model.service objectForKeyedSubscript:@"serviceDescribe"] Width:SCREEN_WIDTH-110]+40;
         }
-        return 44;
+        return 40;
     }
     return 30;
 }
@@ -174,8 +174,6 @@
     
     [requestModel isNullMasterDetail:self.model];
     [cell1 upDateWithModel:self.model];
-    
-    
     if (indexPath.section==0) {
         return cell1;
         

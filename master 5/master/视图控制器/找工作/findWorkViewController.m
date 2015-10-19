@@ -41,11 +41,30 @@
 }
 
 
+-(instancetype)init{
+
+    
+    
+    
+    return self;
+
+}
+
 -(void)dealloc{
 
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"public" object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"placeChange" object:nil];
 
 }
+
+
+-(void)viewWillAppear:(BOOL)animated{
+
+
+    [super viewWillAppear:animated];
+
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -59,11 +78,11 @@
     [self customLeftNavigation];
     [self customRightavigation];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateUI:) name:@"public" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadData:) name:@"placeChange" object:nil];
     // Do any additional setup after loading the view.
 }
 
 -(void)updateUI:(NSNotification*)nc{
-
 
     self.isRefersh=YES;
     [self requestListInformation];
@@ -71,22 +90,35 @@
 }
 
 
+-(void)reloadData:(NSNotification*)nc{
+    
+    NSDictionary*dict=nc.userInfo;
+    AreaModel*model=[dict objectForKey:@"model"];
+    _currentCityName=model.name;
+    [self customLeftNavigation];
+    self.isRefersh=YES;
+    [self requestListInformation];
+
+}
+
 -(void)customLeftNavigation{
     
     UIButton*button=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, 60, self.navigationController.navigationBar.frame.size.height)];
     button.tag=10;
     [button addTarget:self action:@selector(changecity) forControlEvents:UIControlEventTouchUpInside];
-    UIImageView*imageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 14, 14, 18)];
-    imageview.image=ImageNamed(@"2.png");
-    imageview.tag=11;
-    [button addSubview:imageview];
-    UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(17, 9, 60, 30)];
+    UILabel*label=[[UILabel alloc]initWithFrame:CGRectMake(0, 9, 60, 30)];
     label.textColor=[UIColor whiteColor];
     label.font=[UIFont systemFontOfSize:16];
     label.text=_currentCityName;
+    if (_currentCityName.length*16<=60) {
+        label.frame=CGRectMake(0, 9, _currentCityName.length*16, 30);
+    }
+    UIImageView*imageview=[[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(label.frame)+5, 21, 13, 8)];
+    imageview.image=ImageNamed(@"ARROW");
+    imageview.tag=11;
+    [button addSubview:imageview];
     [button addSubview:label];
     self.navigationItem.leftBarButtonItem=[[UIBarButtonItem alloc]initWithCustomView:button];
-    
 }
 
 
@@ -95,17 +127,13 @@
 {
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     cityViewController*cvc=[[cityViewController alloc]init];
+    cvc.hidesBottomBarWhenPushed=YES;
     if (delegate.city) {
         
         cvc.city=delegate.city;
         
     }
-    cvc.TBlock=^(AreaModel*CityModel){
-        _currentCityName=CityModel.name;
-        [self customLeftNavigation];
-        [self request];
-        
-    };
+  
     [self pushWinthAnimation:self.navigationController Viewcontroller:cvc];
     
 }
@@ -369,8 +397,9 @@
             [view.tableview reloadData];
             if (_dataArray.count==0) {
                 self.noDataView.hidden=NO;
+                view.tableview.separatorStyle=0;
             }else{
-                
+                view.tableview.separatorStyle=1;
                 self.noDataView.hidden=YES;
             }
             
