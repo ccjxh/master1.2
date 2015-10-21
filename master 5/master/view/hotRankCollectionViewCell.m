@@ -16,6 +16,17 @@
     self.headImage.layer.masksToBounds=YES;
 }
 
+-(instancetype)initWithCoder:(NSCoder *)aDecoder{
+
+    if (self=[super initWithCoder:aDecoder]) {
+        
+        self.headImage=[[UIImageView alloc]initWithFrame:CGRectMake(22, 15.5, 45, 45)];
+        [self.contentView addSubview:self.headImage];
+    }
+    return self;
+
+}
+
 -(void)reloadData{
 
     self.lineView.backgroundColor=COLOR(224, 224, 224, 1);
@@ -62,7 +73,6 @@
         self.nameWidth.constant=30;
     }
     self.userportWidth.constant=userPost.length*12+3;
-
 }
 
 @end

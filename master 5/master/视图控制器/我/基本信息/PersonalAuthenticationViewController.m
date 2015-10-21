@@ -382,7 +382,14 @@
         if ([type isEqualToString:@"public.image"])
         {
             UIImage *image = [info objectForKey:@"UIImagePickerControllerEditedImage"];
-            CGSize imagesize = image.size;
+            CGFloat length;
+            if (image.size.width>image.size.height) {
+                length=image.size.height;
+            }else{
+                
+                length=image.size.width;
+            }
+            CGSize imagesize = CGSizeMake(length, length);
             UIImage *imageNew = [self imageWithImage:image scaledToSize:imagesize];
             //将图片转换成二进制
             NSData *imageData = UIImageJPEGRepresentation(imageNew, 0.1);

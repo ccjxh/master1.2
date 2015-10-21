@@ -29,9 +29,9 @@
     self.title=@"我的积分";
     [self customNavigation];//定制导航栏
     [self createUI];        //创建UI
-    [self request];         //积分数据请求
     [self CreateFlow];
-    // Do any additional setup after loading the view.
+    [self request];         //积分数据请求
+        // Do any additional setup after loading the view.
 }
 
 -(void)createUI{
@@ -114,6 +114,7 @@
     } failure:^(AFHTTPRequestOperation *Operation, NSError *error) {
         
         [self flowHide];
+        [self.view makeToast:@"当前网络不好,请稍后重试" duration:1.5f position:@"center"];
 
     }];
     

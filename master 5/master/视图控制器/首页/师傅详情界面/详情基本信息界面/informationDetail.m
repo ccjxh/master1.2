@@ -123,9 +123,11 @@
         else if (indexPath.row==4){
         
         if ([self accountStringHeightFromString:[self.model.service objectForKeyedSubscript:@"serviceDescribe"] Width:SCREEN_WIDTH-110]>16) {
+            
             return [self accountStringHeightFromString:[self.model.service objectForKeyedSubscript:@"serviceDescribe"] Width:SCREEN_WIDTH-110]+40;
         }
-        return 40;
+            
+        return 60;
     }
     return 30;
 }

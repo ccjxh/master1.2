@@ -29,15 +29,6 @@
 }
 
 
-//云测相关设置
--(void)setupTestLin{
-    
-    
-    
-}
-
-
-
 
 //推送
 -(void)setupPushWithDictory{

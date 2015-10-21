@@ -37,7 +37,7 @@
 #import <TencentOpenAPI/QQApiInterface.h>
 #import <TencentOpenAPI/TencentOAuth.h>
 #import <Bugly/CrashReporter.h>
-#import "DurexKit.h"
+//#import "DurexKit.h"
 
 @interface AppDelegate ()<TencentSessionDelegate,WXApiDelegate,UIAlertViewDelegate>
 @property (nonatomic) CLLocationManager *locMgr;
@@ -75,7 +75,7 @@
     delegate.userInforDic=[[NSMutableDictionary alloc]init];
     self.window.rootViewController=temp;
     [self setupRecommend];  //评分相关设置
-    [self setupTestLin];    //云测相关设置
+//    [self setupTestLin];    //云测相关设置
     [ShareSDK registerApp:@"a8e3c1e1faa7" activePlatforms:@[@(SSDKPlatformSubTypeQZone),@(SSDKPlatformSubTypeQQFriend),@(SSDKPlatformSubTypeWechatSession),@(SSDKPlatformSubTypeWechatTimeline),@(SSDKPlatformTypeQQ)] onImport:^(SSDKPlatformType platformType) {
         switch (platformType)
         {
@@ -181,11 +181,11 @@
     [self.window bringSubviewToFront:niceView];
     //开始设置动画;
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.5];
+    [UIView setAnimationDuration:2];
     [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.window cache:YES];
     [UIView setAnimationDelegate:self];
     //這裡還可以設置回調函數;
-    [UIView setAnimationDidStopSelector:@selector(startupAnimationDone)];
+//    [UIView setAnimationDidStopSelector:@selector(startupAnimationDone)];
     niceView.alpha = 0.99;
     [UIView commitAnimations];
     

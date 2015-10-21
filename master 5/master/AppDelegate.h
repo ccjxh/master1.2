@@ -43,6 +43,6 @@
 -(void)setupRootView;
 -(void)sendData:(NSString*)pull;
 -(void)setupMap;
-
+-(void)startupAnimationDone;
 @end
 

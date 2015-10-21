@@ -65,15 +65,19 @@
             if (delegate.pullToken) {
                 [delegate sendData:delegate.pullToken];
             }
-            
+            [delegate startupAnimationDone];
             [delegate setHomeView];
             
         } else if ([[dict objectForKey:@"rspCode"] integerValue]==500) {
-            
+            [delegate startupAnimationDone];
+
+            [delegate setupLoginView];
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        [delegate startupAnimationDone];
+
+         [delegate setupLoginView];
     }];
 }
 

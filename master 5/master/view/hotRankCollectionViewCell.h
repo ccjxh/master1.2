@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 //#import ""
 @interface hotRankCollectionViewCell : UICollectionViewCell
-@property (weak, nonatomic) IBOutlet UIImageView *headImage;
+@property ( nonatomic) UIImageView *headImage;
 @property (weak, nonatomic) IBOutlet UILabel *name;
 @property (weak, nonatomic) IBOutlet UILabel *skills;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nameWidth;

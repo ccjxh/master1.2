@@ -22,8 +22,9 @@
     UILabel*_scoreLabel;//总积分标签
     UIScrollView*_backView;
     BOOL _isShowNotice;//是否显示通知
-    UIButton*_signedButton;//签到button
+    UILabel*_signedButton;//签到button
     UIButton*_refershButton;
+    UIButton*_opinionButton;
 
 }
 -(id)initWithCoder:(NSCoder *)aDecoder{
@@ -61,8 +62,24 @@
 
 -(void)customUI{
 
+    AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     self.backgroundColor=COLOR(232, 233, 232, 1);
     _firObjcView=[[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_noticeView.frame), SCREEN_WIDTH, 48)];
+    _opinionButton=[[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-113, _firObjcView.frame.size.height/2-10, 100, 20)];
+    _opinionButton.titleLabel.font=[UIFont systemFontOfSize:14];
+    [_opinionButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [_opinionButton setBackgroundColor:[UIColor whiteColor]];
+    _opinionButton.layer.cornerRadius=5;
+    [_opinionButton addTarget:self action:@selector(sign:) forControlEvents:UIControlEventTouchUpInside];
+    if ([[delegate.signInfo objectForKey:@"signState"] integerValue]==1) {
+            [_opinionButton setTitle:[NSString stringWithFormat:@"明日签到+%ld",[[delegate.signInfo objectForKey:@"nextDayIntegral"]integerValue]] forState:UIControlStateNormal];
+            }
+    else {
+            [_opinionButton setTitle:[NSString stringWithFormat:@"今日签到+%ld",[[delegate.signInfo objectForKey:@"todayIntegral"] integerValue]] forState:UIControlStateNormal];
+                _signedButton.userInteractionEnabled=YES;
+            }
+    [_firObjcView addSubview:_opinionButton];
+        [UIView commitAnimations];
     _firObjcView.backgroundColor=COLOR(100, 172, 196, 1);
     _firObjcView.userInteractionEnabled=YES;
     _timeLabel=[[UILabel alloc]initWithFrame:CGRectMake(13, 7.5, 150, 12)];
@@ -75,16 +92,11 @@
     _scoreLabel=[[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(imageview.frame)+5, CGRectGetMaxY(_timeLabel.frame)+6, 40, 12)];
     _scoreLabel.textColor=[UIColor whiteColor];
     _scoreLabel.font=[UIFont systemFontOfSize:12];
-    [self createSignButton];
     [_firObjcView addSubview:_scoreLabel];
     [self addSubview:_firObjcView];
 
 }
 
--(void)createSignButton{
-
-   
-}
 
 
 -(void)sign:(UIButton*)button{
@@ -119,39 +131,23 @@
 }
 
 -(void)reloadData{
-
-    
-    [UIView beginAnimations:@"move" context:nil];
-    [UIView setAnimationDuration:0.1f];
-    [UIView setAnimationDelegate:self];
-    [_signedButton removeFromSuperview];
-    _signedButton=[[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-113, _firObjcView.frame.size.height/2-10, 100, 20)];
     AppDelegate*delegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
+    _timeLabel.text=[NSString stringWithFormat:@"您已经连续签到了%lu天",[[delegate.signInfo objectForKey:@"renewDay"] integerValue]];
+    
     if ([[delegate.signInfo objectForKey:@"signState"] integerValue]==1) {
-        [_signedButton setTitle:[NSString stringWithFormat:@"明日签到+%ld",[[delegate.signInfo objectForKey:@"nextDayIntegral"]integerValue]] forState:UIControlStateNormal];
-        //        button.userInteractionEnabled=NO;
+        [_opinionButton setTitle:[NSString stringWithFormat:@"明日签到+%ld",[[delegate.signInfo objectForKey:@"nextDayIntegral"]integerValue]] forState:UIControlStateNormal];
+        _opinionButton.userInteractionEnabled=NO;
+    }
+    else {
         
-    }else {
-        
-        [_signedButton setTitle:[NSString stringWithFormat:@"明日签到+%ld",[[delegate.signInfo objectForKey:@"todayIntegral"] integerValue]] forState:UIControlStateNormal];
-        [_signedButton addTarget:self action:@selector(sign:) forControlEvents:UIControlEventTouchUpInside];
+        [_opinionButton setTitle:[NSString stringWithFormat:@"今日签到+%ld",[[delegate.signInfo objectForKey:@"todayIntegral"] integerValue]] forState:UIControlStateNormal];
         _signedButton.userInteractionEnabled=YES;
     }
-    [_signedButton setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
-    _signedButton.titleLabel.font=[UIFont systemFontOfSize:14];
-    [_signedButton setBackgroundColor:[UIColor whiteColor]];
-    _signedButton.layer.cornerRadius=5;
-    _signedButton.tag=BUTTON_TAG;
-    [_firObjcView addSubview:_signedButton];
-    [UIView commitAnimations];
-
     
-    _timeLabel.text=[NSString stringWithFormat:@"您已经连续签到了%lu天",[[delegate.signInfo objectForKey:@"renewDay"] integerValue]];
     _scoreLabel.text=[NSString stringWithFormat:@"%lu",delegate.integral ];
     [UIView beginAnimations:@"move" context:nil];
     [UIView setAnimationDuration:0.5f];
     [UIView setAnimationDelegate:self];
-    
     if (_isShowNotice==NO) {
         _noticeView.frame=CGRectMake(_noticeView.frame.origin.x, _noticeView.frame.origin.y, _noticeView.frame.size.width, 0);
     }else{
@@ -159,7 +155,7 @@
     }
     _firObjcView.frame=CGRectMake(0, CGRectGetMaxY(_noticeView.frame), SCREEN_WIDTH, 48);
     _backView.frame=CGRectMake(0, CGRectGetMaxY(_firObjcView.frame), SCREEN_WIDTH, SCREEN_HEIGHT-24-140);
-    [UIView commitAnimations];    
+    [UIView commitAnimations];
    
 }
 
@@ -339,15 +335,15 @@
             cell.vHine.hidden=NO;
         }
         if (indexPath.row>2) {
-            cell.rankWidth.constant=9;
-            cell.rankHeight.constant=13;
-            cell.rankTop.constant=30;
+            cell.rankWidth.constant=8;
+            cell.rankHeight.constant=14;
+            cell.rankTop.constant=30.5;
+            cell.headImage.frame=CGRectMake(cell.headImage.frame.origin.x-1, cell.headImage.frame.origin.y, 45, 45);
         }else{
             cell.rankWidth.constant=10;
             cell.rankHeight.constant=30;
             cell.rankTop.constant=23;
         }
-        cell.headImageLeading.constant=-1;
         cell.rankImage.image=[UIImage imageNamed:Array[indexPath.row]];
         return cell;
     }
@@ -365,16 +361,16 @@
         
     }
         if (indexPath.row>2) {
-            noSkillCell.rankWidth.constant=9;
-            noSkillCell.rankHeight.constant=13;
-            noSkillCell.rankTop.constant=30;
+            noSkillCell.rankWidth.constant=8;
+            noSkillCell.rankHeight.constant=14;
+            noSkillCell.rankTop.constant=30.5;
+            noSkillCell.headImage.frame=CGRectMake(noSkillCell.headImage.frame.origin.x-1, noSkillCell.headImage.frame.origin.y,45,45);
         }else{
             noSkillCell.rankWidth.constant=10;
             noSkillCell.rankHeight.constant=30;
             noSkillCell.rankTop.constant=23;
         }
         noSkillCell.rankImage.image=[UIImage imageNamed:Array[indexPath.row]];
-        noSkillCell.headImageLeading.constant=-1;
         return noSkillCell;
 }
 

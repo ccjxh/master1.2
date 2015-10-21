@@ -147,7 +147,6 @@
     }
     [subDict setObject:tempModel.mobile forKey:@"phone"];
     [_view.secondArrayPlace replaceObjectAtIndex:1 withObject:tempModel.mobile];
-
    __block  __weak typeof(NSMutableDictionary*)weDict=subDict;
    __block  __weak typeof(self)Weself=self;
    __block __weak typeof(findAddNewWork*)WeView=_view;
